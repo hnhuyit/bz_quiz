@@ -1,0 +1,23 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+<div class="page-header">
+    <h1>Reset Password</h1></div>
+<div class="row" ng-controller="AuthController">
+    <div class="col-sm-6">
+        <form id="userLogin" name="resetForm" method="POST" autocomplete="off">
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" class="form-control" id="newPassword" name="newPassword" ng-model="newPassword" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="confirmNewPassword">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" ng-model="confirmNewPassword" placeholder="Confirm Password">
+            </div>
+            <input type="hidden" name="resetPasswordToken" id="resetPasswordToken" ng-model="resetPasswordToken" value="{{token}}"/>
+            <button type="button" ng-click="reset()" class="btn btn-success">Submit</button>
+        </form>
+    </div>
+</div>
+
+<% endblock %>

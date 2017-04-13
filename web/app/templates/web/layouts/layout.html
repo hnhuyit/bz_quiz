@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include "web/layouts/partials/head.html" %>
+</head>
+<body ng-app="myapp" class="skin-blue sidebar-mini wysihtml5-supported sidebar-collapse">
+    <div class="wrapper">
+        <% include "web/layouts/partials/header.html" %>
+        <% include "web/layouts/partials/sidebar.html" %>
+        <div class="content-wrapper">
+            <% block content %>
+            <% endblock %>
+        </div>
+        <!-- /container -->
+        <% block jsInline %>
+        <% endblock %>
+        <% include "web/layouts/partials/footer.html" %>
+    </div>
+</body>
+</html>

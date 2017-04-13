@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include "admin/layouts/partials/header.html" %>
+</head>
+
+<body class="ng-cloak skin-blue sidebar-mini">
+    <div class="wrapper">
+        <header class="main-header">
+            <a href="/#!/" class="logo">
+                <span class="logo-mini"></span>
+                <span class="logo-lg">CMS</span>
+            </a>
+            <nav class="navbar navbar-static-top" role="navigation" data-ng-controller="HeaderController">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav" ng-show="authentication.user.name">
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="hidden-xs" data-ng-bind="authentication.user.name"></span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" data-ng-controller="AuthenticationController">
+                                <li>
+                                    <a href="/#!/settings/profile">Edit Profile</a>
+                                </li>
+                                <li data-ng-show="authentication.user.provider === 'local'">
+                                    <a href="/#!/settings/password">Change Password</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a style="cursor: pointer" data-ng-click="signout()">Signout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="main-sidebar">
+            <section class="sidebar" data-ng-controller="HeaderController">
+                <ul class="sidebar-menu">
+                    <li class="header">NAVIGATION</li>
+                    <li data-ng-repeat="item in menu.items | orderBy: 'position'" data-ng-if="menu.shouldRender(authentication.user) && item.shouldRender(authentication.user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}} treeview"
+                        ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
+                        <a href="{{cmsprefix}}#!/{{item.link}}"><i class="fa fa-table text-aqua"></i> <span>{{item.title}}</span> <i
+                                class="fa fa-angle-left pull-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li data-ng-repeat="subitem in item.items | orderBy: 'position'" data-ng-if="subitem.shouldRender(authentication.user);" ui-route="{{subitem.uiRoute}}" ng-class="{active: $uiRoute}">
+                                <a href="{{cmsprefix}}#!/{{subitem.link}}"><i class="fa fa-circle-o text-aqua"></i><span data-ng-bind="subitem.title"></span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <div class="content-wrapper">
+            <% block content %>
+                <% endblock %>
+        </div>
+        <!-- /container -->
+        <% include "admin/layouts/partials/footer.html" %>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+<section data-ng-controller="SettingsController" data-ng-init="findOne()">
+    <section class="content-header">
+        <h1>Settings</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="callout">
+                <div class="box-footer">
+                    <div class="form-group">
+                        <a class="btn btn-primary" ng-click="update(SettingForm.$valid, 'GOTOLIST')">Save & List</a> &nbsp;&nbsp;
+                        <a class="btn btn-primary" ng-click="update(SettingForm.$valid)">Apply</a> &nbsp;&nbsp;
+                        <input type="button" value="Cancel" class="btn btn-default" ng-click="gotoList()"> &nbsp;&nbsp;
+                        <input type="button" value="Delete" class="btn btn-danger" ng-click="remove(setting._id)">
+                    </div>
+                    <notice-dir/>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Edit Setting</h3>
+                    </div>
+                    <form name="SettingForm" novalidate>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label class="control-label" for="title">Key</label>
+                                        <div class="controls">
+                                            <input type="text" name="title" data-ng-model="setting.key" id="title" class="form-control" placeholder="Key" required>
+                                        </div>
+                                        <div class="error-messages message" ng-messages="SettingForm.key.$error" ng-messages-multiple ng-if="submitted">
+                                            <error-message/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="value_type">Type</label>
+                                        <div class="controls">
+                                            <select class="form-control" data-ng-model="setting.value_type" id="value_type" name="value_type" ng-options="item.value as item.name for item in value_types" ng-change="changeValueType(setting.value_type, true)" required>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="subtitle">Value</label>
+                                        <div class="controls">
+                                            <input ng-if="setting.value_type == 'string'" ng-disabled="setting.value_type != 'string'" type="text" name="value" data-ng-model="setting.value" id="value" class="form-control" placeholder="Value" ng-change="changeValue(setting.value_type, setting.value)"
+                                                required>
+                                            <textarea ng-if="setting.value_type == 'textarea'" ng-disabled="setting.value_type != 'textarea'" rows="10" name="value" data-ng-model="setting.value" id="value" class="form-control" placeholder="Value" ng-change="changeValue(setting.value_type, setting.value)"
+                                                required></textarea>
+                                            <input ng-if="setting.value_type == 'number'" ng-disabled="setting.value_type != 'number'" type="number" name="value" data-ng-model="setting.value" id="value" class="form-control" placeholder="Value" ng-change="changeValue(setting.value_type, setting.value)"
+                                                required>
+                                            <select ng-if="setting.value_type == 'boolean'" ng-disabled="setting.value_type != 'boolean'" class="form-control" data-ng-model="setting.value" id="value" name="value" ng-options="item.value as item.name for item in value_boolean" ng-change="changeValue(setting.value_type, setting.value)"
+                                                required>
+                                            </select>
+                                            <div ng-if="setting.value_type == 'json'">
+                                                <div ng-disabled="setting.value_type != 'json'" ng-jsoneditor data-ng-model="setting.value" options="json_editor_opt" style="width: 100%; height: 300px;"></div>
+                                                <div style="text-align: right;">
+                                                    <button type="button" class="btn btn-sm btn-info" ng-click="changeOptions()"><i class="fa fa-check-circle"></i> Toggle tree/code mode</button>
+                                                </div>
+                                                <pre>{{prettyJson(setting.value_type, setting.value)}}</pre>
+                                            </div>
+                                            <div ng-if="setting.value_type == 'image'">
+                                                <button ng-if="!f && !setting.value" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-size="10MB">
+													<span>Upload image</span>
+												</button>
+                                                <div style="max-width: 300px; text-align: center">
+                                                    <img ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-size="10MB" ng-if="!f && setting.value" ng-src="{{renderSettingImage(setting)}}" alt="Setting value image" style="width: 100%" />
+                                                    <img ngf-src="!f.$error && f" alt="" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-size="10MB" style="width: 100%">
+                                                    <div style="margin: 3px 0" ng-if="(!f.$error && f) || setting.value">
+                                                        <a href="javascript:void(0);" class="btn btn-sm btn-info" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-size="10MB"><i class="fa fa-edit"></i> Change image</a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm btn-info" ng-click="cancelUpload()"><i class="fa fa-trash"></i> Remove</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div ng-if="setting.value_type == 'date'" class="input-group" ng-click="openCalendar()">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                <input type="text" name="start_date" ng-change="changeValue(setting.value_type, setting.value)" required data-ng-model="setting.value" id="start_date" class="form-control" placeholder="DateTime" disabled datetime-picker="dd MMM yyyy HH:mm:00" is-open="isOpen.start_date"
+                                                />
+                                            </div>
+
+                                            <div class="error-messages message" ng-messages="imageValidate" ng-messages-multiple ng-if="imageValidate">
+                                                <div ng-bind="imageValidate"></div>
+                                            </div>
+                                        </div>
+                                        <div class="error-messages message" ng-messages="SettingForm.value.$error" ng-messages-multiple ng-if="submitted && setting.value_type != 'image'">
+                                            <error-message/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="description">Description</label>
+                                        <div class="controls">
+                                            <textarea data-ng-model="setting.description" name="description" id="description" class="form-control ck-editor"></textarea>
+                                        </div>
+                                        <div class="error-messages message" ng-messages="SettingForm.description.$error" ng-messages-multiple ng-if="submitted">
+                                            <error-message/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="status">Status</label>
+                                        <div class="controls">
+                                            <select class="form-control" name="status" ng-init="status = 1" data-ng-model="setting.status" id="status" ng-options="item.value as item.name for item in statuses" required>
+                                            </select>
+                                        </div>
+                                        <div class="error-messages message" ng-messages="SettingForm.status.$error" ng-messages-multiple ng-if="submitted">
+                                            <error-message require-msg="You did not select a field" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

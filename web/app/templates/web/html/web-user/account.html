@@ -1,0 +1,39 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+    <div class="page-header">
+        <h1>My Account</h1>
+    </div>
+    <div class="row" ng-controller="AuthController" data-ng-init="myaccount()">
+        <div class="col-sm-6">
+            <form id="accountForm" name="accountForm" method="POST" novalidate>
+                <div class="form-group">
+                    <label for="email">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" ng-model="user.name" placeholder="Name" required />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" ng-model="user.email" placeholder="Email" required />
+                </div>
+                
+                <button type="button" class="btn btn-success" ng-click="updateMyAccount()">Save</button>
+
+                <br class="clearfix" />
+                <span ng-show="accountForm.email.$dirty && accountForm.email.$invalid" class="ng-cloak" ng-cloak>
+                        <span ng-show="accountForm.email.$error.required">Email is required.</span>
+                <span ng-show="accountForm.email.$error.email">Invalid email address.</span>
+                </span>
+                <p ng-cloak ng-show="updateSuccess">
+                    <strong>Updated Successful.</strong>
+                </p>
+                <div ng-cloak ng-show="errors && errors.length">
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div ng-repeat="message in errors"><span data-ng-bind="message"></span></div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+<% endblock %>

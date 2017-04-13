@@ -1,0 +1,35 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+<div class="page-header">
+     <h1>List Post</h1> 
+</div>
+<div class="row row-offcanvas row-offcanvas-right">
+    <div class="col-xs-12 col-sm-9">
+        <% asyncEach post in posts %>
+        <div class="media">
+            <div class="media-left">
+                <a href="{{postDetailLink this}}">
+                    <% if post.thumb %>
+                        <img width="200px" class="media-object" src="{{thumb}}"> 
+                    <% else %>
+                        <img width="200px" class="media-object" src="/assets/images/default-image.png"> 
+                    <% endif %>
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading"><$ post.title $></h4>
+                <p><$ post.teaser $></p>
+                 <p><a href="{{postDetailLink this}}">View detail»</a></p>
+            </div>
+        </div>
+        <% endeach %> 
+        
+        <$ paginator | safe $>
+    </div>
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+        <% include "web/html/web-post/partials/sidebar.html" %>
+    </div>
+</div>
+
+<% endblock %>

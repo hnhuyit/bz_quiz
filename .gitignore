@@ -1,0 +1,13 @@
+#Ignore Mac DS_Store files
+.DS_Store
+**/.DS_Store
+misc/backup/node_modules/*
+
+web/node_modules
+web/var/*.log
+web/public/assets/lib
+web/public/files/*
+web/test.js
+*.log
+.vscode
+.idea

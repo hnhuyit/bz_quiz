@@ -1,0 +1,44 @@
+<% extends 'admin/layouts/layout-login.html' %>
+
+<% block content %>
+<div class="login-box">
+    <div class="login-logo">
+        <b>CMS</b>
+    </div>
+    <div class="login-box-body">
+        <div class="login-box-body" data-ng-controller="AuthenticationController">
+            <p class="login-box-msg">Sign in to start your session</p>
+
+            <form name="userForm" data-ng-submit="signin()" novalidate>
+                <div class="form-group has-feedback">
+                    <input type="email" id="email" name="email" class="form-control" data-ng-model="credentials.email" placeholder="Email">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <br/>
+                <div>
+                    <div class="alert alert-danger alert-dismissable ng-cloak" data-ng-show="error">
+                        <h4><i class="icon fa fa-ban"></i> Error!</h4>
+                        <div data-ng-bind="error"></div>
+                    </div>
+                </div>
+            </form>
+            <!-- /.social-auth-links -->
+        </div>
+    </div>
+</div>
+
+<% endblock %>

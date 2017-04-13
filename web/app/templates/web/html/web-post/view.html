@@ -1,0 +1,11 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+<div class="page-header">
+    <h1><$ post.title $></h1>
+</div>
+<p>
+     <$ post.content | safe $>
+</p>
+<p class="blog-post-meta"><span data-ng-bind=""><$ post.created $></span></p>
+<% endblock %>

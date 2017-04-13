@@ -1,0 +1,41 @@
+<header class="main-header">
+    <a href="/#!/" class="logo">
+        <span class="logo-mini">TS</span>
+        <span class="logo-lg">TEST ONLINE</span>
+    </a>
+    <nav class="navbar navbar-static-top" role="navigation">
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+
+                <li><a href="/">Home</a></li>
+                <li><a href="/posts">News</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <% if credentials.uid %>
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs"><$ credentials.name $></span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" data-ng-controller="AuthController">
+                            <li><a href="/account">My Account</a></li>
+                            <li><a href="/changepassword">Change Password</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Change Avatar</a></li>
+                            <li><a href="#">Settings</a></li>
+                            <li><a ng-click="logout()" href="#">Logout</a></li>
+                        </ul>
+                    </li>
+
+                <% else %>
+                    <li><a href="/register">Register</a></li>
+                    <li><a href="/login">Login</a></li>
+                <% endif %>
+                <!-- <li ng-controller="NotifyController"><a href="javascript:;">Message <span class="badge" ng-bind="totalMessage">0</span></a></li> -->
+            </ul>
+        </div>
+    </nav>
+</header>
+

@@ -1,0 +1,102 @@
+<section data-ng-controller="SettingsController" data-ng-init="find()">
+    <section class="content-header">
+        <h1>Settings</h1>
+    </section>
+    <!-- Loading -->
+    <ng-loading loading-done="isLoading" />
+    <!-- Main content -->
+    <section ng-if="!deny" class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">List Settings</h3>
+                        <div class="pull-right">
+                            <form style="display: inline;">
+                                <a class="btn btn-primary" data-ui-sref="createSetting" style="float: left; width: 100px; margin-right: 10px">New</a>
+                                <!-- <input type="submit" class="btn btn-block btn-primary" value="Sold Report" style="float: left; width: 100px; margin-top: 0px"> -->
+                            </form>
+                            <!--<form action="/setting/download" method="post" style="display: inline;">
+                                <input type="submit" class="btn btn-block btn-primary" value="Download" style="float: left; width: 100px; margin-top: 0px">
+                            </form>-->
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <notice-dir/>
+                        <div class="box-tools">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-inline filter-layout">
+                                        <div class="form-group">
+                                            <label class="control-label" for="keyword">Keyword</label>
+                                            <input type="text" name="keyword" data-ng-model="search.keyword" id="keyword" class="form-control" placeholder="Enter keyword..." />
+                                        </div>
+                                        <div class="form-group filter-submit">
+                                            <a class="btn btn-primary" ng-click="filter()">Filter</a>
+                                            <a class="btn btn-default" ng-click="reset()">Reset</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>&nbsp;</div>
+                        <!--<div class="pull-left">
+                            <p>Total items: {{totalItems}}</p>
+                            <p>Total page: {{totalPage}}</p>
+                            <p>Total showing items: {{settings.length}}</p>
+                        </div>-->
+                        <div>&nbsp;</div>
+                        <table id="table-list" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Key</th>
+                                    <th>Value</th>
+                                    <th>Type</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="setting in settings">
+                                    <td><a data-ui-sref="editSetting({settingId: setting._id})">{{setting._id}}</a></td>
+                                    <td>{{setting.key}}</td>
+                                    <td>{{setting.value}}</td>
+                                    <td>{{setting.value_type}}</td>
+                                    <td>
+                                        <a data-ui-sref="editSetting({settingId: setting._id})" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
+                                        <a ng-click="remove(setting._id)" title="Delete">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- <ul boundary-links="true" items-per-page="itemsPerPage" max-size="numberVisiblePages" uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;"
+                            first-text="&laquo;" last-text="&raquo;"></ul> -->
+                        <bd-pagination max-page="10" name="setting_page" current-page="currentPage" total-page="totalPage" page-changed="pageChanged" />
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="alert alert-warning text-center" data-ng-hide="!settings.$resolved || settings.length">
+                    No setting yet
+                </div>
+            </div>
+        </div>
+    </section>
+    <section ng-if="deny">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="alert alert-danger text-center">
+                    <p>You don't have permission to access</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

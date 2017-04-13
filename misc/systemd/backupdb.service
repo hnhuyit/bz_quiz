@@ -1,0 +1,19 @@
+[Unit]
+Description=Backup MongoDB
+Requires=redis.service mongod.service
+After=redis.service mongod.service
+
+[Service]
+WorkingDirectory=/usr/local/backup/mongodb/scripts/
+ExecStart=/usr/bin/node /usr/local/backup/mongodb/scripts/app.js
+Restart=always
+RestartSec=3
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=bz-backup
+User=backup
+Group=backup
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

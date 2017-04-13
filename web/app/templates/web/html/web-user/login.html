@@ -1,0 +1,80 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+<!-- <div class="page-header">
+    <h1>Login</h1>
+</div> -->
+<div class="content body" ng-controller="AuthController">
+    <div class="row">
+        <div class="login-box">
+            <div class="login-logo">
+            <a href="#">TEST ONLINE</a>
+            </div>
+            <!-- /.login-logo -->
+            <div class="login-box-body">
+                <p class="login-box-msg">Sign in to start your session</p>
+                <form name="loginForm" data-ng-submit="login()" novalidate>
+                  <div class="form-group has-feedback">
+                    <input type="email" id="email" name="email" class="form-control" data-ng-model="user.email" placeholder="Email">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                  </div>
+                  <div class="form-group has-feedback">
+                    <input type="password" id="password" name="password" class="form-control" data-ng-model="user.password" placeholder="Password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-8">
+                      <div class="checkbox">
+                        <label>
+                          <input ng-model="isCheck" type="checkbox"> I agree to the <a href="#">terms</a>
+                        </label>
+                      </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                      <button type="submit" ng-disabled="!isCheck" class="btn btn-primary btn-block btn-flat">Login</button>
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                </form>
+                <div class="social-auth-links text-center">
+                  <p>- OR -</p>
+                  <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using Facebook</a>
+                </div>
+                <!-- /.social-auth-links -->
+
+                <a href="/forgot">I forgot my password</a><br>
+                <a href="/register" class="text-center">Register a new membership</a>
+            </div>
+          <!-- /.login-box-body -->
+        </div>
+    </div>
+    <!-- <div class="col-sm-6">
+        <form id="userLogin" name="loginForm" method="POST" autocomplete="off">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" ng-model="email" placeholder="Email" required/>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" ng-model="password" placeholder="Password" required
+                />
+            </div>
+            <div class="form-group">
+                <a href="/forgot">Forgot password ? </a><br/> I am a new member ? <a href="/register">Sign up here</a>
+            </div>
+            <div class="form-group">
+                <button type="button" ng-click="login()" class="btn btn-success">Login</button>
+                <button type="button" ng-click="loginFB()" class="btn btn-success">Login with Facebook</button>
+                <button type="button" ng-click="loginGG()" class="btn btn-success">Login with Google</button>
+            </div>
+            <div ng-cloak ng-show="errors && errors.length">
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div ng-repeat="message in errors"><span data-ng-bind="message"></span></div>
+                </div>
+            </div>
+        </form>
+    </div> -->
+</div>
+<% endblock %>

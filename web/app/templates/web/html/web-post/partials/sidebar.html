@@ -1,0 +1,6 @@
+<div class="list-group">
+    <h4 class="list-group-item active">Category</h4> 
+        <% asyncEach cat in postCategories %>
+            <a class="list-group-item" href="{{postCategoryLink this}}"><$ cat.name $></a> 
+        <% endeach %>
+</div>

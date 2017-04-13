@@ -1,0 +1,160 @@
+<section data-ng-controller="UsersController" id="UsersController">
+    <section class="content-header">
+        <h1>Users</h1>
+    </section>
+    <ng-loading loading-done="isLoading" />
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <a class="btn btn-primary" ng-click="create(UserForm.$valid,'save&list')">Save & List</a> &nbsp;&nbsp;
+                            <a class="btn btn-primary" ng-click="create(UserForm.$valid, 'apply')">Apply</a> &nbsp;&nbsp;
+                            <input type="button" value="Cancel" class="btn btn-default" ng-click="gotoList()">
+                        </div>
+                        <bz-message/>
+                    </div>
+                </div>
+            </div>
+            <form novalidate name="UserForm">
+                <div class="col-md-8">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">New User</h3>
+                        </div>
+                        <!-- <form data-ng-submit="create()" novalidate name="UserForm"> -->
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label class="control-label" for="name">Name</label>
+                                        <div class="controls">
+                                            <input type="text" ng-change="changeSlug(name)" data-ng-model="name" id="name" name="name" class="form-control" placeholder="Name" required>
+                                        </div>
+                                        <div class="error-messages message" ng-messages="UserForm.name.$error" ng-messages-multiple ng-if="submitted">
+                                            <error-message/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="email">Email</label>
+                                        <div class="controls">
+                                            <input type="email" data-ng-model="email" id="email" name="email" class="form-control" placeholder="Email" required>
+                                        </div>
+                                        <div class="error-messages message" ng-messages="UserForm.email.$error" ng-messages-multiple ng-if="submitted">
+                                            <error-message/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="avatar">Cover</label>
+                                        <div class="controls">
+                                            <input type="file" name="file" nv-file-select uploader="uploader" onchange="angular.element(this).scope().handleFileSelect(event,'cover')" />
+                                            <input type="hidden" name="cover" ng-model="cover">
+                                            <img ng-src="{{review_cover}}" ng-show="review_cover" style="max-width: 200px; max-height: 200px; padding-top: 10px" />
+                                            <p class="help-block" ng-hide="cover">Allow file: Image</p>
+                                            <div ng-show="isUploadImage">
+                                                <div class="progress progress-sm active">
+                                                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="password">Password</label>
+                                        <div class="controls">
+                                            <input type="password" data-ng-model="password" id="password" name="password" class="form-control" placeholder="Password" required minlength="6">
+                                        </div>
+                                        <div class="error-messages message" ng-messages="UserForm.password.$error" ng-messages-multiple ng-if="submitted">
+                                            <error-message minlength=6/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="cfpassword">Confirm Password</label>
+                                        <div class="controls">
+                                            <input type="password" data-ng-model="cfpassword" name="cfpassword" id="cfpassword" class="form-control" placeholder="Confirm Password" required>
+                                        </div>
+                                        <div class="error-messages message" ng-messages="UserForm.cfpassword.$error" ng-messages-multiple ng-if="submitted">
+                                            <error-message/>
+                                        </div>
+                                        <div class="error-messages message" ng-if="submitted && cfpassword != password">
+                                            <div>Password and confirm password does not match</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="phone">Phone</label>
+                                        <div class="controls">
+                                            <input type="text" data-ng-model="phone" name="phone" id="phone" class="form-control" placeholder="Phone">
+                                        </div>
+                                        <div class="error-messages message" ng-messages="UserForm.phone.$error" ng-messages-multiple ng-if="submitted">
+                                            <error-message/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="address">Address</label>
+                                        <div class="controls">
+                                            <textarea data-ng-model="address" name="address" id="address" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="province">Province</label>
+                                        <div class="controls">
+                                            <select class="form-control" name="province" data-ng-model="province" id="province" ng-options="province._id as province.name for province in provinces.items" ng-change="provinceChanged(province)">
+                                        <option value="">all province</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="district ">District </label>
+                                        <div class="controls">
+                                            <select class="form-control" name="district" data-ng-model="district " id="district " ng-options="district ._id as district .name for district  in cities.items">
+                                                <option value="">select district</option>
+                                            </select>
+                                        </div>
+                                        <div class="error-messages message" ng-messages-multiple ng-if="province && !district && submitted">
+                                            <div>You must select this field</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="bio">Bio</label>
+                                        <div class="controls">
+                                            <textarea data-ng-model="bio" name="bio" id="bio" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="box box-success">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label class="control-label" for="roles">Role</label>
+                                <div class="controls">
+                                    <select ui-select2 data-placeholder="Select Role" class="form-control" data-ng-model="roles" name="roles" id="roles" ng-options="item.value as item.name for item in userRoles" required multiple="multiple">
+                                </select>
+                                </div>
+                                <div class="error-messages message" ng-messages="UserForm.roles.$error" ng-messages-multiple ng-if="submitted">
+                                    <error-message require-msg="You did not select a field" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="status">Status</label>
+                                <div class="controls">
+                                    <select data-placeholder="Select Status" class="form-control" data-ng-model="status" name="status" id="status" ng-options="item.value as item.name for item in statuses" required>
+                                </select>
+                                </div>
+                                <div class="error-messages message" ng-messages="UserForm.status.$error" ng-messages-multiple ng-if="submitted">
+                                    <error-message require-msg="You did not select a field" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </section>
+</section>

@@ -1,0 +1,48 @@
+<% extends 'web/layouts/layout.html' %>
+
+    <% block content %>
+        <div class="page-heading">
+            <h1>List</h1>
+        </div>
+        <div class="actions pull-right">
+            <a class="btn btn-success" href="/message/add">Add</a>
+        </div>
+        <div class="clearfix"></div>
+        <p>&nbsp;</p>
+        <div class="panel panel-default">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Channel</th>
+                        <th>Title</th>
+                        <th>Message</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% asyncEach item in items %>
+                        <tr>
+                            <td>
+                                <$ item._id $>
+                            </td>
+                            <td>
+                                <$ item.channel $>
+                            </td>
+                            <td>
+                                <$ item.title $>
+                            </td>
+                            <td>
+                                <$ item.message $>
+                            </td>
+                            <td>
+                                <a class="btn btn-success btn-sm" href="/message/edit/<$ item._id $>">Edit</a>
+                                <a class="btn btn-warning btn-sm" href="/message/delete/<$ item._id $>">Delete</button>
+                            </td>
+                        </tr> 
+                    <% endeach %>
+                 </tbody>    
+        </table>
+    </div>  
+
+<%endblock%>

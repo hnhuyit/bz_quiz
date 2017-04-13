@@ -1,0 +1,19 @@
+[Unit]
+Description=Bz Website
+Requires=redis.service mongod.service
+After=redis.service mongod.service
+
+[Service]
+WorkingDirectory=/srv/sites/bz/web/
+ExecStart=/usr/bin/node /srv/sites/bz/web/app.js
+Restart=always
+RestartSec=3
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=bz-web
+User=www-data
+Group=www-data
+Environment=NODE_ENV=production CMS_WEB_PORT=9006  CMS_ADMIN_PORT=9000  CMS_API_PORT=9001
+
+[Install]
+WantedBy=multi-user.target

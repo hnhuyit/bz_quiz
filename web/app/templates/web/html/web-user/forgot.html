@@ -1,0 +1,28 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+<div class="page-header">
+    <h1>Forgot Password</h1></div>
+<div class="row" ng-controller="AuthController">
+    <div class="col-sm-6">
+        <form id="userLogin" name="forgotForm" method="POST" autocomplete="off">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" ng-model="email" placeholder="Email" required/>
+            </div>
+            <p>
+                <button type="button" ng-click="forgot()" class="btn btn-success">Submit</button>
+            </p>
+            <p ng-cloak ng-show="updateSuccess">
+                <strong>Send Successful.</strong>
+            </p>
+            <div ng-cloak ng-show="errors && errors.length">
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div ng-repeat="message in errors"><span data-ng-bind="message"></span></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<% endblock %>

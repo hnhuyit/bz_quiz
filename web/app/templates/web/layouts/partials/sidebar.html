@@ -1,0 +1,14 @@
+<aside class="main-sidebar">
+    <section class="sidebar" style="height: auto;" data-ng-controller="AuthController">
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            <li class="header">NAVIGATION</li>
+            <% if credentials.uid %>
+                <li class="treeview"><a href="/posts"><i class="fa fa-book"></i><span>News</span></a></li>
+                <li class="treeview"><a href="/contact"><i class="fa fa-book"></i><span>Contact</span></a></li>
+            <% else %>
+                <li class="treeview"><a href="/"><i class="fa fa-book"></i><span>Home</span></a></li>
+            <% endif %>
+        </ul>
+    </section>
+</aside>

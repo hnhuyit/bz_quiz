@@ -1,0 +1,137 @@
+<section data-ng-controller="UsersController" data-ng-init="find()">
+    <section class="content-header">
+        <h1>Users</h1>
+    </section>
+    <!-- Loading -->
+    <ng-loading loading-done="isLoading" />
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <div class="pull-left">
+                            <a class="btn btn-primary" data-ui-sref="createUser">New</a> &nbsp;&nbsp;
+                            <button class="btn btn-primary" data-toggle="modal" ng-click="typePublish=1" data-target="#publishPopup">Publish</button>&nbsp;&nbsp;
+                            <button class="btn btn-warning" data-toggle="modal" ng-click="typePublish=0" data-target="#publishPopup">UnPublish</button>&nbsp;&nbsp;
+                            <button ng-if="search.status !=2" class="btn btn-danger" data-toggle="modal" data-target="#movetoTrashMultiRowsPopup">Move to trash</button>
+                            <button ng-if="search.status ==2" class="btn btn-danger" data-toggle="modal" data-target="#deletePermanentMultiRowsPopup">Delete Permanent</button>
+                        </div>
+                    </div>
+                    <hr/>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <bz-message/>
+                        <div class="box-tools">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-inline filter-layout">
+                                        <div class="form-group">
+                                            <label class="control-label" for="keyword">Keyword</label>
+                                            <input type="text" name="keyword" data-ng-model="search.keyword" id="keyword" class="form-control" placeholder="Search" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="roles">Role</label>
+                                            <select ng-change="filter()" class="form-control" data-ng-model="search.role" id="role" ng-options="item.value as item.name for item in userRoles" required>
+                                                    <option value="">All role</option>
+                                                </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="status">Status</label>
+                                            <select ng-change="filter()" class="form-control" ng-init="status = 1" data-ng-model="search.status" id="status" ng-options="item.value as item.name for item in statuses" required>
+                                                    <option value="">All status</option>
+                                                </select>
+                                        </div>
+                                        <hr/>
+                                        <div class="form-group filter-submit">
+                                            <a class="btn btn-primary" ng-click="filter()">Filter</a> &nbsp;&nbsp;
+                                            <a class="btn btn-primary" ng-click="reset()">Reset</a>
+                                        </div>
+                                        <hr/>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4><b>Summary</b></h4>
+                            <p><b>Items Per Page</b>: {{itemsPerPage}}</p>
+                            <p><b>Total Page</b>: {{totalPage}}</p>
+                            <p><b>Total Items</b>: {{totalItems}}</p>
+                        </div>
+                        <table id="table-list" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" ng-model="selectAll" ng-click="sellectAll()" id="selectAll" />
+                                    </th>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Status</th>
+                                    <th>Roles</th>
+                                    <th>Created on</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="user in users">
+                                    <td>
+                                        <input type="checkbox" ng-model="rowsSelected[user._id]" />
+                                    </td>
+                                    <td>{{user._id}}</td>
+                                    <td><a data-ui-sref="editUser({userId: user._id})">{{user.name}}</a></td>
+                                    <td><a data-ui-sref="editUser({userId: user._id})">{{user.email}}</a></td>
+                                    <td>{{user.phone}}</td>
+                                    <td>
+                                        <a style="cursor:pointer" data-toggle="modal" data-target="#changeStatusPopup" ng-click="changeStatus(user._id, user.status)">
+                                            <span class="label label-success" ng-if="user.status == 1">Publish </span>
+                                            <span class="label label-danger" ng-if="user.status == 0">Unpublish </span>
+                                        </a>
+                                        <span class="label label-danger" ng-if="user.status == 2">Trashed </span>
+                                    </td>
+                                    <td>
+                                        <div data-ng-repeat="role in user.roles"> <span class="label label-primary">{{role}}</span></div>
+                                    </td>
+                                    <td>{{user.created | date:'medium'}}</td>
+                                    <td>
+                                        <a style="cursor:pointer" ng-if="user.status !== 2" data-ui-sref="editUser({userId: user._id})" title="Edit">
+                                            <i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
+                                        <a style="cursor:pointer" ng-if="user.status !== 2" data-toggle="modal" data-target="#movetoTrashPopup" title="Move to trash" ng-click="confirmRemove(user._id, false)">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                        <a style="cursor:pointer" ng-if="user.status == 2" data-toggle="modal" data-target="#deletePermanentPopup" title="Delete" ng-click="confirmRemove(user._id, true)">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                        &nbsp; &nbsp;
+                                        <a style="cursor:pointer" ng-if="user.status == 2" ng-click="putback(user._id)" title="Put back">
+                                            <i class="glyphicon glyphicon-arrow-left"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--<ul boundary-links="true" items-per-page="itemsPerPage" max-size="numberVisiblePages" uib-pagination total-items="totalItems" ng-model="currentPage" ng-click="pageChanged()" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;"
+                            first-text="&laquo;" last-text="&raquo;"></ul>-->
+                        <bz-pagination max-page="10" name="user_page" current-page="currentPage" total-page="totalPage" page-changed="pageChanged">
+                        </bz-pagination>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="alert alert-warning text-center" data-ng-hide="!users.$resolved || users.length">
+                    No users yet, why don't you <a data-ui-sref="createUser">create one</a>?
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Popup Confirm-->
+    <div data-ng-include="'/templates/admin-core/popupConfirm.html'">
+    </div>
+</section>

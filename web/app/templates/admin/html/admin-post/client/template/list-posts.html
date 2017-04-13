@@ -1,0 +1,144 @@
+<section data-ng-controller="PostsController" data-ng-init="find()">
+    <section class="content-header">
+        <h1>Posts</h1>
+    </section>
+    <!-- Loading -->
+    <ng-loading loading-done="isLoading" />
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="pull-left">
+                            <a class="btn btn-primary" data-ui-sref="createPost">New</a> &nbsp;&nbsp;
+                            <button class="btn btn-primary" data-toggle="modal" ng-click="typePublish=1" data-target="#publishPopup">Publish</button>&nbsp;&nbsp;
+                            <button class="btn btn-warning" data-toggle="modal" ng-click="typePublish=0" data-target="#publishPopup">UnPublish</button>&nbsp;&nbsp;
+                            <button ng-if="search.status !=2" class="btn btn-danger" data-toggle="modal" data-target="#movetoTrashMultiRowsPopup">Move to trash</button>
+                            <button ng-if="search.status ==2" class="btn btn-danger" data-toggle="modal" data-target="#deletePermanentMultiRowsPopup">Delete Permanent</button>
+                        </div>
+                    </div>
+                    <hr/>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <bz-message/>
+                        <div class="box-tools">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-inline filter-layout">
+                                        <div class="form-group">
+                                            <label class="control-label" for="keyword">Keyword</label>
+                                            <input type="text" name="keyword" data-ng-model="search.keyword" id="keyword" class="form-control" placeholder="Search" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="categories">Categories</label>
+                                            <select ng-change="filter()" class="form-control" data-ng-model="search.category" id="category" ng-options="category._id as category.name for category in categories.items">
+                                                    <option value="">All categories</option>
+                                                </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="status">Status</label>
+                                            <select ng-change="filter()" class="form-control" ng-init="status = 1" data-ng-model="search.status" id="status" ng-options="item.value as item.name for item in statuses" required>
+                                                    <option value="">All status</option>
+                                                </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="feature">Feature</label>
+                                            <select ng-change="filter()" class="form-control" data-ng-model="search.feature" id="feature" ng-options="item.value as item.name for item in features" required>
+                                                    <option value="">All</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group filter-submit">
+                                            <a class="btn btn-primary" ng-click="filter()">Filter</a> &nbsp;&nbsp;
+                                            <a class="btn btn-primary" ng-click="reset()">Reset</a>
+                                        </div>
+                                        <hr/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4><b>Summary</b></h4>
+                            <p><b>Items Per Page</b>: {{itemsPerPage}}</p>
+                            <p><b>Total Page</b>: {{totalPage}}</p>
+                            <p><b>Total Items</b>: {{totalItems}}</p>
+                        </div>
+                        <table id="table-list" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" ng-model="selectAll" ng-click="sellectAll()" id="selectAll" />
+                                    </th>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Feature</th>
+                                    <th>Status</th>
+                                    <th>Created on</th>
+                                    <!--<th>Created by</th>-->
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="post in posts | filter: query">
+                                    <td>
+                                        <input type="checkbox" ng-model="rowsSelected[post._id]" />
+                                    </td>
+                                    <td><a data-ui-sref="editPost({postId: post._id})">{{post._id}}</a></td>
+                                    <td>
+                                        <a data-ui-sref="editPost({postId: post._id})">
+                                            {{post.title}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div data-ng-repeat="category in post.category"> {{category.name}}</div>
+                                    </td>
+                                    <td><span class="label label-success" ng-if="post.feature == 1">Feature </span><span class="label label-danger" ng-if="post.feature == 0">Not Feature </span></td>
+                                    <td>
+                                        <a style="cursor:pointer" data-toggle="modal" data-target="#changeStatusPopup" ng-click="changeStatus(post._id, post.status)">
+                                            <span class="label label-success" ng-if="post.status == 1">Publish </span>
+                                            <span class="label label-danger" ng-if="post.status == 0">Unpublish </span>
+                                        </a>
+                                        <span class="label label-danger" ng-if="post.status == 2">Trashed </span>
+                                    </td>
+                                    <td>{{post.created | date:'medium'}}</td>
+                                    <td>
+                                        <a style="cursor:pointer" ng-if="post.status !== 2" data-ui-sref="editPost({postId: user._id})" title="Edit">
+                                            <i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
+                                        <a style="cursor:pointer" ng-if="post.status !== 2" data-toggle="modal" data-target="#movetoTrashPopup" title="Move to trash" ng-click="confirmRemove(post._id, false)">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                        <a style="cursor:pointer" ng-if="post.status == 2" data-toggle="modal" data-target="#deletePermanentPopup" title="Delete" ng-click="confirmRemove(post._id, true)">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                        &nbsp; &nbsp;
+                                        <a style="cursor:pointer" ng-if="post.status == 2" ng-click="putback(post._id)" title="Put back">
+                                            <i class="glyphicon glyphicon-arrow-left"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--<ul boundary-links="true" items-per-page="itemsPerPage" max-size="numberVisiblePages" uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;"
+                            first-text="&laquo;" last-text="&raquo;"></ul>-->
+                        <bz-pagination max-page="10" name="post_page" current-page="currentPage" total-page="totalPage" page-changed="pageChanged">
+                        </bz-pagination>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="alert alert-warning text-center" data-ng-hide="!items.$resolved || items.length">
+                    No Posts yet, why don't you <a data-ui-sref="createPost">create one</a>?
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Popup Confirm-->
+    <div data-ng-include="'/templates/admin-core/popupConfirm.html'">
+    </div>
+</section>

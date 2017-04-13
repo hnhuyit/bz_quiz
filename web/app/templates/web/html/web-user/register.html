@@ -1,0 +1,93 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+    <!-- <div class="page-header">
+        <h1>Sign up</h1>
+    </div> -->
+
+    <div class="register-box" style="width: 450px;margin: 0px auto;padding: 30px;" ng-controller="AuthController">
+      <div class="register-logo">
+        <a href="#">TEST ONLINE</a>
+      </div>
+
+      <div class="register-box-body">
+        <p class="login-box-msg">Register a new membership</p>
+
+        <form id="registerForm" name="registerForm" method="POST" novalidate>
+          <div class="form-group has-feedback">
+            <input type="text" class="form-control" id="name" name="name" ng-model="name" placeholder="Full name" required >
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input type="email" class="form-control" id="email" name="email" ng-model="email" placeholder="Email" required >
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input type="password" class="form-control" id="password" name="password" ng-model="password" placeholder="Password">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input type="password" class="form-control" id="cfpassword" name="cfpassword" ng-model="cfpassword" placeholder="Retype password">
+            <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+          </div>
+          <div class="row">
+            <div class="col-xs-8">
+              <div class="checkbox">
+                <label>
+                  <input ng-model="isCheck" type="checkbox"> I agree to the <a href="#">terms</a>
+                </label>
+              </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-4">
+              <button type="submit" ng-disabled="!isCheck" class="btn btn-primary btn-block btn-flat" ng-click="register()">Register</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+        <a href="/login" class="text-center">I already have a membership</a>
+      </div>
+      <!-- /.form-box -->
+    </div>
+
+    <!-- <div class="row" ng-controller="AuthController">
+        <div class="col-sm-6">
+            <form id="registerForm" name="registerForm" method="POST" novalidate>
+                <div class="form-group">
+                    <label for="email">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" ng-model="name" placeholder="Name" required />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" ng-model="email" placeholder="Email" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" ng-model="password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label for="cfpassword">Confirm Password</label>
+                    <input type="password" class="form-control" id="cfpassword" name="cfpassword" ng-model="cfpassword" placeholder="Confirm Password">
+                </div>
+                <p>
+                <button type="button" class="btn btn-success" ng-click="register()">Sign up</button>
+                </p>
+                <br class="clearfix" />
+                <span ng-show="registerForm.email.$dirty && registerForm.email.$invalid" class="ng-cloak" ng-cloak>
+                        <span ng-show="registerForm.email.$error.required">Email is required.</span>
+                <span ng-show="registerForm.email.$error.email">Invalid email address.</span>
+                </span>
+                <div ng-cloak ng-show="registerSuccess">
+                    <strong>Registration successful, please login.</strong>
+                </div>
+                <div ng-cloak ng-show="errors && errors.length">
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div ng-repeat="message in errors"><span data-ng-bind="message"></span></div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div> -->
+<% endblock %>

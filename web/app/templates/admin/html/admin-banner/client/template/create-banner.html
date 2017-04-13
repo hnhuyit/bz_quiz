@@ -1,0 +1,97 @@
+<section data-ng-controller="BannersController">
+    <section class="content-header">
+        <h1>Banners</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">New Banner</h3>
+                    </div>
+                    <form data-ng-submit="create()" novalidate>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label class="control-label" for="title">Title</label>
+                                        <div class="controls">
+                                            <input type="text" data-ng-model="title" id="title" class="form-control" placeholder="Title" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="subtitle">Sub Title</label>
+                                        <div class="controls">
+                                            <input type="text" data-ng-model="subtitle" id="subtitle" class="form-control" placeholder="Sub Title" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="link">Link</label>
+                                        <div class="controls">
+                                            <input type="text" data-ng-model="link" id="link" class="form-control" placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="image">Image</label>
+                                        <div class="controls">
+                                            <input type="file" name="file" nv-file-select uploader="uploader" />
+                                            <input type="hidden" name="image" ng-model="image">
+                                            <img ng-src="{{review_image}}" ng-show="review_image" style="max-width: 200px; max-height: 200px; padding-top: 10px" />
+                                            <p class="help-block" ng-hide="image">Allow file: Image</p>
+                                            <div ng-show="isUploadImage">
+                                                <div class="progress progress-sm active">
+                                                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="status">Position</label>
+                                        <div class="controls">
+                                            <select class="form-control" ng-init="position = 'right'" data-ng-model="position" id="position" ng-options="item.value as item.name for item in positions" required>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="categories">Categories</label>
+                                        <div class="controls">
+                                            <select class="form-control" data-ng-model="category" id="category" ng-options="category._id as category.name for category in categories.items" required multiple="multiple">
+                                                <option value="">all categories</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="status">Status</label>
+                                        <div class="controls">
+                                            <select class="form-control" ng-init="status = 1" data-ng-model="status" id="status" ng-options="item.value as item.name for item in statuses" required>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label" for="description">Description</label>
+                                        <div class="controls">
+                                            <textarea data-ng-model="description" id="description" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary">
+                                <input type="button" value="Cancel" class="btn btn-default" ng-click="gotoList()">
+                            </div>
+                            <div class="alert alert-danger alert-dismissable" data-ng-show="error">
+                                <h4><i class="icon fa fa-ban"></i> Error!</h4>
+                                <div data-ng-bind="error"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

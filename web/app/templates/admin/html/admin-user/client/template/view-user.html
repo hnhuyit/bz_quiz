@@ -1,0 +1,31 @@
+<section data-ng-controller="UsersController" data-ng-init="findOne()">
+    <section class="content-header">
+        <h1>Users</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <h3 data-ng-bind="user.name"></h3>
+                        <small>
+							<em class="text-muted">
+								Created on
+								<span data-ng-bind="user.created | date:'mediumDate'"></span>
+							</em>
+						</small>
+                    </div>
+                    <div class="box-footer">
+                        <a class="btn btn-primary" data-ui-sref="editUser({userId: user._id})">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a class="btn btn-primary" data-ng-click="remove();">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
