@@ -72,7 +72,7 @@ exports.save = {
 
         let promise = question.save();
         promise.then(function(question) {
-            reply(question);
+            reply({question: question, status: 1, message: "Thêm thành công!!!"});
         }).catch(function(err) {
             reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
         });

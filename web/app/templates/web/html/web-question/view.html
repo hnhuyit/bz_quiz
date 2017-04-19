@@ -65,30 +65,14 @@
                                     <th>Đáp án nối</th>
                                     <th style="width: 40px">Điểm</th>
                                 </tr>
+                                <% asyncEach item in options %>
                                 <tr>
                                     <td>1.</td>
-                                    <td>Đáp án 1</td>
-                                    <td>NULL</td>
-                                    <td><span class="badge bg-red">1</span></td>
+                                    <td><$ item.name $></td>
+                                    <td><$ item.name_match $></td>
+                                    <td><span class="badge bg-red"><$ item.score $></span></td>
                                 </tr>
-                                <tr>
-                                    <td>2.</td>
-                                    <td>Đáp án 2</td>
-                                    <td>NULL</td>
-                                    <td><span class="badge bg-red">0</span></td>
-                                </tr>
-                                <tr>
-                                    <td>3.</td>
-                                    <td>Đáp án 3</td>
-                                    <td>NULL</td>
-                                    <td><span class="badge bg-red">0</span></td>
-                                </tr>
-                                <tr>
-                                    <td>4.</td>
-                                    <td>Đáp án 4</td>
-                                    <td>NULL</td>
-                                    <td><span class="badge bg-red">0</span></td>
-                                </tr>
+                                <% endeach %>
                             </tbody>
                         </table>
                     </div>

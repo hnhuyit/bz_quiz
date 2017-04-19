@@ -126,6 +126,9 @@ exports.create = {
         let subject = new Subject(request.payload);
             subject.user_id = request.auth.credentials.uid;
 
+            
+            console.log(subject);
+
         let promise = subject.save();
         promise.then(function() {
             return reply.redirect('/subjects');

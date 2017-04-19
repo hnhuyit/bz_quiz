@@ -2,7 +2,7 @@ angular
     .module('Question')
     .controller('QuestionsController', QuestionsController);
 
-function QuestionsController($scope, $filter, QuestionService, QuestionFactory, SubjectFactory, ChapterFactory, OptionFactory, Option, $cookies, toastr) {
+function QuestionsController($scope, $filter, $window, $location, QuestionService, QuestionFactory, SubjectFactory, ChapterFactory, OptionFactory, Option, $cookies, toastr) {
 
     
     SubjectFactory.query(function(data){
@@ -19,7 +19,17 @@ function QuestionsController($scope, $filter, QuestionService, QuestionFactory, 
             $scope.chapterList = data.items;
         });
     }
+    $scope.isCheck = false;
 
+    $scope.reset = function() {
+        $scope.question.name = "";
+        $scope.question.desc = "";
+        $scope.options.name1 = "";
+        $scope.options.name2 = "";
+        $scope.options.name3 = "";
+        $scope.options.name4 = "";
+        $scope.isCheck = false;
+    };
 
     //CRUD 
     $scope.create = function() {
@@ -33,19 +43,22 @@ function QuestionsController($scope, $filter, QuestionService, QuestionFactory, 
         let question = new QuestionFactory($scope.question);
 
         question.$save(function(response){
-            // console.log(response);
+            console.log(response);
             
             for(let i=0; i<options.length; i++) {
                 let option = new OptionFactory(options[i]);
-                    option.question_id = response._id;
+                    option.question_id = response.question._id;
                     option.$save(function(response) {
                         console.log(response);
                     }, function(err) {
                         console.log(err);
                     });
             }
+            $scope.reset();
+            toastr.success(response.message, 'Thông báo');
         }, function(err) {
             console.log(err);
+            toastr.error(response.data.message, 'Thông báo');
         });
 
         // console.log('options', options, question);
