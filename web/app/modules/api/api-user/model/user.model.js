@@ -69,9 +69,21 @@ var UserSchema = new Schema({
     roles: {
         type: [{
             type: String,
-            enum: ['user', 'admin']
+            enum: ['user', 'admin', 'guest']
         }],
         default: ['user']
+    },
+    // unit: {
+    //     type: String,
+    //     default: 'teacher'
+    // },
+    group_id: {
+        type: Schema.ObjectId,
+        ref: 'Group',
+    },
+    image: {
+        type: String,
+        default: '',
     },
     status: {
         type: Number,

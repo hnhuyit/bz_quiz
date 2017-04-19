@@ -11,6 +11,7 @@ var SessionSchema = new Schema({
     id: { type: String },
     uid: { type: String },
     name: { type: String },
+    unit: { type: String },
     scope: [
         {
             type: String

@@ -1,14 +1,62 @@
 <% extends 'web/layouts/layout.html' %>
 
 <% block content %>
-<!-- Content Header (Page header) -->
-<div class="content-header">
-	<h1><$ title $></h1>
-</div>
-<!-- Main content -->
-<div class="content body">
-    <p><$ message $></p>
-</div>
+
+	<section data-ng-controller="HomeController">
+	    <section class="content-header">
+	        <h1>Dashboard<small>Control panel</small></h1>
+	    </section>
+	    <!-- Main content -->
+
+		<!-- <div ng-show="loading" style="text-align: center;"><img src="/files/loading.svg" alt=""></div> -->
+	    <section class="content">
+	        <div class="row">
+	            <div class="col-md-3 col-xs-6">
+	                <!-- small box -->
+	                <div class="small-box bg-aqua">
+	                    <div class="inner">
+							<h3 data-ng-bind="totalQuiz"></h3>
+	                        <p>Number of Quizzes available</p>
+	                    </div>
+	                    <div class="icon">
+	                        <i class="ion ion-person-add"></i>
+	                    </div>
+	                    <a href="/quizzes" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+	                </div>
+	            </div>
+	            <!-- ./col -->
+	            <div class="col-md-3 col-xs-6">
+	                <!-- small box -->
+	                <div class="small-box bg-red">
+	                    <div class="inner">
+							<h3 data-ng-bind="totalSubject"></h3>
+	                        <p>Number of Subjects available</p>
+	                    </div>
+	                    <div class="icon">
+	                        <i class="ion ion-pie-graph"></i>
+	                    </div>
+	                    <a href="/subjects" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+	                </div>
+	            </div>
+	            <!-- ./col -->
+	            <!--<div class="col-lg-3 col-xs-6">
+	                <div class="small-box bg-yellow">
+	                    <div class="inner">
+							<h3 data-ng-bind="totalUser"></h3>
+	                        <p>Number of Users available</p>
+	                    </div>
+	                    <div class="icon">
+	                        <i class="ion ion-pie-graph"></i>
+	                    </div>
+	                    <a href="/subjects" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+	                </div>
+	            </div>-->
+	            <!-- ./col -->
+	        </div>
+	    </section>
+	</section>
+
+
 <% endblock %>
 
 <% block jsInline %>
@@ -16,4 +64,3 @@
        console.log('BZ CMS');
     </script>
 <% endblock %>
-

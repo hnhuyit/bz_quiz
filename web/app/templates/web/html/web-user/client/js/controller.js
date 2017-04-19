@@ -18,19 +18,21 @@ function AuthController($scope, $filter, AuthService, $cookies, toastr) {
             var data = {
                 name: this.name,
                 email: this.email,
-                roles: ['user'],
+                roles: [this.typeUser],
+                // unit: this.typeUser,
                 password: this.password,
                 cfpassword: this.cfpassword
             };
+
             AuthService.register(data).then(function(res) {
-                $scope.registerSuccess = true;
+                // $scope.registerSuccess = true;
                 toastr.success('Registration successful, please login.!', 'Register Information');
                 setTimeout(function(){
                   window.location.href = '/login';
                 }, 2000);
             }).catch(function(res) {
                 $scope.errors = [res.data.message];
-                toastr.error($scope.errors, 'Login Information');
+                toastr.error($scope.errors, 'Register Information');
             });
         }
     };
@@ -38,14 +40,18 @@ function AuthController($scope, $filter, AuthService, $cookies, toastr) {
     function login() {
         if ($scope.loginForm.$valid) {
             var data = $scope.user;
-                data.scope = 'user';
+                data.scope = this.typeUser;
             AuthService.login(data).then(function(res) {
-                $scope.loginSuccess = true;
-                console.log(res.data.token);
+                // $scope.loginSuccess = true;
+                // console.log(res);
+                toastr.success('Login Successful', 'Login Information');
                 $cookies.put('token', res.data.token);
-                window.location.href = '/';
+                setTimeout(function(){
+                  window.location.href = '/';
+                }, 2000);
             }).catch(function(res) {
                 $scope.errors = [res.data.message];
+                toastr.error($scope.errors, 'Login Information');
             });
         }
     };

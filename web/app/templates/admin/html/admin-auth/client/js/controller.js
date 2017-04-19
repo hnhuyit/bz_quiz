@@ -15,6 +15,7 @@ angular.module('auth').controller('AuthenticationController', ['$scope', '$http'
                     $scope.error = response.message;
                 })
                 .catch(function(response) {
+                    // console.log(response);
                     $scope.error = response.data.message;
                 });
         };

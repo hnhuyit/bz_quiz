@@ -1,0 +1,121 @@
+<section data-ng-controller="QuizzesController" data-ng-init="findOne()">
+    <section class="content-header">
+        <h1>Quizzes</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Edit Quiz</h3>
+                    </div>
+                    <form data-ng-submit="update()" novalidate>
+                        <div class="box-body">
+                            
+                           <div class="form-group">
+                             <label class="control-label" for="name">Name</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="quiz.name" id="name" class="form-control" placeholder="Name">
+                             </div>
+                                          
+                           </div>
+                           
+                           <div class="form-group">
+                             <label class="control-label" for="slug">Slug</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="quiz.slug" id="slug" class="form-control" placeholder="Slug">
+                             </div>
+                                          
+                           </div>
+                          
+                           <div class="form-group">
+                             <label class="control-label" for="description">Description</label>
+                            <div class="controls">
+                                <textarea class="form-control ck-editor" data-ng-model="quiz.description" rows="3"> </textarea>
+                             </div>
+                                          
+                           </div>
+                          
+                           <div class="form-group">
+                             <label class="control-label" for="duration">Duration</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="quiz.duration" id="duration" class="form-control" placeholder="Duration">
+                             </div>
+                                          
+                           </div>
+                          
+                           <div class="form-group">
+                             <label class="control-label" for="maximum_attempts">Maximum attempts</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="quiz.maximum_attempts" id="maximum_attempts" class="form-control" placeholder="Maximum attempts">
+                             </div>
+                                          
+                           </div>
+                          
+                           <div class="form-group">
+                             <label class="control-label" for="pass_percentage">Pass percentage</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="quiz.pass_percentage" id="pass_percentage" class="form-control" placeholder="Pass percentage">
+                             </div>
+                                          
+                           </div>
+                            <div class="form-group">
+                                <label class="control-label" for="group_id">Group</label>
+                                <div class="controls">
+                                    <select class="form-control" data-ng-model="quiz.group_id" id="group_id" ng-options="item._id as item.name for item in groupList" required multiple="multiple">
+                                    </select>
+                                </div>
+                            </div>
+                          
+                           <div class="form-group">
+                             <label class="control-label" for="view_answer">View answer</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="quiz.view_answer" id="view_answer" class="form-control" placeholder="View answer">
+                             </div>
+                                          
+                           </div>
+                          
+                           <div class="form-group">
+                             <label class="control-label" for="with_login">With login</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="quiz.with_login" id="with_login" class="form-control" placeholder="With login">
+                             </div>
+                                          
+                           </div>
+                          
+                           <div class="form-group">
+                             <label class="control-label" for="number_of_question">Number of question</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="quiz.number_of_question" id="number_of_question" class="form-control" placeholder="Number of question">
+                             </div>
+                                          
+                           </div>
+                          
+                          
+                           <div class="form-group">
+                             <label class="control-label" for="status">Status</label>
+                            <div class="controls">
+                                <select class="form-control" ng-init="status = 1" data-ng-model="quiz.status" id="status" ng-options="item.value as item.name for item in statuses" required>
+                                </select>
+                            </div>
+                               
+                           </div>
+              
+                        </div>
+                        <div class="box-footer">
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary">
+                                <input type="button" value="Cancel" class="btn btn-default" ng-click="gotoList()">
+                            </div>
+                            <div class="alert alert-danger alert-dismissable" data-ng-show="error">
+                                <h4><i class="icon fa fa-ban"></i> Error!</h4>
+                                <div data-ng-bind="error"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

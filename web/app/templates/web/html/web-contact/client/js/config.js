@@ -1,1 +1,1 @@
-angular.module('Contact', ['Core']);
+angular.module('Contact', []);

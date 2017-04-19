@@ -1,0 +1,54 @@
+<section data-ng-controller="QuestionsController" data-ng-init="findOne()">
+    <section class="content-header">
+        <h1>Questions</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <h3 data-ng-bind="question.name"></h3>
+                        
+                                    <div><strong>Name: </strong> {{question.name}}</div>
+                         
+                                    <div><strong>Slug: </strong> {{question.slug}}</div>
+                         
+                                    <div><strong>Question Type: </strong> {{question.question_type}}</div>
+                         
+                                    <div><strong>Category Id: </strong> {{question.chapter_id.name}}</div>
+                         
+                                    <div><strong>Subject Id: </strong> {{question.subject_id.name}}</div>
+                         
+                                    <div><strong>Level: </strong> {{question.level}}</div>
+                         
+                                    <div><strong>Description: </strong> {{question.description}}</div>
+                         
+                                    <!-- <div><strong>No Time Corrected: </strong> {{question.no_time_corrected}}</div>
+                         
+                                    <div><strong>No Time Incorrected: </strong> {{question.no_time_incorrected}}</div>
+                         
+                                    <div><strong>No Time Unattempted: </strong> {{question.no_time_unattempted}}</div> -->
+                         
+                                    <div><strong>Option: </strong> {{question.option}}</div>
+                         
+                                    <div><strong>Status: </strong> {{question.status}}</div>
+                         
+                                    <div><strong>Created: </strong> {{question.created}}</div>
+                         
+                                    <div><strong>Modified: </strong> {{question.modified}}</div>
+                         
+                    </div>
+                    <div class="box-footer">
+                        <a class="btn btn-primary" data-ui-sref="editQuestion({itemId: question._id})">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a class="btn btn-primary" data-ng-click="remove();">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

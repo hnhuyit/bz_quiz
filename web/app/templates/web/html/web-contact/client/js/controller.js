@@ -3,8 +3,6 @@ angular.module('Contact')
 
 function ContactController($scope, $filter, ContactService, Option) {
 
-    console.log('Option', Option.getLevels());
-    $scope.hello = "hello";
     $scope.submit = function() {        
         if ($scope.contactForm.$valid) {
             var data = { name: this.name, email: this.email, message: this.message }

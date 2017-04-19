@@ -2,49 +2,59 @@
 /**
  * Created by chung on 7/23/15.
  */
-angular.module('core').factory("Option", function($rootScope) {
+angular.module('core').factory("Option", function ($rootScope) {
 
-    var statuses = [{ name: "Publish", value: 1 }, { 'name': "Unpublish", value: 0 }, { name: "Trash", value: 2 }];
+    var statuses = [{name: "Publish", value: 1}, {'name': "Unpublish", value: 0}];
 
-    var features = [{ name: "Yes", value: 1 }, { 'name': "No", value: 0 }];
+    var features = [{name: "Yes", value: 1}, {'name': "No", value: 0}];
 
-    var yesno = [{ name: "Yes", value: 1 }, { 'name': "No", value: 0 }];
+    var yesno = [{name: "Yes", value: 1}, {'name': "No", value: 0}];
 
-    var roles = [{ name: 'Admin', value: 'admin' }, { name: 'User', value: 'user' }];
+    var roles = [{name: 'Admin', value: 'admin'}, {name: 'User', value: 'user'}];
 
-    var genders = [{ name: 'male', value: 'male' }, { name: 'female', value: 'female' }];
+    var genders = [{name: 'male', value: 'male'}, {name: 'female', value: 'female'}];
 
-    var types = [{ name: 'Product', value: 'product' }, { name: 'Post', value: 'post' }, { name: 'Banner', value: 'banner' }];
+    var types = [{name: 'Product', value: 'product'}, {name: 'Post', value: 'post'}, {name: 'Banner', value: 'banner'}];
 
-    var bannerPositions = [{ name: 'home', value: 'home' }, { name: 'right', value: 'right' }];
+    var bannerPositions = [{name: 'home', value: 'home'}, {name: 'right', value: 'right'}];
 
-    var adsPositions = [{ name: 'top', value: 'top' }, { name: 'right', value: 'right' }, { name: 'home', value: 'home' }];
+    var adsPositions = [{name: 'top', value: 'top'}, {name: 'right', value: 'right'}, {name: 'home', value: 'home'}];
+
+    var typeQuestions = [{name: 'Loai 1', value: 1}, {name: 'Loai 2', value: 2}, {name: 'Loai 3', value: 3}];
+
+    var levels = [{name: 'De', value: 1}, {name: 'Trung Binh', value: 2}, {name: 'Kho', value: 3}];
 
     return {
-        getStatus: function() {
+        getStatus: function () {
             return statuses;
         },
 
-        getRoles: function() {
+        getRoles: function () {
             return roles;
         },
-        getGenders: function() {
+        getGenders: function () {
             return genders;
         },
-        getFeatures: function() {
+        getFeatures: function () {
             return features;
         },
-        getTypes: function() {
+        getTypes: function () {
             return types;
         },
-        getYesNo: function() {
+        getYesNo: function () {
             return yesno;
         },
-        getPositions: function() {
+        getPositions: function () {
             return bannerPositions;
         },
-        getAdsPositions: function() {
+        getAdsPositions: function () {
             return adsPositions;
+        },
+        getTypeQuestions: function () {
+            return typeQuestions;
+        },
+        getLevels: function () {
+            return levels;
         },
 
 

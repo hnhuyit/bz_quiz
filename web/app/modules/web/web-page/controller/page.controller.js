@@ -109,6 +109,23 @@ exports.error404 = {
             });
     }
 }
+exports.error403 = {
+    handler: function (request, reply) {
+        let promise = Page.findOne({ 'slug': 'error403' });
+        promise
+            .then(function (page) {
+                let meta = {
+                    title: page.title,
+                    description: ''
+                }
+                return reply.view('web/html/web-page/403', { page: page, meta: meta }).code(403);
+            })
+            .catch(function (err) {
+                request.log(['error'], err);
+                return reply.continue();
+            });
+    }
+}
 
 exports.html = {
     handler: function (request, reply) {

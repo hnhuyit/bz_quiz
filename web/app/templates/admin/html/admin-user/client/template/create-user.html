@@ -141,6 +141,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="control-label" for="unit">Unit</label>
+                                <div class="controls">
+                                    <select class="form-control" name="unit" data-ng-model="user.unit" id="unit" ng-options="item.value as item.name for item in units" required>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="control-label" for="status">Status</label>
                                 <div class="controls">
                                     <select data-placeholder="Select Status" class="form-control" data-ng-model="status" name="status" id="status" ng-options="item.value as item.name for item in statuses" required>

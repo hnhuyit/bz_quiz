@@ -1,14 +1,33 @@
 <aside class="main-sidebar">
     <section class="sidebar" style="height: auto;" data-ng-controller="AuthController">
         <!-- sidebar menu: : style can be found in sidebar.less -->
-        <ul class="sidebar-menu">
-            <li class="header">NAVIGATION</li>
-            <% if credentials.uid %>
+        <% if credentials.uid %>
+            <ul class="sidebar-menu">
+                <li class="header">NAVIGATION</li>
+                <% if credentials.scope == 'user' %>
+                    <!-- <li><a href="/groups"><i class="fa fa-book"></i> <span>Danh sách Groups</span></a></li> -->
+                    <li><a href="/subjects"><i class="fa fa-book"></i> <span>Danh sách môn học</span></a></li>
+                    <li><a href="/chapters"><i class="fa fa-book"></i> <span>Danh sách danh mục</span></a></li>
+                    <li><a href="/quizzes"><i class="fa fa-book"></i> <span>Danh sách đề thi</span></a></li>
+                    <li><a href="/questions"><i class="fa fa-book"></i> <span>Danh sách câu hỏi</span></a></li>
+                    <!--<li><a href="/quiz-questions"><i class="fa fa-book"></i> <span>Danh sách Quiz & Question</span></a></li>-->
+                    <li><a href="/anwsers"><i class="fa fa-book"></i> <span>Danh sách bài thi</span></a></li>
+                    <li><a href="/results"><i class="fa fa-book"></i> <span>Danh sách điểm</span></a></li>
+                <% elseif credentials.scope == 'guest' %>
+                    <li><a href="/quizzes"><i class="fa fa-book"></i> <span>Danh sách đề thi</span></a></li>
+                    <li><a href="/results"><i class="fa fa-book"></i> <span>Xem bài thi</span></a></li>
+                    <li><a href="/results"><i class="fa fa-book"></i> <span>Xem điểm</span></a></li>
+                    <!-- <li><a href="#"><i class="fa fa-book"></i> <span>Payment History</span></a></li> -->
+                <% endif %>
+            </ul>
+        <% else %>
+            <ul class="sidebar-menu">
+                <li class="header">NAVIGATION</li>
+                <li class="treeview"><a href="/"><i class="fa fa-book"></i><span>Home</span></a></li>
                 <li class="treeview"><a href="/posts"><i class="fa fa-book"></i><span>News</span></a></li>
                 <li class="treeview"><a href="/contact"><i class="fa fa-book"></i><span>Contact</span></a></li>
-            <% else %>
-                <li class="treeview"><a href="/"><i class="fa fa-book"></i><span>Home</span></a></li>
-            <% endif %>
-        </ul>
+                <li><a href="/posts"><i class="fa fa-book"></i> <span>Post</span></a></li>
+            </ul>
+        <% endif %>
     </section>
 </aside>

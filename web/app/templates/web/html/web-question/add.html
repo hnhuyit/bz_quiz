@@ -1,0 +1,154 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+<section ng-controller="QuestionsController">
+	<section class="content-header">
+	    <h1><$ meta.controller $></h1>
+	</section>
+	<!-- Main content -->
+	<section class="content">
+	    <div class="row">
+	        <div class="col-md-12">
+	            <div class="box box-primary">
+	                <div class="box-header with-border">
+	                    <h3 class="box-title"><$ meta.action $></h3>
+	                </div>
+	                <form name="addForm" novalidate>
+	                    <div class="box-body">
+	                        
+	        				<div class="col-md-8 col-sm-12">
+								<div class="form-group">
+									<label class="control-label" for="name">Name</label>
+									<div class="controls">
+										<input type="text" data-ng-model="question.name" name="name" id="name" class="form-control" placeholder="Name">
+									</div>
+												
+								</div>
+								
+								<div class="form-group">
+									<label class="control-label" for="desc">Description</label>
+									<div class="controls">
+										<textarea class="form-control ck-editor" data-ng-model="question.desc" name="desc" rows="3"> </textarea>
+									</div>
+												
+								</div>
+
+								<div class="form-group">
+									<label class="control-label" for="name">Đáp án 1</label>
+									<div class="controls">
+										<input type="text" name="option1" data-ng-model="options.name1" id="name" class="form-control" placeholder="Name">
+									</div>
+									<div class="checkbox">
+										<label>
+											<input name="score1" data-ng-model="options.score1" ng-true-value="'1'" ng-false-value="'0'" type="checkbox" value="1">
+											Đáp án đúng
+										</label>
+									</div>
+												
+								</div>
+
+								<div class="form-group">
+									<label class="control-label" for="name">Đáp án 2</label>
+									<div class="controls">
+										<input type="text" name="option2" data-ng-model="options.name2" id="name" class="form-control" placeholder="Name">
+									</div>
+									<div class="checkbox">
+										<label>
+											<input name="score2" data-ng-model="options.score2" ng-true-value="'1'" ng-false-value="'0'" type="checkbox" >
+											Đáp án đúng
+										</label>
+									</div>
+												
+								</div>
+
+								<div class="form-group">
+									<label class="control-label" for="name">Đáp án 3</label>
+									<div class="controls">
+										<input type="text" name="option3" data-ng-model="options.name3" id="name" class="form-control" placeholder="Name">
+									</div>
+									<div class="checkbox">
+										<label>
+											<input name="score3" data-ng-model="options.score3" ng-true-value="'1'" ng-false-value="'0'" type="checkbox" >
+											Đáp án đúng
+										</label>
+									</div>
+												
+								</div>
+
+								<div class="form-group">
+									<label class="control-label" for="name">Đáp án 4</label>
+									<div class="controls">
+										<input type="text" name="option4" data-ng-model="options.name4" id="name" class="form-control" placeholder="Name">
+									</div>
+									<div class="checkbox">
+										<label>
+											<input name="score4" data-ng-model="options.score4" ng-true-value="'1'" ng-false-value="'0'" type="checkbox" >
+											Đáp án đúng
+										</label>
+									</div>
+												
+								</div>
+	        				</div>
+
+
+	                        <div class="col-md-4 col-sm-12">
+								<div class="form-group">
+									<label class="control-label" for="subject_id">Subject</label>
+									<div class="controls">
+										<select class="form-control" data-ng-change="getChapter()" data-ng-model="question.subject_id" name="subject_id" id="subject_id" required >
+											<option value="">-- subject --</option>
+											<option data-ng-repeat="item in subjectList" value="{{item._id}}">{{item.name}}</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="chapter_id">Chapter</label>
+									<div class="controls">
+										<select class="form-control" data-ng-model="question.chapter_id" name="chapter_id" id="chapter_id" required >
+										<option value="">-- chapter --</option>
+											<option data-ng-repeat="item in chapterList" value="{{item._id}}">{{item.name}}</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="question_type">Question type</label>
+									<div class="controls">
+										<select class="form-control" data-ng-model="question.question_type" name="question_type" id="question_type" required >
+											<option value="">-- Question type --</option>
+											<option data-ng-repeat="item in typeQuestions" value="{{item.value}}">{{item.name}}</option>
+										</select>
+									</div>
+									
+								</div>
+
+								<div class="form-group">
+									<label class="control-label" for="level">Level</label>
+									<div class="controls">
+										<select class="form-control" data-ng-model="question.level" name="level" id="level" required >
+											<option value="">-- Level --</option>
+											<option data-ng-repeat="item in levels" value="{{item.value}}">{{item.name}}</option>
+										</select>
+									</div>
+									
+								</div>
+							</div>
+	                    </div>
+
+	                    <div class="box-footer">
+	                        <div class="form-group">
+	                            <input type="submit" data-ng-click="create()" class="btn btn-primary">
+	                            <a href="/questions" class="btn btn-default">Cancel</a>
+	                        </div>
+	                        <!-- <div class="alert alert-danger alert-dismissable" data-ng-show="error">
+	                            <h4><i class="icon fa fa-ban"></i> Error!</h4>
+	                            <div data-ng-bind="error"></div>
+	                        </div> -->
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</section>
+</section>
+
+<% endblock %>

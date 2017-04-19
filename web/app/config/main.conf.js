@@ -19,7 +19,7 @@ config.web = {
     paging: {
         defaultPageSize: 25,
         numberVisiblePages: 10,
-        itemsPerPage: 20
+        itemsPerPage: 25
     },
     db: {
         uri: 'mongodb://localhost/db_quiz',
@@ -121,6 +121,9 @@ config.web = {
         notfound: {
             url: '/error404' //404 URL
         },
+        notpermission: {
+            url: '/error403' //404 URL
+        },
         user: {
             login: '/login' // Login URL
         }
@@ -129,7 +132,7 @@ config.web = {
     context: {
         cmsprefix: '/admin',
         app: {
-            title: 'BZ CMS',
+            title: 'TEST ONLINE',
             description: 'This is description bz cms',
             keywords: ''
         },

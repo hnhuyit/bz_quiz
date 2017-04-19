@@ -40,6 +40,12 @@ exports.register = function (server, options, next) {
 
     server.route({
         method: 'GET',
+        path: '/error403',
+        config: PageController.error403
+    });
+
+    server.route({
+        method: 'GET',
         path: '/html/{slug}',
         config: PageController.html
     });

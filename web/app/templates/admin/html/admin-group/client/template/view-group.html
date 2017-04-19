@@ -1,0 +1,42 @@
+<section data-ng-controller="GroupsController" data-ng-init="findOne()">
+    <section class="content-header">
+        <h1>Groups</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <h3 data-ng-bind="group.name"></h3>
+                        
+                                    <div><strong>Name: </strong> {{group.name}}</div>
+                         
+                                    <div><strong>Slug: </strong> {{group.slug}}</div>
+                         
+                                    <div><strong>Status: </strong> {{group.status}}</div>
+                         
+                                    <div><strong>Valid For Days: </strong> {{group.valid_for_days}}</div>
+                         
+                                    <div><strong>Price: </strong> {{group.price}}</div>
+                         
+                                    <div><strong>Description: </strong> {{group.description}}</div>
+                         
+                                    <div><strong>Created: </strong> {{group.created}}</div>
+                         
+                                    <div><strong>Modified: </strong> {{group.modified}}</div>
+                         
+                    </div>
+                    <div class="box-footer">
+                        <a class="btn btn-primary" data-ui-sref="editGroup({itemId: group._id})">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a class="btn btn-primary" data-ng-click="remove();">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

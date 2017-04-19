@@ -71,6 +71,7 @@
                                     <th>Phone</th>
                                     <th>Status</th>
                                     <th>Roles</th>
+                                    <!-- <th>Unit</th> -->
                                     <th>Created on</th>
                                     <th>Action</th>
                                 </tr>
@@ -92,8 +93,16 @@
                                         <span class="label label-danger" ng-if="user.status == 2">Trashed </span>
                                     </td>
                                     <td>
-                                        <div data-ng-repeat="role in user.roles"> <span class="label label-primary">{{role}}</span></div>
+                                        <div data-ng-repeat="role in user.roles">
+                                             <span ng-if="role == 'user'" class="label label-primary">teacher</span>
+                                             <span ng-if="role == 'admin'" class="label label-primary">admin</span>
+                                             <span ng-if="role == 'guest'" class="label label-primary">student</span>
+                                        </div>
                                     </td>
+                                    <!-- <td>
+                                        <span class="label label-success" ng-if="user.unit == 'teacher'">Teacher </span>
+                                        <span class="label label-info" ng-if="user.unit == 'student'">Student </span>
+                                    </td> -->
                                     <td>{{user.created | date:'medium'}}</td>
                                     <td>
                                         <a style="cursor:pointer" ng-if="user.status !== 2" data-ui-sref="editUser({userId: user._id})" title="Edit">

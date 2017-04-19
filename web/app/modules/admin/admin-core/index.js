@@ -15,7 +15,7 @@ exports.register = function(server, options, next) {
     });
     server.ext('onPostHandler', CoreController.createGuestToken);
     server.ext('onPostHandler', CoreController.getCredentials);
-    server.ext('onPreResponse', CoreController.handleError);
+    // server.ext('onPreResponse', CoreController.handleError);
     next();
 };
 exports.register.attributes = {

@@ -1,0 +1,123 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+
+<section data-ng-controller="ChapterController">
+    <section class="content-header">
+        <h1><$ meta.controller $></h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title"><$ meta.action $></h3>
+                        <div class="pull-right">
+                            <a class="btn btn-block btn-primary" href="/<$ meta.context $>/add">New</a>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="box-tools">
+                            <div class="input-group" style="width: 150px;">
+                                <input type="text" name="query" class="form-control input-sm pull-right" placeholder="Search" />
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>&nbsp;</div>
+                        <table id="table-list" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    
+                                    <th>Name</th>
+                                    
+                                    <!-- <th>Desc</th> -->
+
+                                    <th>Subject</th>
+                                    
+                                    <!-- <th>User Id</th> -->
+                                    
+                                    <!-- <th>Slug</th> -->
+                                    
+                                    <!-- <th>Status</th> -->
+                                    
+                                    <th>Created</th>
+                                    
+                                    <th>Modified</th>
+                                    
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% asyncEach item in items %>
+                                <tr>
+                                    <td><a href="chapter/<$ item._id $>/view"><$ item._id $></a></td>
+                                    
+                                    
+                                    <td><a href="chapter/<$ item._id $>/view"><$ item.name $></a></td>
+                                    
+                                    
+                                    
+                                    <!-- <td><$ item.desc $></td> -->
+                                    
+                                    
+                                    
+                                    <td><$ item.subject_id.name $></td>
+                                    
+                                    
+                                    
+                                    <!-- <td>{{user_id}}</td> -->
+                                    
+                                    
+                                    
+                                    <!-- <td>{{slug}}</td> -->
+                                    
+                                    
+                                        
+                                    <!-- <td>{{status}}</td> -->
+                                    
+                                    
+                                    
+                                    <td><$ item.created $></td>
+                                    
+                                    
+                                    
+                                    <td><$ item.modified $></td>
+                                    
+                                      
+                                    <td>
+                                        <a href="chapter/<$ item._id $>/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
+                                        <a href="chapter/<$ item._id $>/view" title="Delete">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% endeach %> 
+                            </tbody>
+                        </table>
+
+                        <$ paginator | safe $>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <%  if not items %>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="alert alert-warning text-center">
+                    There is no item found, why don't you <a href="chapter/add">create one</a>?
+                </div>
+            </div>
+        </div>
+        <% endif %>
+    </section>
+</section>
+
+<% endblock %>

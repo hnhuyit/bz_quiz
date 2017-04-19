@@ -1,0 +1,171 @@
+<section data-ng-controller="QuestionsController">
+    <section class="content-header">
+        <h1>Questions</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">New Question</h3>
+                    </div>
+                    <form data-ng-submit="create()" novalidate>
+                        <div class="box-body">
+                            
+                          <div class="form-group">
+                           <label class="control-label" for="name">Name</label>
+                            <div class="controls">
+                              <input type="text" data-ng-model="question.name" id="name" class="form-control" placeholder="Name">
+                            </div>
+                                        
+                          </div>
+
+                          <div class="form-group">
+                           <label class="control-label" for="description">Description</label>
+                            <div class="controls">
+                              <textarea class="form-control ck-editor" id="description" data-ng-model="question.description" rows="3"> </textarea>
+                            </div>
+                                        
+                          </div>
+                        
+                          <div class="form-group">
+                           <label class="control-label" for="slug">Slug</label>
+                            <div class="controls">
+                              <input type="text" data-ng-model="question.slug" id="slug" class="form-control" placeholder="Slug">
+                            </div>
+                                        
+                          </div>
+
+                         
+                         <!-- <div class="form-group">
+                           <label class="control-label" for="no_time_corrected">No time corrected</label>
+                          <div class="controls">
+                              <input type="text" data-ng-model="question.no_time_corrected" id="no_time_corrected" class="form-control" placeholder="No time corrected">
+                           </div>
+                                        
+                         </div>
+                        
+                         <div class="form-group">
+                           <label class="control-label" for="no_time_incorrected">No time incorrected</label>
+                          <div class="controls">
+                              <input type="text" data-ng-model="question.no_time_incorrected" id="no_time_incorrected" class="form-control" placeholder="No time incorrected">
+                           </div>
+                                        
+                         </div>
+                        
+                         <div class="form-group">
+                           <label class="control-label" for="no_time_unattempted">No time unattempted</label>
+                          <div class="controls">
+                              <input type="text" data-ng-model="question.no_time_unattempted" id="no_time_unattempted" class="form-control" placeholder="No time unattempted">
+                           </div>
+                                        
+                         </div> -->
+                        
+                          <div class="form-group">
+                           <label class="control-label" for="option">Option</label>
+                            <div class="controls">
+
+                              <div class="col-md-6 col-sm-12">
+                                <div class="row">
+                                  <div class="input-group">
+                                    <span class="input-group-addon">
+                                      <input type="radio" name="optionsRadios" id="optionsRadios1">
+                                    </span>
+                                    <input type="text" data-ng-model="option1" class="form-control" placeholder="Option 1">
+                                  </div>
+                                  <div class="input-group">
+                                    <span class="input-group-addon">
+                                      <input type="radio" name="optionsRadios" id="optionsRadios2">
+                                    </span>
+                                    <input type="text" data-ng-model="option2" class="form-control" placeholder="Option 2">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="col-md-6 col-sm-12">
+                                <div class="row">
+                                  <div class="input-group">
+                                    <span class="input-group-addon">
+                                      <input type="radio" name="optionsRadios" id="optionsRadios3">
+                                    </span>
+                                    <input type="text" data-ng-model="option3" class="form-control" placeholder="Option 3">
+                                  </div>
+                                  <div class="input-group">
+                                    <span class="input-group-addon">
+                                      <input type="radio" name="optionsRadios" id="optionsRadios4">
+                                    </span>
+                                    <input type="text" data-ng-model="option4" class="form-control" placeholder="Option 4">
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                                        
+                          </div>
+              
+                        </div>
+
+                        <div class="box-footer">
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary">
+                                <input type="button" value="Cancel" class="btn btn-default" ng-click="gotoList()">
+                            </div>
+                            <div class="alert alert-danger alert-dismissable" data-ng-show="error">
+                                <h4><i class="icon fa fa-ban"></i> Error!</h4>
+                                <div data-ng-bind="error"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="box box-default">
+                <div class="box-body">
+                  <div class="form-group">
+                     <label class="control-label" for="question_type">Question type</label>
+                    <div class="controls">
+                        <select class="form-control" data-ng-model="question.question_type" id="question_type" ng-options="item.value as item.name for item in typeQuestions" required >
+                        </select>
+                    </div>
+                       
+                   </div>
+
+                   <div class="form-group">
+                     <label class="control-label" for="level">Level</label>
+                    <div class="controls">
+                        <select class="form-control" data-ng-model="question.level" id="level" ng-options="item.value as item.name for item in levels" required >
+                        </select>
+                    </div>
+                       
+                   </div>
+                  
+                  <div class="form-group">
+                      <label class="control-label" for="subject_id">Subject</label>
+                      <div class="controls">
+                          <select class="form-control" data-ng-model="question.subject_id" id="subject_id" ng-options="subject_id._id as subject_id.name for subject_id in subjectList" required>
+                          </select>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" for="chapter_id">Chapter</label>
+                      <div class="controls">
+                          <select class="form-control" data-ng-model="question.chapter_id" id="chapter_id" ng-options="chapter_id._id as chapter_id.name for chapter_id in chapterList" required>
+                          </select>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                   <label class="control-label" for="status">Status</label>
+                  <div class="controls">
+                      <select class="form-control" ng-init="status = 1" data-ng-model="question.status" id="status" ng-options="item.value as item.name for item in statuses" required >
+                      </select>
+                  </div>
+                     
+                  </div>
+                </div>
+              </div>    
+            </div>
+        </div>
+    </section>
+</section>

@@ -80,7 +80,7 @@ angular.module('banners').controller('BannersController', ['$scope', '$statePara
                 category: this.category,
                 position: this.position,
             });
-            console.log(banner.category, 'po');
+            // console.log(banner.category, 'po');
             if (banner.category === undefined) {
                 $scope.categories = Categories.query(function(resp) {
                     banner.category = [];

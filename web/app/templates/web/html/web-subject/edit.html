@@ -1,0 +1,63 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+
+<section data-ng-controller="SubjectController">
+    <section class="content-header">
+        <h1><$ meta.controller $></h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><$ meta.action $></h3>
+                    </div>
+	                <form method="POST" name="editForm" action="/<$ meta.context $>/<$ subject._id $>/edit" novalidate>
+                        <div class="box-body">
+                            
+			               <div class="form-group">
+			                 <label class="control-label" for="name">Name</label>
+			                <div class="controls">
+			                    <input type="text" name="name" value="<$ subject.name $>" id="name" class="form-control" placeholder="Name">
+			                 </div>
+			                              
+			               </div>
+			              
+			               <div class="form-group">
+			                 <label class="control-label" for="desc">Desc</label>
+			                <div class="controls">
+			                    <textarea class="form-control ck-editor" name="desc" rows="3"><$ subject.desc $></textarea>
+			                 </div>
+			                              
+			               </div>
+			              
+			               <<!-- div class="form-group">
+			                 <label class="control-label" for="slug">Slug</label>
+			                <div class="controls">
+			                    <input type="text" name="slug" value="<$ subject.slug $>" id="slug" class="form-control" placeholder="Slug">
+			                 </div>
+			                              
+			               </div> -->
+              
+              
+                        </div>
+                        <div class="box-footer">
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary">
+                                <a href="/subjects" class="btn btn-default">Cancel</a>
+                            </div>
+                            <!-- <div class="alert alert-danger alert-dismissable" data-ng-show="error">
+                                <h4><i class="icon fa fa-ban"></i> Error!</h4>
+                                <div data-ng-bind="error"></div>
+                            </div> -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<% endblock %>

@@ -1,0 +1,157 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+
+<section data-ng-controller="QuizController">
+    <section class="content-header">
+        <h1><$ meta.controller $></h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="col-sm-6">
+                            <h3><$ quiz.name $></h3>
+                        
+                            <div><strong>Name: </strong> <$ quiz.name $></div>
+
+                            <div><strong>Desc: </strong> <$ quiz.desc $></div>
+
+                            <div><strong>Start date: </strong> <$ quiz.start_date $></div>
+
+                            <div><strong>End date: </strong> <$ quiz.end_date $></div>
+
+                            <div><strong>Slug: </strong> <$ quiz.slug $></div>
+
+                            <div><strong>Status: </strong> <$ quiz.status $></div>
+
+                            <div><strong>Created: </strong> <$ quiz.created $></div>
+
+                            <div><strong>Modified: </strong> <$ quiz.modified $></div>
+                            </div>
+						<div class="col-sm-6">
+                            
+                            <h3>&nbsp</h3>
+                        
+                            <div><strong>Subject Id: </strong> <$ quiz.subject_id $></div>
+
+                            <div><strong>Group Id: </strong> <$ quiz.group_id $></div>
+
+                            <div><strong>Number of questions: </strong> <$ quiz.number_of_question $></div>
+
+                            <div><strong>Duration: </strong> <$ quiz.duration $></div>
+
+                            <div><strong>Maximum Attempts: </strong> <$ quiz.maximum_attempts $></div>
+
+                            <div><strong>Pass percentage: </strong> <$ quiz.pass_percentage $></div>
+
+                            <div><strong>View login: </strong> <$ quiz.view_answer $></div>
+
+                            <div><strong>View answer: </strong> <$ quiz.view_login $></div>
+                        </div>	                         
+                         
+                    </div>
+                    <div class="box-footer">
+                        <a class="btn btn-primary" href="quiz/<$ quiz._id $>/edit">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a class="btn btn-primary" href="quiz/<$ quiz._id $>">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
+  					</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- List Question by Quiz -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Danh sách câu hỏi đã thêm vào đề thi</h3>
+                        <div class="pull-right">
+                            <a class="btn btn-block btn-primary" href="/<$ meta.context $>/<$ quiz.id $>/question/add">Thêm mới</a>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="box-tools">
+                            <div class="input-group" style="width: 150px;">
+                                <input type="text" name="query" class="form-control input-sm pull-right" placeholder="Search" />
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>&nbsp;</div>
+                        <table id="table-list" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    
+                                    <th>Name</th>
+                                    
+                                    <th>Description</th>
+
+                                    <th>Question Type</th>
+
+                                    <th>Level</th>
+                                    
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% asyncEach item in questionsByQuiz %>
+                                <tr>
+                                    <td><a href="question/<$ item._id $>/view"><$ item._id $></a></td>
+                                    
+                                    
+                                    <td><a href="question/<$ item._id $>/view"><$ item.name $></a></td>
+                                    
+                                    
+                                    <td><$ item.desc $></td>
+                                    
+                                
+                                    <td><$ item.question_type $></td>
+                                    
+                                    
+                                    <td><$ item.level $></td>
+                                    
+                                    <td>
+                                        <a href="question/<$ item._id $>/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
+                                        <a href="question/<$ item._id $>/view" title="Delete">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% endeach %> 
+                            </tbody>
+                        </table>
+
+                        <bz-pagination max-page="10" name="post_page" current-page="currentPage" total-page="totalPage" page-changed="pageChanged">
+                        </bz-pagination>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <%  if not questionsByQuiz %>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="alert alert-warning text-center">
+                    Chưa có câu hỏi nào, <a href="quiz/<$ quiz.id $>/question/add">thêm mới một câu hỏi</a>?
+                </div>
+            </div>
+        </div>
+        <% endif %>
+    </section>
+</section>
+</section>
+
+<% endblock %>

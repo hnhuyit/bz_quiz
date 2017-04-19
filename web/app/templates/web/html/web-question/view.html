@@ -1,0 +1,101 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+
+<section data-ng-controller="QuestionsController">
+    <section class="content-header">
+        <h1><$ meta.controller $></h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="col-sm-6">
+                            <h3><$ question.name $></h3>
+                        
+                            <div><strong>Name: </strong> <$ question.name $></div>
+
+                            <div><strong>Desc: </strong> <$ question.desc $></div>
+
+                            <div><strong>Slug: </strong> <$ question.slug $></div>
+
+                            <div><strong>Status: </strong> <$ question.status $></div>
+
+                            <div><strong>Subject Id: </strong> <$ question.subject_id $></div>
+
+                            <div><strong>Created: </strong> <$ question.created $></div>
+
+                            <div><strong>Modified: </strong> <$ question.modified $></div>
+                        </div>
+						
+                        <div class="col-sm-6">
+                            
+                            <h3>Thống kê: </h3>
+                            <div><strong>Số lần trả lời đúng: </strong> <$ question.no_times_corrected $></div>
+
+                            <div><strong>Số lần trả lời sai: </strong> <$ question.no_times_incorrected $></div>
+
+                            <div><strong>Số lần được đưa vào đề thi: </strong> <$ question.no_times_unattempted $></div>
+                        </div>	                         
+                         
+                    </div>
+                    <div class="box-footer">
+                        <a class="btn btn-primary" href="question/<$ question._id $>/edit">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a class="btn btn-primary" href="question/<$ question._id $>">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
+  					</div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <h3>Đáp án</h3>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Đáp án</th>
+                                    <th>Đáp án nối</th>
+                                    <th style="width: 40px">Điểm</th>
+                                </tr>
+                                <tr>
+                                    <td>1.</td>
+                                    <td>Đáp án 1</td>
+                                    <td>NULL</td>
+                                    <td><span class="badge bg-red">1</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2.</td>
+                                    <td>Đáp án 2</td>
+                                    <td>NULL</td>
+                                    <td><span class="badge bg-red">0</span></td>
+                                </tr>
+                                <tr>
+                                    <td>3.</td>
+                                    <td>Đáp án 3</td>
+                                    <td>NULL</td>
+                                    <td><span class="badge bg-red">0</span></td>
+                                </tr>
+                                <tr>
+                                    <td>4.</td>
+                                    <td>Đáp án 4</td>
+                                    <td>NULL</td>
+                                    <td><span class="badge bg-red">0</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<% endblock %>

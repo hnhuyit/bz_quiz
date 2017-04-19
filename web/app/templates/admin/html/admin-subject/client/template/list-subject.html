@@ -1,0 +1,111 @@
+<section data-ng-controller="SubjectsController" data-ng-init="find()">
+    <section class="content-header">
+        <h1>Subjects</h1>
+    </section>
+    <!-- Loading -->
+    <ng-loading loading-done="isLoading" />
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">List Subjects</h3>
+                        <div class="pull-right">
+                            <a class="btn btn-block btn-primary" data-ui-sref="createSubject">New</a>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="box-tools">
+                            <div class="input-group" style="width: 150px;">
+                                <input type="text" name="query" data-ng-model="query" class="form-control input-sm pull-right" placeholder="Search" />
+                                <div class="input-group-btn">
+                                    <button ng-click="find()" class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>&nbsp;</div>
+                        <table id="table-list" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    
+                                    <th>Name</th>
+                                    
+                                    <!-- <th>Desc</th> -->
+                                    
+                                    <th>User Id</th>
+                                    
+                                    <th>Slug</th>
+                                    
+                                    <th>Status</th>
+                                    
+                                    <th>Created</th>
+                                    
+                                    <th>Modified</th>
+                                    
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="subject in items">
+                                    <td><a data-ui-sref="viewSubject({itemId: subject._id})">{{subject._id}}</a></td>
+                                    
+                                    
+                                    <td>{{subject.name}}</td>
+                                    
+                                    
+                                    
+                                    <!-- <td>{{subject.desc}}</td> -->
+                                    
+                                    
+                                    
+                                    <td><div data-ng-repeat="subject in subject.user_id"><span class="label label-primary">{{subject.name}}</span> </div></td>
+                                    
+                                    
+                                    
+                                    <td>{{subject.slug}}</td>
+                                    
+                                    
+                                        
+                                    <td><span class="label label-success" ng-if="subject.status == 1">Publish </span><span class="label label-danger" ng-if="subject.status == 0">Unpublish </span></td>
+                                    
+                                    
+                                    
+                                    <td>{{subject.created | date:'medium'}}</td>
+                                    
+                                    
+                                    
+                                    <td>{{subject.modified | date:'medium'}}</td>
+                                    
+                                      
+                                    <td>
+                                        <a data-ui-sref="editSubject({itemId: subject._id})" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
+                                        <a data-ui-sref="viewSubject({itemId: subject._id})" title="Delete">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- <ul boundary-links="true" items-per-page="itemsPerPage" max-size="numberVisiblePages" uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="find()" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-disabled="blocked"></ul> -->
+                        
+                        <!-- <bz-pagination max-page="10" name="post_page" current-page="currentPage" total-page="totalPage" page-changed="pageChanged"> -->
+                        </bz-pagination>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="alert alert-warning text-center" data-ng-hide="!items.$resolved || items.length">
+                    There is no item found, why don't you <a data-ui-sref="createSubject">create one</a>?
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

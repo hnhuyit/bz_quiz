@@ -1,0 +1,110 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+
+<section data-ng-controller="QuizController">
+    <section class="content-header">
+        <h1><$ meta.controller $></h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title"><$ meta.action $></h3>
+	                </div>
+	                <form method="POST" name="addForm" action="/<$ meta.context $>/<$ quiz.id $>/question/create" novalidate>
+	                    <div class="box-body">
+	                        
+	                        <div class="form-group">
+	                            <label class="control-label" for="quiz_id">Tên đề thi: <$ quiz.name $></label>
+	                        </div>
+							
+    						<!-- List Question by Quiz -->
+			                <div class="box">
+			                    <div class="box-header">
+			                        <h3 class="box-title">Danh sách câu hỏi: </h3>
+			                    </div>
+								
+			                    <!-- /.box-header -->
+			                    <div class="box-body">
+			                        <div class="box-tools">
+			                            <div class="input-group" style="width: 150px;">
+			                                <input type="text" name="query" class="form-control input-sm pull-right" placeholder="Search" />
+			                                <div class="input-group-btn">
+			                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+			                                </div>
+			                            </div>
+			                        </div>
+			                        <div>&nbsp;</div>
+			                        <table id="table-list" class="table table-bordered table-hover">
+			                            <thead>
+			                                <tr>
+			                                    <th>Add</th>
+
+			                                    <th>Name</th>
+			                                    
+			                                    <th>Description</th>
+
+
+			                                    <th>Chapter</th>
+
+
+			                                    <th>Question Type</th>
+
+
+			                                    <th>Level</th>
+			                                    <th>
+			                                        <input type="checkbox" ng-model="selectAll" id="selectAll" />
+			                                    </th>
+			                                </tr>
+			                            </thead>
+			                            <tbody>
+                            				<% asyncEach item in questions %>
+			                                <tr>
+												<td><a data-ng-click="addQuestion('<$ item._id $>', '<$ quiz.id $>')" class="btn btn-xs btn-primary">Add</a></td>
+			                                    <td><a href="question/<$ item._id $>/view"><$ item.name $></a></td>
+			                                    
+			                                    <td><$ item.desc $></td>
+			                                    
+			                                    <th><$ item.chapter_id.name $></th>
+			                                    
+			                                    <td><$ item.question_type $></td>
+			                                    
+			                                    <td><$ item.level $></td>
+			                                    <td>
+			                                        <input name="question_id" value="<$ item._id $>" type="checkbox" ng-checked="selectAll" />
+			                                    </td>
+			                                </tr>
+											<% endeach %> 
+			                            </tbody>
+			                        </table>
+
+			                        <!-- <bz-pagination max-page="10" name="post_page" current-page="currentPage" total-page="totalPage" page-changed="pageChanged">
+			                        </bz-pagination> -->
+			                    </div>
+
+								<div class="box-footer pull-right">
+									<div class="form-group">
+										<input type="submit" class="btn btn-primary">
+										<a href="/quiz/<$ quiz._id $>/view" class="btn btn-default">Cancel</a>
+									</div>
+									<!-- div class="alert alert-danger alert-dismissable" data-ng-show="error">
+										<h4><i class="icon fa fa-ban"></i> Error!</h4>
+										<div data-ng-bind="error"></div>
+									</div> -->
+								</div>
+			                    <!-- /.box-body -->
+			                </div>
+							
+				          
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</section>
+</section>
+
+<% endblock %>

@@ -1,6 +1,7 @@
 angular
     .module('Auth')
-    .service('AuthService', AuthService);
+    .service('AuthService', AuthService)
+    .factory('AuthFactory', AuthFactory);
 
 function AuthService($http, $window) {
     return {
@@ -32,4 +33,18 @@ function AuthService($http, $window) {
             return $http.post($window.settings.services.userApi + '/api/user/reset?token=' + token, data);
         }
     };
+}
+
+
+function AuthFactory($resource, $window) {
+    return $resource($window.settings.services.userApi + '/api/user/:itemId', {
+        itemId: '@_id'
+    }, {
+        update: {
+            method: 'PUT'
+        },
+        query: {
+            isArray: false,
+        }
+    });
 }

@@ -105,6 +105,7 @@ exports.save = {
             status: Joi.number().integer().min(0).max(1),
             roles: Joi.any().description('Roles'),
             phone: Joi.any().description('Phone'),
+            unit: Joi.any().description('Unit'),
             address: Joi.any().description('Address'),
         }
     }
@@ -153,6 +154,7 @@ exports.update = {
             status: Joi.number().integer().min(0).max(1),
             roles: Joi.any().description('Roles'),
             phone: Joi.any().description('Phone'),
+            unit: Joi.any().description('Unit'),
             address: Joi.any().description('Address'),
         },
         options: {

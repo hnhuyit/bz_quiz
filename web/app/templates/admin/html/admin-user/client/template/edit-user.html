@@ -123,10 +123,17 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="control-label" for="status">Unit</label>
+                                <div class="controls">
+                                    <select class="form-control" name="status" data-ng-model="user.unit" id="status" ng-options="item.value as item.name for item in units" required>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="control-label" for="status">Status</label>
                                 <div class="controls">
                                     <select class="form-control" name="status" data-ng-model="user.status" id="status" ng-options="item.value as item.name for item in statuses" required>
-                                </select>
+                                    </select>
                                 </div>
                                 <div class="error-messages message" ng-messages="UserForm.status.$error" ng-messages-multiple ng-if="submitted">
                                     <error-message require-msg="You did not select a field" />

@@ -10,7 +10,26 @@ const JWT = require('jsonwebtoken');
 const aguid = require('aguid');
 const crypto = require('crypto');
 const UserEmail = require('../util/user-email');
+// exports.getAll = {
+//     handler: function (request, reply) {
+//         let page = request.query.page || 1;
+//         let config = request.server.configManager;
+//         let itemsPerPage = config.get('web.paging.itemsPerPage');
+//         let numberVisiblePages = config.get('web.paging.numberVisiblePages');
 
+//         let options = {status: 1, user_id: request.auth.credentials.uid};
+
+//         User.find(options).sort('id').paginate(page, itemsPerPage, function (err, items, total) {
+//             if (err) {
+//                 request.log(['error', 'list', 'user'], err);
+//                 reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+//             }
+//             let totalPage = Math.ceil(total / itemsPerPage);
+//             let dataRes = { status: 1, totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
+//             reply(dataRes);
+//         });
+//     }
+// }
 exports.index = {
     auth: false,
     handler: function (request, reply) {
@@ -98,6 +117,7 @@ exports.register = {
             password: Joi.string().min(5).required().description('Password'),
             cfpassword: Joi.string().min(5).required().description('Confirm Password'),
             roles: Joi.array().description('Roles'),
+            // unit: Joi.string().description('Unit'),
         }
     }
 }
@@ -151,7 +171,7 @@ exports.login = {
         promise
             .then(user => {
 
-                console.log(user, "user");
+                // console.log(user, "user");
 
                 if (!user || (user && user.status != 1)) {
                     return reply(Boom.unauthorized("Incorrect email or password"));
@@ -165,7 +185,7 @@ exports.login = {
                 auth
                     .login(email, password, user)
                     .then(jwtToken => {
-                        reply({ token: jwtToken }).header("Authorization", jwtToken).state(cookieKey, jwtToken, cookieOptions);
+                        reply({ token: jwtToken}).header("Authorization", jwtToken).state(cookieKey, jwtToken, cookieOptions);
                     })
                     .catch(err => {
                         request.log(['error', 'login'], err);
@@ -435,6 +455,20 @@ exports.update = {
         }
     }
 }
+
+// exports.checkLogin = {
+//     pre: [
+//         { method: getAuthUser, assign: 'user' }
+//     ],
+//     auth: 'jwt',
+//     handler: function (request, reply) {
+//         const user = request.pre.user;
+//         if (user) {
+//             return reply(user.unit);
+//         }
+//         reply(Boom.unauthorized('User is not found'));
+//     }
+// }
 
 /**
  * Middleware

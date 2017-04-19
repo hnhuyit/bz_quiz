@@ -115,6 +115,7 @@ exports.handleError = function (request, reply) {
     let config = request.server.configManager;
     let loginUrl = config.get('web.error.user.login');
     let notFoundUrl = config.get('web.error.notfound.url');
+    let notpermission = config.get('web.error.notpermission.url');
 
     const error = response;
     const statusCode = error.output.statusCode;
@@ -122,9 +123,9 @@ exports.handleError = function (request, reply) {
     if (statusCode === 404) {
         request.log(['error', 'notfound'], 'Resources is not be found');
         return reply.redirect(notFoundUrl);
-    } else if (statusCode === 403) {
+    } else if (statusCode === 403 || statusCode === 401) {
         request.log(['error', 'permission'], 'You have not permission to access this page');
-        return reply.redirect(loginUrl);
+        return reply.redirect(notpermission);
     } else {
         return reply.continue();
     }

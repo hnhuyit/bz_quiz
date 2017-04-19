@@ -3,7 +3,8 @@
  * Created by chung on 7/23/15.
  */
 angular.module('Core')
-    .factory("Option", Option);
+    .factory("Option", Option)
+    .factory("Notice", Notice);
     
 function Option() {
 
@@ -23,15 +24,14 @@ function Option() {
 
     var adsPositions = [{name: 'top', value: 'top'}, {name: 'right', value: 'right'}, {name: 'home', value: 'home'}];
 
-    var typeQuestions = [{name: 'Loai 1', value: 'loai_1'}, {name: 'Loai 2', value: 'loai_2'}, {name: 'Loai 3', value: 'loai_3'}];
+    var typeQuestions = [{name: 'Loai 1', value: 1}, {name: 'Loai 2', value: 2}, {name: 'Loai 3', value: 3}];
 
-    var levels = [{name: 'De', value: 'de'}, {name: 'Trung Binh', value: 'Trung Binh'}, {name: 'Kho', value: 'kho'}];
+    var levels = [{name: 'De', value: 1}, {name: 'Trung Binh', value: 2}, {name: 'Kho', value: 3}];
 
     return {
         getStatus: function () {
             return statuses;
         },
-
         getRoles: function () {
             return roles;
         },
@@ -59,5 +59,57 @@ function Option() {
         getLevels: function () {
             return levels;
         },
+    };
+};
+
+function Notice($rootScope) {
+    var queue = [];
+    var oldMessage = "";
+    var currentMessage = "";
+
+    $rootScope.$on("$stateChangeStart", function() {
+        oldMessage = currentMessage;
+        currentMessage = queue.shift() || "";
+        // console.log(currentMessage);
+    });
+
+    $rootScope.$on("requireChange", function() {
+        oldMessage = currentMessage;
+        currentMessage = queue.shift() || "";
+        // console.log(currentMessage);
+    });
+
+    $rootScope.$on("$stateChangeError", function() {
+        queue.push(oldMessage);
+        currentMessage = "";
+    });
+
+    return {
+        setNotice: function(message, type, require) {
+            var require = typeof require !== 'undefined' ? require : false;
+            queue.push({
+                type: type,
+                message: message
+            });
+            if (require) {
+                $rootScope.$broadcast('requireChange');
+                // console.log('requireChange');
+            }
+            // console.log('Queue',queue);
+        },
+        getNotice: function() {
+            return currentMessage;
+        },
+        requireChange: function() {
+            $rootScope.$broadcast('requireChange');
+        },
+        SUCCESS: 'SUCCESS',
+        ERROR: 'ERROR',
+        INFO: 'INFO',
+        clearNotice: function() {
+            queue = [];
+            currentMessage = "";
+            $rootScope.$broadcast('CLEAR_NOTICE');
+        }
     };
 };
