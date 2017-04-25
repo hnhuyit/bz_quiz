@@ -6,11 +6,11 @@ function ChapterController($scope, $filter, ChapterService, SubjectFactory, $coo
 
 	// console.log(localStorageService);
 
-    localStorageService.set('chapter.create', {name: 11111111});
+  //   localStorageService.set('chapter.create', {name: 11111111});
 
-    $scope.find = function() {
-		// getChapterToLocalStorage();
-    }
+  //   $scope.find = function() {
+		// // getChapterToLocalStorage();
+  //   }
 
 
     SubjectFactory.query(function(data){

@@ -45,6 +45,10 @@ function AuthFactory($resource, $window) {
         },
         query: {
             isArray: false,
+        },
+        getUserLogin: {
+            url: $window.settings.services.userApi + '/api/user/get-user-login',
+            method: 'GET'
         }
     });
 }

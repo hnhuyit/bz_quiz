@@ -9,6 +9,10 @@ const Chapter = mongoose.model('Chapter');
 const Subject = mongoose.model('Subject');
 const _ = require('lodash');
 exports.list = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let meta = {
             context: 'chapter',
@@ -45,6 +49,10 @@ exports.list = {
     }
 }
 exports.view = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'chapter' }
     ],
@@ -65,10 +73,10 @@ exports.view = {
     },
 }
 exports.add = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['user', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
 
         // console.log(request.auth);
@@ -84,10 +92,10 @@ exports.add = {
     }
 }
 exports.create = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: (request, reply) => {
         let chapter = new Chapter(request.payload);
             chapter.user_id = request.auth.credentials.uid;
@@ -103,10 +111,10 @@ exports.create = {
     }
 }
 exports.edit = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         {method: getItem, assign: 'chapter'}
     ],
@@ -130,6 +138,10 @@ exports.edit = {
     }
 }
 exports.update = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'chapter' }
     ],
@@ -163,10 +175,10 @@ exports.update = {
     // }
 }
 exports.delete = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'chapter' }
     ],

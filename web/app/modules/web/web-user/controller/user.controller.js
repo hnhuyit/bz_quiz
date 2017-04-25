@@ -4,6 +4,10 @@ exports.login = {
             title: 'Login',
             description: ''
         }
+        // console.log(request.auth)
+        // if(request.auth.isAuthenticated) {
+        //     return reply.redirect('/');
+        // }
         reply.view('web/html/web-user/login', meta);
     },
 }

@@ -21,6 +21,14 @@ function QuizFactory($resource, $window) {
         },
         query: {
             isArray: false,
+        },
+        getQuizzesBySubject: {
+            url: $window.settings.services.userApi + '/api/quiz/get-quizzes-by-subject',
+            method: 'GET'
+        },
+        getQuizzesByStudent: {
+            url: $window.settings.services.userApi + '/api/quiz/get-quizzes-by-student',
+            method: 'GET'
         }
     });
 }
@@ -30,10 +38,12 @@ function QuizQuestionFactory($resource, $window) {
         itemId: '@_id'
     }, {
         update: {
-            method: 'PUT'
+            method: 'PUT',
+            headers:{'Content-Type':'application/x-www-form-urlencoded'} 
         },
         query: {
             isArray: false,
+            headers:{'Content-Type':'application/x-www-form-urlencoded'} 
         }
     });
 }

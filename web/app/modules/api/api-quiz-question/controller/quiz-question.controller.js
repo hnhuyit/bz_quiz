@@ -5,8 +5,13 @@ const util = require('util');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const QuizQuestion = mongoose.model('QuizQuestion');
+const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const _ = require('lodash');
 exports.getAll = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let page = request.query.page || 1;
         let config = request.server.configManager;
@@ -56,6 +61,10 @@ exports.getAll = {
 // }
 
 exports.save = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let qq = new QuizQuestion(request.payload);
             qq.user_id = request.auth.credentials.uid;

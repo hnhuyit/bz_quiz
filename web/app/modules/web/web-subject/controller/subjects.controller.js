@@ -9,11 +9,11 @@ const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const _ = require('lodash');
 
 exports.list = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'guest', 'admin']
+    },
     handler: function(request, reply) {
-        let config = request.server.configManager;
-        let itemsPerPage = config.get('web.paging.itemsPerPage');
-        let numberVisiblePages = config.get('web.paging.numberVisiblePages');
-        let page = request.query.page || 1;
 
         let meta = {
             title: 'Subjects',
@@ -23,61 +23,43 @@ exports.list = {
             action: 'List Subject',
         }
 
-        let options = { status: 1, user_id: request.auth.credentials.uid };
+        let options = { status: 1};
 
-        // if (request.query.keyword && request.query.keyword.length > 0) {
-        //     let re = new RegExp(request.query.keyword, 'i');
-        //     options.title = re;
-        // }
-
-        Subject.find(options).sort('id').paginate(page, itemsPerPage, function(err, items, total) {
-            if (err) {
-                request.log(['error', 'list'], err);
-                return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
-            }
-            let totalPage = Math.ceil(total / itemsPerPage);
-            let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items, meta:meta };
-            reply.view('web/html/web-subject/list',dataRes);
-        });
-
-        // async.parallel({
-        //     subjects: function(callback) {
-        //         Subject
-        //             .find(options)
-        //             .sort('-created')
-        //             .lean()
-        //             .paginate(page, itemsPerPage, callback);
-        //     }
-        // }), function(err, result) {
-        //     if(err) {
-        //         console.log(err);
-        //         throw err;
-        //     }
-        //     let items = result;
-        //     let totalPage = Math.ceil(total / itemsPerPage);
-        //     let pagination = new paginator().set({
-        //         per_page: itemsPerPage,
-        //         current_page: page,
-        //         total: total,
-        //         number_of_pages: totalPage,
-        //         show_empty: false,
-        //         url: '/subjects' + getPrelink(request)
-        //     });
-        //     let meta = {
-        //         title: 'Subjects',
-        //         description: 'Subjects description'
-        //     }
-
-        //     let dataRes = { posts: items, meta: meta, paginator: pagination.render() };
-        //     return reply.view('web/html/web-subject/list',dataRes);
-        // }
+        if(request.auth.credentials && request.auth.credentials.scope.includes('user')) {
+            options.user_id =  request.auth.credentials.uid;
+            let promiseSubjects = Subject.find(options).populate('user_id');
+            promiseSubjects.then(function(items) {
+                
+                let dataRes = { status: '1', items: items, meta:meta };
+                reply.view('web/html/web-subject/list', dataRes);
+            }).catch(function(err) {
+                if (err) {
+                    request.log(['error'], err);
+                    return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+                }
+            });
+        } else {
+            options.students =  request.auth.credentials.uid;
+            let promiseSubjects = Subject.find(options).populate('user_id');
+            promiseSubjects.then(function(items) {
+                
+                let dataRes = { status: '1', items: items, meta:meta };
+                reply.view('web/html/web-subject/subjects-by-student', dataRes);
+            }).catch(function(err) {
+                if (err) {
+                    request.log(['error'], err);
+                    return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+                }
+            });
+        }
+        
 
     }
 }
 exports.view = {
     auth: {
         strategy: 'jwt',
-        scope: ['user']
+        scope: ['user', 'admin']
     },
     pre: [
         { method: getItem, assign: 'subject' }
@@ -118,15 +100,17 @@ exports.add = {
     }
 }
 exports.create = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: (request, reply) => {
         let subject = new Subject(request.payload);
             subject.user_id = request.auth.credentials.uid;
 
-            
+        let auth = request.server.plugins['api-user'].auth;
+            subject.key = auth.getRandomString(3);
+
             console.log(subject);
 
         let promise = subject.save();
@@ -138,10 +122,10 @@ exports.create = {
     }
 }
 exports.edit = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         {method: getItem, assign: 'subject'}
     ],
@@ -162,6 +146,10 @@ exports.edit = {
     }
 }
 exports.update = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'subject' }
     ],
@@ -194,10 +182,10 @@ exports.update = {
     // }
 }
 exports.delete = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'subject' }
     ],

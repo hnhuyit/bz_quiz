@@ -10,6 +10,16 @@ exports.register = function(server, options, next) {
         config: SubjectsController.getAll,
     });
     server.route({
+        method: 'GET',
+        path: '/subject/get-subjects-by-student',
+        config: SubjectsController.getSubjectsByStudent,
+    });
+    server.route({
+        method: 'GET',
+        path: '/subject/get-subject-by-key',
+        config: SubjectsController.getSubjectByKey,
+    });
+    server.route({
         method: ['GET'],
         path: '/subject/{id}',
         config: SubjectsController.edit,

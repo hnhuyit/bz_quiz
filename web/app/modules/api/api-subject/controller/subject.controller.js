@@ -4,12 +4,13 @@ const Boom = require('boom');
 const util = require('util');
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const Subject = mongoose.model('Subject');
 const _ = require('lodash');
 exports.getAll = {
     auth: {
         strategy: 'jwt',
-        scope: ['user', 'admin']
+        scope: ['user', 'admin', 'guest']
     },
     handler: function(request, reply) {
         let page = request.query.page || 1;
@@ -25,7 +26,7 @@ exports.getAll = {
         Subject.find(options).populate('user_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
             if (err) {
                 request.log(['error', 'list', 'page'], err);
-                reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+                return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
             }
             let totalPage = Math.ceil(total / itemsPerPage);
             let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
@@ -35,7 +36,78 @@ exports.getAll = {
 
     }
 }
+exports.getSubjectsByStudent = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['guest']
+    },
+    handler: function(request, reply) {
+       
+        let options = {};
+        options.status = 1;
+        options.students = { $in: [request.auth.credentials.uid] };
+
+        Subject.find(options, function(err, items) {
+            if (err) {
+                request.log(['error'], err);
+                return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+            }
+            let dataRes = { status: '1', items: items };
+            reply(dataRes);
+        });
+
+
+    }
+}
+exports.getSubjectByKey = { 
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin', 'guest']
+    },
+    handler: function(request, reply) {
+       
+        let options = {status: 1};
+        let user_id = request.auth.credentials.uid;
+        let key = request.query.key || request.payload.key;
+
+        if(key) {
+            options.key = key;
+        }
+
+        let promiseFindSubject = Subject.findOne(options);
+        promiseFindSubject.then(function(subject) {
+            subject.students.push(user_id);
+
+            return subject.save(subject);
+        }).then(function(subject) {
+            reply(subject);
+        })
+        .catch(function(err) {
+            request.log(['error'], err);
+            return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+        });
+
+
+    },
+    description: 'Get Subject By Key',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+            responses: { '400': { 'description': 'Bad Request' } }
+        }
+    },
+    validate: {
+        params: {
+            key: Joi.string().description('Key'),
+        }
+    }
+}
+
 exports.edit = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'subject' }
     ],
@@ -63,6 +135,10 @@ exports.edit = {
 }
 
 exports.save = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let subject = new Subject(request.payload);
         let promise = subject.save();
@@ -94,6 +170,10 @@ exports.save = {
     }
 }
 exports.update = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'subject' }
     ],
@@ -132,6 +212,10 @@ exports.update = {
     }
 }
 exports.delete = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'subject' }
     ],

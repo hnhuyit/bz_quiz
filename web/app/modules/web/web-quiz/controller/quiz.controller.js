@@ -11,6 +11,10 @@ const Question = mongoose.model('Question');
 const QuizQuestion = mongoose.model('QuizQuestion');
 const _ = require('lodash');
 exports.list = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let meta = {
             context: 'quiz',
@@ -46,7 +50,57 @@ exports.list = {
 
     }
 }
+exports.listQuizzesByStudent = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['guest']
+    },
+    handler: function(request, reply) {
+        let meta = {
+            context: 'quiz',
+            controller: 'Danh sách đề thi',
+            title : 'Danh sách đề thi',
+            description: 'Danh sách đề thi',
+        };
+        
+        let options = {status: 1};
+        options.students = { $in: [request.auth.credentials.uid] };
+        
+        let promiseSubject = Subject.find(options).exec();
+
+        promiseSubject.then(function(subjects) {
+            let quizzes = [];
+
+            subjects.forEachEmission(function(subject, index, done){
+                let promiseQuiz = Quiz.find({subject_id: subjects[index].id}).exec();
+                promiseQuiz.then(function(quiz) {
+                    quizzes[index] = quiz;
+                    done();
+                });
+                
+            }, function(){
+                let q = [];
+                    quizzes.forEach(function(qzs){
+                        qzs.forEach(function(qz){
+                            q.push(qz);
+                        })
+                    });
+                let dataRes = { status: '1', items: q, meta: meta};
+                return reply.view('web/html/web-quiz/list-quizzes',dataRes);
+            });
+        }).catch(function(err) {
+            if (err) {
+                request.log(['error'], err);
+                return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+            }
+        });
+    }
+}
 exports.view = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'quiz' }
     ],
@@ -80,6 +134,10 @@ exports.view = {
     },
 }
 exports.addQuestion = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'quiz' }
     ],
@@ -147,6 +205,10 @@ exports.addQuestion = {
     }
 }
 exports.createQuestion = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'quiz' }
     ],
@@ -171,10 +233,10 @@ exports.createQuestion = {
     }
 }
 exports.add = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['user', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
 
         // console.log(request.auth);
@@ -190,10 +252,10 @@ exports.add = {
     }
 }
 exports.create = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: (request, reply) => {
         let quiz = new Quiz(request.payload);
             quiz.user_id = request.auth.credentials.uid;
@@ -212,10 +274,10 @@ exports.create = {
     }
 }
 exports.edit = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         {method: getItem, assign: 'quiz'}
     ],
@@ -239,6 +301,10 @@ exports.edit = {
     }
 }
 exports.update = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'quiz' }
     ],
@@ -272,10 +338,10 @@ exports.update = {
     // }
 }
 exports.delete = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'quiz' }
     ],

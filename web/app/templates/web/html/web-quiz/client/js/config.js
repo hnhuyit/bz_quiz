@@ -1,2 +1,2 @@
 angular
-    .module('Quiz', ['Core', 'Group', 'Subject', 'Question']);
+    .module('Quiz', ['Core']);

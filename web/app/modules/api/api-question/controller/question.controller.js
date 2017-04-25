@@ -8,6 +8,10 @@ const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const Question = mongoose.model('Question');
 const _ = require('lodash');
 exports.getAll = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin', 'guest']
+    },
     handler: function(request, reply) {
         let page = request.query.page || 1;
         let config = request.server.configManager;
@@ -28,7 +32,7 @@ exports.getAll = {
         Question.find(options).populate('subject_id').populate('chapter_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
             if (err) {
                 request.log(['error', 'list', 'page'], err);
-                reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+                return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
             }
             let totalPage = Math.ceil(total / itemsPerPage);
             let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
@@ -39,6 +43,10 @@ exports.getAll = {
     }
 }
 exports.edit = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'question' }
     ],
@@ -66,6 +74,10 @@ exports.edit = {
 }
 
 exports.save = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let question = new Question(request.payload);
             question.user_id = request.auth.credentials.uid;
@@ -93,6 +105,7 @@ exports.save = {
             level: Joi.number().required().description('Level'),
             subject_id: Joi.any().allow('').description('Subject'),
             chapter_id: Joi.any().allow('').description('Chapter'),
+            correct_option: Joi.any().allow('').description('Option'),
             desc: Joi.string().allow('').description('Desc'),
             // no_time_corrected: Joi.number().allow('').description('No Time Corrected'),
             // no_time_incorrected: Joi.number().allow('').description('No Time Incorrected'),
@@ -105,13 +118,13 @@ exports.save = {
     }
 }
 exports.update = {
-    pre: [
-        { method: getById, assign: 'question' }
-    ],
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
-        let question = request.pre.question;
+        let question = request.payload;
         
-        question = _.extend(question, request.payload);
         let promise = question.save();
         promise.then(function(question) {
             reply(question);
@@ -135,6 +148,7 @@ exports.update = {
             level: Joi.number().required().description('Level'),
             subject_id: Joi.any().allow('').description('Subject'),
             chapter_id: Joi.any().allow('').description('Chapter'),
+            correct_option: Joi.any().allow('').description('Option'),
             description: Joi.string().allow('').description('Description'),
             // no_time_corrected: Joi.number().allow('').description('No Time Corrected'),
             // no_time_incorrected: Joi.number().allow('').description('No Time Incorrected'),
@@ -149,6 +163,10 @@ exports.update = {
     }
 }
 exports.delete = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'question' }
     ],

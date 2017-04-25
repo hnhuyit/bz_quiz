@@ -8,6 +8,10 @@ const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const Group = mongoose.model('Group');
 const _ = require('lodash');
 exports.getAll = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let page = request.query.page || 1;
         let config = request.server.configManager;
@@ -33,6 +37,10 @@ exports.getAll = {
     }
 }
 exports.edit = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'group' }
     ],
@@ -60,6 +68,10 @@ exports.edit = {
 }
 
 exports.save = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let group = new Group(request.payload);
         let promise = group.save();
@@ -92,6 +104,10 @@ exports.save = {
     }
 }
 exports.update = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'group' }
     ],
@@ -131,6 +147,10 @@ exports.update = {
     }
 }
 exports.delete = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'group' }
     ],

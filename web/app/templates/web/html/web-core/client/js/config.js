@@ -13,8 +13,10 @@ var app = angular.module('myapp', [
 		'Home', 
 		'Question'
 	]).config(function($httpProvider) {
-    $httpProvider.defaults.withCredentials = true;
-});
+		$httpProvider.defaults.withCredentials = true;
+	}).config(['$qProvider', function ($qProvider) {
+		$qProvider.errorOnUnhandledRejections(false);
+	}]);
 
 angular
     .module('Core', ['toastr']).config(function(toastrConfig) {

@@ -29,6 +29,16 @@ var SubjectSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'User'
     }],
+    students: [{
+        type: Schema.ObjectId,
+        ref: 'User',
+        default: ''
+    }],
+    key: {
+        type: String,
+        unique: true,
+        required: true
+    },
     status: {
         type: Number,
         default: 1

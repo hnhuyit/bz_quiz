@@ -15,8 +15,9 @@ function QuestionsController($scope, $filter, $window, $location, QuestionServic
 
     $scope.getChapter = function() {
         // console.log(11111);
-        ChapterFactory.query({subject_id: $scope.subject_id}, function(data){
+        ChapterFactory.query({subject_id: $scope.question.subject_id}, function(data){
             $scope.chapterList = data.items;
+            // console.log(data);
         });
     }
     $scope.isCheck = false;
@@ -50,6 +51,13 @@ function QuestionsController($scope, $filter, $window, $location, QuestionServic
                     option.question_id = response.question._id;
                     option.$save(function(response) {
                         console.log(response);
+                        // if(response.is_correct) {
+                        //     question.correct_option = response._id;
+                        //     question.$update(function(response) {
+                        //         console.log(response);
+                        //     });
+                        // }
+
                     }, function(err) {
                         console.log(err);
                     });

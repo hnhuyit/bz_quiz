@@ -12,6 +12,11 @@ exports.register = function (server, options, next) {
     });
     server.route({
         method: 'GET',
+        path: '/quizzes/list-quizzes-by-student',
+        config: QuizzesController.listQuizzesByStudent
+    });
+    server.route({
+        method: 'GET',
         path: '/quiz/{id}/view',
         config: QuizzesController.view
     });

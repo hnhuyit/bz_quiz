@@ -58,6 +58,10 @@ var UserSchema = new Schema({
         type: String,
         required: 'Provider is required'
     },
+    student_code: {
+        type: String,
+        default: '',
+    },
     providerData: {},
     additionalProvidersData: {},
     phone: {

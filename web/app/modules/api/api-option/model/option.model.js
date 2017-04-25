@@ -18,12 +18,17 @@ var OptionSchema = new Schema({
     },
     slug: {
         type: String,
+        default: '',
         trim: true
     },
     name_match: {
         type: String,
         default: '',
         trim: true
+    },
+    is_correct: {
+        type: Number,
+        default: 0
     },
     score: {
         type: Number,

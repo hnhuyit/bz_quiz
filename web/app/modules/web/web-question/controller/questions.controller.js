@@ -9,6 +9,10 @@ const Option = mongoose.model('Option');
 const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const _ = require('lodash');
 exports.list = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let meta = {
             context: 'question',
@@ -45,6 +49,10 @@ exports.list = {
     }
 }
 exports.view = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'question' }
     ],
@@ -71,10 +79,10 @@ exports.view = {
     },
 }
 exports.add = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['user', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
 
         // console.log(request.auth);
@@ -90,10 +98,10 @@ exports.add = {
     }
 }
 exports.create = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: (request, reply) => {
         let question = new Question(request.payload);
             question.user_id = request.auth.credentials.uid;
@@ -109,10 +117,10 @@ exports.create = {
     }
 }
 exports.edit = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         {method: getItem, assign: 'question'}
     ],
@@ -136,6 +144,10 @@ exports.edit = {
     }
 }
 exports.update = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'question' }
     ],
@@ -169,10 +181,10 @@ exports.update = {
     // }
 }
 exports.delete = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'question' }
     ],

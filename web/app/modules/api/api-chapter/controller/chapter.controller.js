@@ -43,6 +43,10 @@ exports.getAll = {
     }
 }
 exports.edit = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'chapter' }
     ],
@@ -70,6 +74,10 @@ exports.edit = {
 }
 
 exports.save = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let chapter = new Chapter(request.payload);
         let promise = chapter.save();
@@ -101,6 +109,10 @@ exports.save = {
     }
 }
 exports.update = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'chapter' }
     ],
@@ -139,6 +151,10 @@ exports.update = {
     }
 }
 exports.delete = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'chapter' }
     ],

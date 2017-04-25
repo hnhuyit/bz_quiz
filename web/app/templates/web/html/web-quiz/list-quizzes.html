@@ -1,0 +1,52 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+
+<section data-ng-controller="QuizController">
+    <section class="content-header">
+        <h1><$ meta.controller $></h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            
+            <% asyncEach item in items %>
+            <div class="col-md-6 col-sm-12">
+              <!-- Widget: user widget style 1 -->
+              <div class="box box-widget widget-user-2">
+                <!-- Add the bg color to the header using any of the bg-* classes -->
+                <div class="widget-user-header bg-aqua">
+                  <!-- <div class="widget-user-image">
+                    <img class="img-circle" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                  </div> -->
+                  <!-- /.widget-user-image -->
+                  <h3 class="widget-user-username"><$ item.name $></h3>
+                  <h5 class="widget-user-desc"><$ item.desc $></h5>
+                </div>
+                <div class="box-body no-padding">
+                  <ul class="nav nav-stacked">
+                    <li><a href="#">Thời gian làm bài <span class="pull-right badge bg-blue"><$ item.duration $></span></a></li>
+                    <li><a href="#">Ngày bắt đầu <span class="pull-right badge bg-aqua"><$ item.start_date $></span></a></li>
+                    <li><a href="#">Ngày kết thúc <span class="pull-right badge bg-green"><$ item.end_date $></span></a></li>
+                    <li><a href="#">Số lượng thí sinh tham dự tối đa <span class="pull-right badge bg-red"><$ item.maximum_attempts $></span></a></li>
+                    <li><a href="#">Tý lệ bắt buộc phải vượt qua <span class="pull-right badge bg-red"><$ item.pass_percentage $></span></a></li>
+                  </ul>
+                </div>
+                <div class="box-footer text-center">
+                  <p>
+                    <button data-ng-click="expression" type="button" class="btn btn-lg btn-default btn-flat">Chi tiết</button>
+                    <button data-ng-click="expression" type="button" class="btn bg-olive btn-flat margin btn-lg">Tham gia</button>
+                  </p>
+                </div>
+              </div>
+              <!-- /.widget-user -->
+            </div>
+
+            <% endeach %>
+
+        </div>
+    </section>
+</section>
+</section>
+
+<% endblock %>

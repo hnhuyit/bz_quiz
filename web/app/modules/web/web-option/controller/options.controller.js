@@ -9,6 +9,10 @@ const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const _ = require('lodash');
 
 exports.list = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let config = request.server.configManager;
         let itemsPerPage = config.get('web.paging.itemsPerPage');
@@ -77,7 +81,7 @@ exports.list = {
 exports.view = {
     auth: {
         strategy: 'jwt',
-        scope: ['user']
+        scope: ['user', 'admin']
     },
     pre: [
         { method: getItem, assign: 'option' }
@@ -118,10 +122,10 @@ exports.add = {
     }
 }
 exports.create = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: (request, reply) => {
         let option = new Option(request.payload);
             option.user_id = request.auth.credentials.uid;
@@ -135,10 +139,10 @@ exports.create = {
     }
 }
 exports.edit = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         {method: getItem, assign: 'option'}
     ],
@@ -159,6 +163,10 @@ exports.edit = {
     }
 }
 exports.update = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'option' }
     ],
@@ -191,10 +199,10 @@ exports.update = {
     // }
 }
 exports.delete = {
-    // auth: {
-    //     strategy: 'jwt',
-    //     scope: ['teacher', 'admin'],
-    // },
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getItem, assign: 'option' }
     ],

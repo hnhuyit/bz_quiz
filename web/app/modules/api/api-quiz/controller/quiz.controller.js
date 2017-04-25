@@ -5,10 +5,17 @@ const util = require('util');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const Quiz = mongoose.model('Quiz');
+const Subject = mongoose.model('Subject');
 const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 // const QuizQuesiton = mongoose.model('QuizQuesiton');
 const _ = require('lodash');
+const arrays = require('async-arrays').proto();
+
 exports.getAll = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin', 'guest']
+    },
     handler: function(request, reply) {
         let page = request.query.page || 1;
         let config = request.server.configManager;
@@ -28,7 +35,7 @@ exports.getAll = {
         Quiz.find(options).populate('group_id').populate('user_id').populate('subject_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
             if (err) {
                 request.log(['error', 'list', 'page'], err);
-                reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+                return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
             }
             let totalPage = Math.ceil(total / itemsPerPage);
             let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
@@ -38,7 +45,76 @@ exports.getAll = {
 
     }
 }
+exports.getQuizzesBySubject = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['guest']
+    },
+    handler: function(request, reply) {
+       
+        let options = {status: 1};
+
+        let {keyword, subject_id} = request.payload || request.query;
+        if(subject_id) {
+            options.subject_id = subject_id;
+        }
+        if (keyword && keyword.length > 0) {
+            let re = new RegExp(request.query.keyword, 'i');
+            options.title = re;
+        }
+        Quiz.find(options, function(err, items) {
+            if (err) {
+                request.log(['error'], err);
+                return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+            }
+            let dataRes = { status: '1', items: items };
+            reply(dataRes);
+        });
+
+
+    }
+}
+exports.getQuizzesByStudent = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin', 'guest']
+    },
+    handler: function(request, reply) {
+       
+        let options = {status: 1};
+        options.students = { $in: [request.auth.credentials.uid] };
+        
+        let promiseSubject = Subject.find(options).exec();
+
+        promiseSubject.then(function(subjects) {
+            let quizzes = [];
+
+            subjects.forEachEmission(function(subject, index, done){
+                let promiseQuiz = Quiz.find({subject_id: subjects[index].id}).exec();
+                promiseQuiz.then(function(quiz) {
+                    quizzes[index] = quiz;
+                    done();
+                });
+                
+            }, function(){
+                let dataRes = { status: '1', items: quizzes };
+                return reply(dataRes);
+            });
+        }).catch(function(err) {
+            if (err) {
+                request.log(['error'], err);
+                return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+            }
+        });
+
+    }
+}
+
 exports.edit = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'quiz' }
     ],
@@ -66,6 +142,10 @@ exports.edit = {
 }
 
 exports.save = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let quiz = new Quiz(request.payload);
         let promise = quiz.save();
@@ -106,6 +186,10 @@ exports.save = {
     }
 }
 exports.update = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'quiz' }
     ],
@@ -153,6 +237,10 @@ exports.update = {
     }
 }
 exports.delete = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'quiz' }
     ],

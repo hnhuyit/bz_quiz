@@ -13,11 +13,16 @@ function QuizController($scope, $filter, QuizService, QuizFactory, QuizQuestionF
     	$scope.subjectList = data.items;
     });
 
-    // console.log($scope.quiz_id)
+    QuizFactory.getQuizzesByStudent(function(data){
 
-    // QuizFactory.query(function(data){
-    //     $scope.quizzesList = data.items;
-    // });
+        let quizzes = [];
+        data.items.forEach(function(qzs){
+            qzs.forEach(function(qz){
+                quizzes.push(qz);
+            })
+        });
+        $scope.items = quizzes;
+    });
 
     // QuestionFactory.query(function(data){
     // 	console.log(data);
@@ -78,4 +83,5 @@ function QuizController($scope, $filter, QuizService, QuizFactory, QuizQuestionF
 
     };
 
+    
 }

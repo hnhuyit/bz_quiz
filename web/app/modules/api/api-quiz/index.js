@@ -10,6 +10,16 @@ exports.register = function(server, options, next) {
         config: QuizzesController.getAll,
     });
     server.route({
+        method: 'GET',
+        path: '/quiz/get-quizzes-by-subject',
+        config: QuizzesController.getQuizzesBySubject,
+    });
+    server.route({
+        method: 'GET',
+        path: '/quiz/get-quizzes-by-student',
+        config: QuizzesController.getQuizzesByStudent,
+    });
+    server.route({
         method: ['GET'],
         path: '/quiz/{id}',
         config: QuizzesController.edit,

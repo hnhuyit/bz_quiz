@@ -94,6 +94,12 @@ exports.register = function (server, options, next) {
         config: AuthController.uploadavatar,
         
     });
+    server.route({
+        method: 'GET',
+        path: '/user/get-user-login',
+        config: AuthController.getUserLogin,
+        
+    });
     return next();
 };
 

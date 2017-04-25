@@ -1,0 +1,42 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+
+<section data-ng-controller="SubjectController">
+    <section class="content-header">
+        <h1><$ meta.controller $></h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+
+            <% asyncEach item in items %>
+            <div class="col-md-6 col-sm-12">
+              <!-- Widget: user widget style 1 -->
+              <div class="box box-widget widget-user-2">
+                <!-- Add the bg color to the header using any of the bg-* classes -->
+                <div class="widget-user-header bg-aqua">
+                  <!-- <div class="widget-user-image">
+                    <img class="img-circle" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                  </div> -->
+                  <!-- /.widget-user-image -->
+                  <h3 class="widget-user-username"><$ item.name $></h3>
+                  <h5 class="widget-user-desc"><$ item.user_id[0].name $></h5>
+                </div>
+                <div class="box-footer no-padding">
+                  <ul class="nav nav-stacked">
+                    <li><a href="#">Key môn học <span class="pull-right badge bg-blue"><$ item.key $></span></a></li>
+                    
+                  </ul>
+                </div>
+              </div>
+              <!-- /.widget-user -->
+            </div>
+
+            <% endeach %>
+
+        </div>
+    </section>
+</section>
+
+<% endblock %>

@@ -48,7 +48,7 @@ function AuthController($scope, $filter, AuthService, $cookies, toastr) {
                 $cookies.put('token', res.data.token);
                 setTimeout(function(){
                   window.location.href = '/';
-                }, 2000);
+                }, 1200);
             }).catch(function(res) {
                 $scope.errors = [res.data.message];
                 toastr.error($scope.errors, 'Login Information');
@@ -58,7 +58,7 @@ function AuthController($scope, $filter, AuthService, $cookies, toastr) {
 
     function logout() {
         AuthService.logout().then(function(res) {
-            $cookies.put('token', '');
+            $cookies.remove('token');
             window.location.href = '/';
         }).catch(function(res) {
             $scope.errors = [res.data.message];

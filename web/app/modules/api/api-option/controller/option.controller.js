@@ -5,6 +5,8 @@ const util = require('util');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const Option = mongoose.model('Option');
+const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
+const Question = mongoose.model('Question');
 const _ = require('lodash');
 exports.getAll = {
     auth: {
@@ -36,6 +38,10 @@ exports.getAll = {
     }
 }
 exports.edit = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'option' }
     ],
@@ -63,13 +69,33 @@ exports.edit = {
 }
 
 exports.save = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     handler: function(request, reply) {
         let option = new Option(request.payload);
             option.user_id = request.auth.credentials.uid;
-
+            if(option.score !== 0) {
+                option.is_correct = 1;
+            }
         let promise = option.save();
         promise.then(function(option) {
-            reply(option);
+            if(option.is_correct) {
+                Question.findById(option.question_id, function(err, question) {
+                    if(err) {
+                         return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+                    }
+                    question.correct_option = option._id;
+                    question.save(function (err, questionUpdate) {
+                        if (err) return handleError(err);
+                        console.log(questionUpdate);
+                        reply(option);
+                    });
+                });
+            }else {
+                reply(option);
+            }
         }).catch(function(err) {
             reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
         });
@@ -89,6 +115,7 @@ exports.save = {
             slug: Joi.string().allow('').description('Slug'),
             status: Joi.number().allow('').description('Status'),
             score: Joi.number().allow('').description('Score'),
+            is_correct: Joi.number().allow('').description('Is correct'),
             user_id: Joi.any().allow('').description('User'),
             question_id: Joi.any().allow('').description('Question'),
             created: Joi.date().allow('').description('Created'),
@@ -98,6 +125,10 @@ exports.save = {
     }
 }
 exports.update = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'option' }
     ],
@@ -136,6 +167,10 @@ exports.update = {
     }
 }
 exports.delete = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
     pre: [
         { method: getById, assign: 'option' }
     ],

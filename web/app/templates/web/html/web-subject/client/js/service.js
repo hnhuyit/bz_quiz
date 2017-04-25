@@ -20,6 +20,14 @@ function SubjectFactory($resource, $window) {
         },
         query: {
             isArray: false,
+        },
+        getSubjectsByStudent: {
+            url: $window.settings.services.userApi + '/api/subject/get-subjects-by-student',
+            method: 'GET'
+        },
+        getSubjectByKey: {
+            url: $window.settings.services.userApi + '/api/subject/get-subject-by-key',
+            method: 'GET'
         }
     });
 }

@@ -61,22 +61,10 @@ var QuestionSchema = new Schema({
         type: 'Number',
         default: 0
     },
-    // ,
-    // options: [{
-    //     question_option: {
-    //         type: 'String',
-    //         required: true
-    //     },
-    //     question_option_match: {
-    //         type: 'String',
-    //         default: ""
-    //     },
-    //     score: {
-    //         type: 'Number',
-    //         required: true,
-    //         default: 0
-    //     },
-    // }],
+    correct_option: {
+        type: Schema.ObjectId,
+        ref: 'Option'
+    },
     created: {
         type: Date,
         default: Date.now

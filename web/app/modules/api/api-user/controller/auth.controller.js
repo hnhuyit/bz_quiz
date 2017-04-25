@@ -387,7 +387,7 @@ exports.account = {
     ],
     auth: {
         strategy: 'jwt',
-        scope: ['user', 'admin']
+        scope: ['guest', 'user', 'admin']
     },
     handler: function (request, reply) {
         const user = request.pre.user;
@@ -455,20 +455,28 @@ exports.update = {
         }
     }
 }
+exports.getUserLogin = {
+    pre: [
+        { method: getAuthUser, assign: 'user' }
+    ],
+    auth: 'jwt',
+    handler: function (request, reply) {
+        let user = request.pre.user;
+        if (!user) {
+            reply(Boom.notFound('User is not found'));
+        }
+        reply(user);
 
-// exports.checkLogin = {
-//     pre: [
-//         { method: getAuthUser, assign: 'user' }
-//     ],
-//     auth: 'jwt',
-//     handler: function (request, reply) {
-//         const user = request.pre.user;
-//         if (user) {
-//             return reply(user.unit);
-//         }
-//         reply(Boom.unauthorized('User is not found'));
-//     }
-// }
+    },
+    description: 'Get User Login',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+            responses: { '400': { 'description': 'Bad Request' } },
+            payloadType: 'form'
+        }
+    }
+}
 
 /**
  * Middleware
