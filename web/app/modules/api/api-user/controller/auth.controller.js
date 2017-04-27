@@ -10,26 +10,32 @@ const JWT = require('jsonwebtoken');
 const aguid = require('aguid');
 const crypto = require('crypto');
 const UserEmail = require('../util/user-email');
-// exports.getAll = {
-//     handler: function (request, reply) {
-//         let page = request.query.page || 1;
-//         let config = request.server.configManager;
-//         let itemsPerPage = config.get('web.paging.itemsPerPage');
-//         let numberVisiblePages = config.get('web.paging.numberVisiblePages');
+exports.getAll = {
+    handler: function (request, reply) {
+        let page = request.query.page || 1;
+        let config = request.server.configManager;
+        let itemsPerPage = config.get('web.paging.itemsPerPage');
+        let numberVisiblePages = config.get('web.paging.numberVisiblePages');
 
-//         let options = {status: 1, user_id: request.auth.credentials.uid};
+        let options = {status: 1, user_id: request.auth.credentials.uid};
 
-//         User.find(options).sort('id').paginate(page, itemsPerPage, function (err, items, total) {
-//             if (err) {
-//                 request.log(['error', 'list', 'user'], err);
-//                 reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
-//             }
-//             let totalPage = Math.ceil(total / itemsPerPage);
-//             let dataRes = { status: 1, totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
-//             reply(dataRes);
-//         });
-//     }
-// }
+        User.find(options).sort('id').paginate(page, itemsPerPage, function (err, items, total) {
+            if (err) {
+                request.log(['error', 'list', 'user'], err);
+                reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+            }
+            let totalPage = Math.ceil(total / itemsPerPage);
+            let dataRes = { status: 1, totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
+            reply(dataRes);
+        });
+    },
+    description: 'List User',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
+}
 exports.index = {
     auth: false,
     handler: function (request, reply) {
@@ -117,7 +123,6 @@ exports.register = {
             password: Joi.string().min(5).required().description('Password'),
             cfpassword: Joi.string().min(5).required().description('Confirm Password'),
             roles: Joi.array().description('Roles'),
-            // unit: Joi.string().description('Unit'),
         }
     }
 }
@@ -218,12 +223,24 @@ exports.login = {
 exports.facebookLogin = {
     handler: function (request, reply) {
         reply();
-    }
+    },
+    description: 'Login Facebook',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.googleLogin = {
     handler: function (request, reply) {
         reply();
-    }
+    },
+    description: 'Login Google',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.logout = {
     auth: 'jwt',
@@ -246,6 +263,12 @@ exports.logout = {
                 return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
             })
 
+    },
+    description: 'Logout',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
     },
 }
 exports.forgot = {
@@ -395,7 +418,13 @@ exports.account = {
             return reply(user);
         }
         reply(Boom.unauthorized('User is not found'));
-    }
+    },
+    description: 'Get Account',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.profile = {
     pre: [
@@ -408,7 +437,13 @@ exports.profile = {
             reply(user);
         }
         reply(Boom.unauthorized('User is not found'));
-    }
+    },
+    description: 'Get Profile',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.uploadavatar = {
     pre: [
@@ -418,7 +453,13 @@ exports.uploadavatar = {
     handler: function (request, reply) {
         const user = request.pre.user;
         reply();
-    }
+    },
+    description: 'Upload Avatar',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 
 exports.update = {

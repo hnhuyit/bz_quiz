@@ -205,7 +205,7 @@ function getItem(request, reply) {
         _id: id,
         status: 1
     };
-    let promise = Chapter.findOne(options).exec();
+    let promise = Chapter.findOne(options).populate('subject_id').exec();
     promise.then(function(chapter) {
         reply(chapter);
     }).catch(function(err) {

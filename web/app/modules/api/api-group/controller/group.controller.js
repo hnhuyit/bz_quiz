@@ -34,7 +34,13 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Group',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.edit = {
     auth: {
@@ -52,7 +58,7 @@ exports.edit = {
             reply(Boom.notFound('Group is not found'));
         }
     },
-    description: 'Get Group',
+    description: 'Edit Group',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {
@@ -122,7 +128,7 @@ exports.update = {
             reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
         });
     },
-    description: 'Update Group',
+    description: 'Updated Group',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {

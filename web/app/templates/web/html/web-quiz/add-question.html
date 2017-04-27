@@ -41,23 +41,23 @@
 			                        <table id="table-list" class="table table-bordered table-hover">
 			                            <thead>
 			                                <tr>
-			                                    <th>Add</th>
+			                                    <th>Thêm</th>
 
-			                                    <th>Name</th>
+			                                    <th>Tên câu hỏi</th>
 			                                    
-			                                    <th>Description</th>
+			                                    <!-- <th>Description</th> -->
 
 
-			                                    <th>Chapter</th>
+			                                    <th>Danh mục câu hỏi</th>
 
 
-			                                    <th>Question Type</th>
+			                                    <th>Loại câu hỏi</th>
 
 
-			                                    <th>Level</th>
-			                                    <th>
+			                                    <th>Mức độ</th>
+			                                    <!--<th>
 			                                        <input type="checkbox" ng-model="selectAll" id="selectAll" />
-			                                    </th>
+			                                    </th>-->
 			                                </tr>
 			                            </thead>
 			                            <tbody>
@@ -66,16 +66,16 @@
 												<td><a data-ng-click="addQuestion('<$ item._id $>', '<$ quiz.id $>')" class="btn btn-xs btn-primary">Add</a></td>
 			                                    <td><a href="question/<$ item._id $>/view"><$ item.name $></a></td>
 			                                    
-			                                    <td><$ item.desc $></td>
+			                                    <!-- <td><$ item.desc $></td> -->
 			                                    
 			                                    <th><$ item.chapter_id.name $></th>
 			                                    
 			                                    <td><$ item.question_type $></td>
 			                                    
 			                                    <td><$ item.level $></td>
-			                                    <td>
+			                                    <!--<td>
 			                                        <input name="question_id" value="<$ item._id $>" type="checkbox" ng-checked="selectAll" />
-			                                    </td>
+			                                    </td>-->
 			                                </tr>
 											<% endeach %> 
 			                            </tbody>
@@ -90,10 +90,6 @@
 										<input type="submit" class="btn btn-primary">
 										<a href="/quiz/<$ quiz._id $>/view" class="btn btn-default">Cancel</a>
 									</div>
-									<!-- div class="alert alert-danger alert-dismissable" data-ng-show="error">
-										<h4><i class="icon fa fa-ban"></i> Error!</h4>
-										<div data-ng-bind="error"></div>
-									</div> -->
 								</div>
 			                    <!-- /.box-body -->
 			                </div>

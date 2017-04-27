@@ -13,7 +13,8 @@
                     <div class="box-header">
                         <h3 class="box-title"><$ meta.action $></h3>
                         <div class="pull-right">
-                            <a class="btn btn-block btn-primary" href="/<$ meta.context $>/add">Thêm mới</a>
+                            <a class="btn btn-primary" href="/<$ meta.context $>/add">Thêm mới</a>
+                            <a class="btn btn-success" href="/<$ meta.context $>/import">Import...</a>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -32,19 +33,19 @@
                                 <tr>
                                     <th>ID</th>
                                     
-                                    <th>Name</th>
+                                    <th>Tên câu hỏi</th>
                                     
-                                    <th>Description</th>
+                                    <!-- <th>Description</th> -->
 
-                                    <th>Subject</th>
+                                    <th>Môn học</th>
 
-                                    <th>Chapter</th>
-
-
-                                    <th>Question Type</th>
+                                    <th>Danh mục</th>
 
 
-                                    <th>Level</th>
+                                    <th>Loại câu hỏi</th>
+
+
+                                    <th>Mức độ</th>
                                     
                                     <!-- <th>User Id</th> -->
                                     
@@ -69,19 +70,35 @@
                                     
                                     
                                     
-                                    <td><$ item.desc $></td>
+                                    <!-- <td><$ item.desc $></td> -->
                                     
                                     
 
                                     <th><$ item.subject_id.name $></th>
 
                                     <th><$ item.chapter_id.name $></th>
+
+
+                                    <% if item.question_type === 1 %>
+                                    <td><span class="label label-info">Nhiều lựa chọn một đáp án</span></td>
+                                    <% elseif item.question_type === 2 %>
+                                    <td><span class="label label-primary">Nhiều lựa chọn nhiều đáp án</span></td>
+                                    <% elseif item.question_type === 3 %>
+                                    <td><span class="label label-success">Ghép hợp</span></td>
+                                    <% else %>
+                                    <td><span class="label label-danger">Điền vào chỗ trống</span></td>
+                                    <% endif %>
                                     
-                                    <td><$ item.question_type $></td>
-                                    
-                                    
-                                    
-                                    <td><$ item.level $></td>
+
+                                    <% if item.level === 1 %>
+                                    <td><span class="label label-info">Dễ</span></td>
+                                    <% elseif item.level === 2 %>
+                                    <td><span class="label label-primary">Trung bình</span></td>
+                                    <% elseif item.level === 3 %>
+                                    <td><span class="label label-success">Khó</span></td>
+                                    <% else %>
+                                    <td><span class="label label-danger">Rất khó</span></td>
+                                    <% endif %>
                                     
                                     
                                     

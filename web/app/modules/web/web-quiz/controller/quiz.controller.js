@@ -72,7 +72,7 @@ exports.listQuizzesByStudent = {
             let quizzes = [];
 
             subjects.forEachEmission(function(subject, index, done){
-                let promiseQuiz = Quiz.find({subject_id: subjects[index].id}).exec();
+                let promiseQuiz = Quiz.find({subject_id: subjects[index].id}).populate('subject_id').populate('user_id').exec();
                 promiseQuiz.then(function(quiz) {
                     quizzes[index] = quiz;
                     done();
@@ -121,16 +121,50 @@ exports.view = {
         let qqPromise = QuizQuestion.find({quiz_id: request.params.id, user_id: request.auth.credentials.uid}).populate('question_id').exec();
 
         qqPromise.then(qq => {
-            console.log(qq.question_id);
+            // console.log('qq', qq);
             let questions = [];
             for(let i=0; i<qq.length; i++) {
                 questions[i] = qq[i].question_id;
             }
-            console.log(questions);
+            // console.log(questions); 
             return reply.view('web/html/web-quiz/view', { quiz: quiz, questionsByQuiz: questions,  meta: meta });
         });
 
         //return reply.view('web/html/web-quiz/view', { quiz: quiz, meta: meta });
+    },
+}
+exports.attempt = {
+    auth: {
+        strategy: 'jwt',
+    },
+    pre: [
+        { method: getItem, assign: 'quiz' }
+    ],
+    handler: function(request, reply) {
+        let quiz = request.pre.quiz;
+        if (!quiz) {
+            return reply(Boom.notFound('quiz is not be found'));
+        }
+        let meta = {};
+            meta = {
+            context: 'quiz',
+            controller: 'Dự thi: ' + quiz.name,
+            action: 'Dự thi ' + quiz.name,
+            title : 'Dự thi ' + quiz.name,
+            description: 'Dự thi ' + quiz.name,
+        };
+
+        let qqPromise = QuizQuestion.find({quiz_id: request.params.id}).populate('question_id').exec();
+
+        qqPromise.then(qq => {
+            // console.log('qq', qq);
+            let questions = [];
+            for(let i=0; i<qq.length; i++) {
+                questions[i] = qq[i].question_id;
+            }
+            // console.log(questions); 
+            return reply.view('web/html/web-quiz/attempt', { quiz: quiz, questionsByQuiz: questions,  meta: meta });
+        });
     },
 }
 exports.addQuestion = {
@@ -159,7 +193,7 @@ exports.addQuestion = {
         let subjectPromise = Subject.findById(quiz.subject_id).exec();
         subjectPromise.then(function(subject) {
             // console.log(subject);
-            let questionPromise = Question.find({subject_id: subject._id, user_id: request.auth.credentials.uid}).exec();
+            let questionPromise = Question.find({subject_id: subject._id, user_id: request.auth.credentials.uid}).populate('chapter_id').exec();
                 ///Lay nhung cau hoi thuoc mon hoc do: questions
                 questionPromise.then(questions => {
                     //Lay danh sach cac cau hoi da duoc them vao de thi
@@ -260,10 +294,11 @@ exports.create = {
         let quiz = new Quiz(request.payload);
             quiz.user_id = request.auth.credentials.uid;
 
-            quiz.start_date = request.payload.date.slice(0, 10);
-            quiz.end_date = request.payload.date.slice(14, 24);
-
-            console.log(quiz);
+            quiz.start_date = request.payload.range_date.slice(0, 10);
+            quiz.end_date = request.payload.range_date.slice(14, 24);
+            quiz.estimated_time = request.payload.date + ' ' +  request.payload.time;
+            quiz.with_login = request.payload.with_login ? 1 : 0; //1: cho phep thi || 0: Khong cho phep thi
+            quiz.view_answer = request.payload.view_answer ? 1 : 0;
 
         let promise = quiz.save();
         promise.then(function() {
@@ -368,7 +403,7 @@ function getItem(request, reply) {
         _id: id,
         status: 1
     };
-    let promise = Quiz.findOne(options).exec();
+    let promise = Quiz.findOne(options).populate('subject_id').populate('group_id').exec();
     promise.then(function(quiz) {
         reply(quiz);
     }).catch(function(err) {

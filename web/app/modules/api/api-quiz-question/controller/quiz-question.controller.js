@@ -31,7 +31,13 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Questions Belong Quiz',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 // exports.edit = {
 //     pre: [
@@ -76,7 +82,13 @@ exports.save = {
         }).catch(function(err) {
             reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
         });
-    }
+    },
+    description: 'Created QuizQuestion',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 // exports.update = {
 //     // pre: [

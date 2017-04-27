@@ -22,6 +22,11 @@ exports.register = function (server, options, next) {
     });
     server.route({
         method: 'GET',
+        path: '/quiz/{id}/attempt',
+        config: QuizzesController.attempt
+    });
+    server.route({
+        method: 'GET',
         path: '/quiz/{id}/question/add',
         config: QuizzesController.addQuestion
     });

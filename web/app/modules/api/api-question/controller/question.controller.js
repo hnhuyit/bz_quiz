@@ -40,7 +40,13 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Question',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.edit = {
     auth: {
@@ -58,7 +64,7 @@ exports.edit = {
             reply(Boom.notFound('Question is not found'));
         }
     },
-    description: 'Get Question',
+    description: 'Edit Question',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {
@@ -132,7 +138,7 @@ exports.update = {
             reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
         });
     },
-    description: 'Update Question',
+    description: 'Updated Question',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {

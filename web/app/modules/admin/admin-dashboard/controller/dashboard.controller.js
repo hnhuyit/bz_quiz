@@ -1,3 +1,5 @@
+'use strict'
+
 exports.index = {
     auth: {
         strategy: 'jwt',

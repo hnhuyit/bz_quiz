@@ -10,7 +10,7 @@ exports.register = function (server, options, next) {
     ws.listen(server);
     server.expose('ws', ws);
 
-     server.route({
+    server.route({
         method: 'GET',
         path: '/message',
         config: SocketController.getAllMessage

@@ -2,7 +2,7 @@
 
 <% block content %>
 
-<section data-ng-controller="QuizController">
+<section>
     <section class="content-header">
         <h1><$ meta.controller $></h1>
     </section>
@@ -21,7 +21,7 @@
                   </div> -->
                   <!-- /.widget-user-image -->
                   <h3 class="widget-user-username"><$ item.name $></h3>
-                  <h5 class="widget-user-desc"><$ item.desc $></h5>
+                  <h5 class="widget-user-desc"><$ item.subject_id.name $> / <$ item.user_id.name $></h5>
                 </div>
                 <div class="box-body no-padding">
                   <ul class="nav nav-stacked">
@@ -34,8 +34,8 @@
                 </div>
                 <div class="box-footer text-center">
                   <p>
-                    <button data-ng-click="expression" type="button" class="btn btn-lg btn-default btn-flat">Chi tiết</button>
-                    <button data-ng-click="expression" type="button" class="btn bg-olive btn-flat margin btn-lg">Tham gia</button>
+                    <a href="/quiz/<$ quiz._id $>/view" class="btn btn-lg btn-default btn-flat">Chi tiết</a>
+                    <a href="/quiz/<$ quiz._id $>/attempt" class="btn bg-olive btn-flat margin btn-lg">Tham gia</a>
                   </p>
                 </div>
               </div>

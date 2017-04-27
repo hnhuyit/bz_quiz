@@ -21,7 +21,7 @@ exports.getAllMessage = {
     plugins: {
         'hapi-io': 'messages/all'
     },
-    description: 'Service status',
+    description: 'List Message',
     tags: ['api']
 }
 
@@ -47,7 +47,7 @@ exports.joinRoom = {
         }
       }
     },
-    description: 'Service status',
+    description: 'Join Room',
     tags: ['api']
 }
 exports.leaveRoom = {
@@ -71,6 +71,6 @@ exports.leaveRoom = {
         }
       }
     },
-    description: 'Service status',
+    description: 'Leave Room',
     tags: ['api']
 }

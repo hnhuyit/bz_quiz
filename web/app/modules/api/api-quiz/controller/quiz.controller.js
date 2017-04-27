@@ -43,7 +43,13 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Quiz',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.getQuizzesBySubject = {
     auth: {
@@ -107,7 +113,13 @@ exports.getQuizzesByStudent = {
             }
         });
 
-    }
+    },
+    description: 'List Quizzes By Student',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 
 exports.edit = {
@@ -126,7 +138,7 @@ exports.edit = {
             reply(Boom.notFound('Quiz is not found'));
         }
     },
-    description: 'Get Quiz',
+    description: 'Edit Quiz',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {
@@ -204,7 +216,7 @@ exports.update = {
             reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
         });
     },
-    description: 'Update Quiz',
+    description: 'Updated Quiz',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {

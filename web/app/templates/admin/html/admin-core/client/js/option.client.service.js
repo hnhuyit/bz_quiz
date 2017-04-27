@@ -20,9 +20,14 @@ angular.module('core').factory("Option", function ($rootScope) {
 
     var adsPositions = [{name: 'top', value: 'top'}, {name: 'right', value: 'right'}, {name: 'home', value: 'home'}];
 
-    var typeQuestions = [{name: 'Loai 1', value: 1}, {name: 'Loai 2', value: 2}, {name: 'Loai 3', value: 3}];
+    var typeQuestions = [
+        {name: 'Nhiều lựa chọn một đáp án', value: 1}, 
+        {name: 'Nhiều lựa chọn nhiều đáp án', value: 2}, 
+        {name: 'Ghép hợp', value: 3}, 
+        {name: 'Điền vào chỗ trống', value: 4}
+    ];
 
-    var levels = [{name: 'De', value: 1}, {name: 'Trung Binh', value: 2}, {name: 'Kho', value: 3}];
+    var levels = [{name: 'Dễ', value: 1}, {name: 'Trung bình', value: 2}, {name: 'Khó', value: 3}, {name: 'Rất khó', value: 4}];
 
     return {
         getStatus: function () {

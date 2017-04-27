@@ -35,7 +35,13 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Option',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.edit = {
     auth: {
@@ -53,7 +59,7 @@ exports.edit = {
             reply(Boom.notFound('Option is not found'));
         }
     },
-    description: 'Get Option',
+    description: 'Edit Option',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {
@@ -89,7 +95,7 @@ exports.save = {
                     question.correct_option = option._id;
                     question.save(function (err, questionUpdate) {
                         if (err) return handleError(err);
-                        console.log(questionUpdate);
+                        // console.log(questionUpdate);
                         reply(option);
                     });
                 });
@@ -143,7 +149,7 @@ exports.update = {
             reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
         });
     },
-    description: 'Update Option',
+    description: 'Updated Option',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {

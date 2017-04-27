@@ -39,8 +39,13 @@ exports.getAll = {
             reply(dataRes);
         });
 
-
-    }
+    },
+    description: 'List Chapter',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.edit = {
     auth: {
@@ -58,7 +63,7 @@ exports.edit = {
             reply(Boom.notFound('Chapter is not found'));
         }
     },
-    description: 'Get Chapter',
+    description: 'Edit Chapter',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {
@@ -127,7 +132,7 @@ exports.update = {
             reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
         });
     },
-    description: 'Update Chapter',
+    description: 'Updated Chapter',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {

@@ -21,6 +21,11 @@ exports.register = function (server, options, next) {
         config: QuestionsController.add,
     });
     server.route({
+        method: 'GET',
+        path: '/question/import',
+        config: QuestionsController.import,
+    });
+    server.route({
         method: 'POST',
         path: '/question/create',
         config: QuestionsController.create,

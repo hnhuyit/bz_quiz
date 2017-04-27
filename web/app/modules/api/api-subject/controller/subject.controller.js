@@ -18,7 +18,11 @@ exports.getAll = {
         let itemsPerPage =  config.get('web.paging.itemsPerPage');
         let numberVisiblePages = config.get('web.paging.numberVisiblePages');
        
-        let options = {status: 1, user_id: request.auth.credentials.uid};
+        let options = {status: 1};
+        let user_id = request.auth.credentials.uid
+        if(user_id) {
+            options.user_id = user_id;
+        }
         if (request.query.keyword && request.query.keyword.length > 0) {
             let re = new RegExp(request.query.keyword, 'i');
             options.title = re;
@@ -26,7 +30,7 @@ exports.getAll = {
         Subject.find(options).populate('user_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
             if (err) {
                 request.log(['error', 'list', 'page'], err);
-                return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+                return reply(Boom.badRequest('ErrorHandler.getErrorMessage(err)'));
             }
             let totalPage = Math.ceil(total / itemsPerPage);
             let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
@@ -34,7 +38,13 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Subject',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.getSubjectsByStudent = {
     auth: {
@@ -57,7 +67,13 @@ exports.getSubjectsByStudent = {
         });
 
 
-    }
+    },
+    description: 'List Subjects By Student',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.getSubjectByKey = { 
     auth: {
@@ -76,6 +92,10 @@ exports.getSubjectByKey = {
 
         let promiseFindSubject = Subject.findOne(options);
         promiseFindSubject.then(function(subject) {
+
+            if(!subject) {
+                return reply(Boom.badRequest('Key môn học không tồn tại'));
+            }
             subject.students.push(user_id);
 
             return subject.save(subject);
@@ -119,7 +139,7 @@ exports.edit = {
             reply(Boom.notFound('Subject is not found'));
         }
     },
-    description: 'Get Subject',
+    description: 'Edit Subject',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {
@@ -188,7 +208,7 @@ exports.update = {
             reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
         });
     },
-    description: 'Update Subject',
+    description: 'Updated Subject',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {

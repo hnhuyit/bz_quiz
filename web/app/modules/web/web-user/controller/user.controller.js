@@ -1,18 +1,22 @@
+'use strict'
+
 exports.login = {
+    auth: false,
     handler: function (request, reply) {
         let meta = {
             title: 'Login',
             description: ''
         }
-        // console.log(request.auth)
-        // if(request.auth.isAuthenticated) {
-        //     return reply.redirect('/');
-        // }
+        console.log(request.auth)
+        if(request.auth.isAuthenticated) {
+            return reply.redirect('/');
+        }
         reply.view('web/html/web-user/login', meta);
     },
 }
 
 exports.register = {
+    auth: false,
     handler: function (request, reply) {
         let meta = {
             title: 'Register',
@@ -25,7 +29,6 @@ exports.register = {
 exports.account = {
     auth: {
         strategy: 'jwt',
-        scope: ['user', 'admin']
     },
     handler: function (request, reply) {
         let meta = {
@@ -37,6 +40,9 @@ exports.account = {
 }
 
 exports.forgot = {
+    auth: {
+        strategy: 'jwt',
+    },
     handler: function (request, reply) {
         let meta = {
             title: 'Forgot Password',
@@ -47,6 +53,9 @@ exports.forgot = {
 }
 
 exports.reset = {
+    auth: {
+        strategy: 'jwt',
+    },
     handler: function (request, reply) {
         let token = request.query.token;
         let meta = {
@@ -58,7 +67,9 @@ exports.reset = {
 }
 
 exports.changepassword = {
-
+    auth: {
+        strategy: 'jwt',
+    },
     handler: function (request, reply) {
         let meta = {
             title: 'Change password',

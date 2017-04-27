@@ -68,7 +68,7 @@
 		              <ul class="nav nav-stacked">
 
 		                <li data-ng-repeat="quiz in listQuizzes" ng-show="quiz.subject_id == item._id">
-		                	<a href="#" data-ng-bind="quiz.name">
+		                	<a href="/quiz/{{quiz._id}}/attempt" data-ng-bind="quiz.name">
 		                		<span class="pull-right badge bg-blue" data-ng-bind=""></span>
 		                	</a>
 	            		</li>

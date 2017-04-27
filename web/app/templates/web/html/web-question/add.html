@@ -40,7 +40,7 @@
 									</div>
 									<div class="checkbox">
 										<label>
-											<input name="score1" data-ng-model="options.score1" ng-checked="isCheck" ng-true-value="'1'" ng-false-value="'0'" type="checkbox" value="1">
+											<input name="score" data-ng-model="options.score1" ng-value="1" type="radio" >
 											Đáp án đúng
 										</label>
 									</div>
@@ -54,7 +54,7 @@
 									</div>
 									<div class="checkbox">
 										<label>
-											<input name="score2" data-ng-model="options.score2" ng-checked="isCheck" ng-true-value="'1'" ng-false-value="'0'" type="checkbox" >
+											<input name="score" data-ng-model="options.score2"  ng-value="1" type="radio" >
 											Đáp án đúng
 										</label>
 									</div>
@@ -68,7 +68,7 @@
 									</div>
 									<div class="checkbox">
 										<label>
-											<input name="score3" data-ng-model="options.score3" ng-checked="isCheck" ng-true-value="'1'" ng-false-value="'0'" type="checkbox" >
+											<input name="score" data-ng-model="options.score3" ng-value="1" type="radio" >
 											Đáp án đúng
 										</label>
 									</div>
@@ -82,14 +82,13 @@
 									</div>
 									<div class="checkbox">
 										<label>
-											<input name="score4" data-ng-model="options.score4" ng-checked="isCheck" ng-true-value="'1'" ng-false-value="'0'" type="checkbox" >
+											<input name="score" data-ng-model="options.score4" ng-value="1" type="radio" >
 											Đáp án đúng
 										</label>
 									</div>
 												
 								</div>
 	        				</div>
-
 
 	                        <div class="col-md-4 col-sm-12">
 								<div class="form-group">
@@ -138,11 +137,11 @@
 	                        <div class="form-group">
 	                            <input type="submit" data-ng-click="create()" class="btn btn-primary">
 	                            <a href="/questions" class="btn btn-default">Cancel</a>
+								
+								<div class="pull-right">
+									<a class="btn btn-success" href="/<$ meta.context $>/import">Import...</a>
+								</div>
 	                        </div>
-	                        <!-- <div class="alert alert-danger alert-dismissable" data-ng-show="error">
-	                            <h4><i class="icon fa fa-ban"></i> Error!</h4>
-	                            <div data-ng-bind="error"></div>
-	                        </div> -->
 	                    </div>
 	                </form>
 	            </div>
@@ -152,4 +151,3 @@
 </section>
 
 <% endblock %>
-i'life

@@ -24,6 +24,9 @@ var QuizSchema = new Schema({
         type: 'String',
         editor: 1
     },
+    estimated_time: {
+        type: 'Date'
+    },
     start_date: {
         type: 'Date'
     },
@@ -60,10 +63,11 @@ var QuizSchema = new Schema({
     },
     with_login: {
         type: 'Number',
-        default: 1
+        default: 0
     },
     number_of_question: {
         type: 'Number',
+        default: 0
     },
     status: {
         type: 'Number',

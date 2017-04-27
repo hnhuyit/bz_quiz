@@ -14,12 +14,6 @@ exports.register = function(server, options, next) {
         config: QuizQuestionController.save,
 
     });
-    // server.route({
-    //     method: ['PUT', 'POST'],
-    //     path: '/quiz-question/{id}',
-    //     config: QuizQuestionController.update,
-
-    // });
     next();
 };
 

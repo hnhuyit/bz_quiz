@@ -35,7 +35,8 @@ exports.list = {
             }).catch(function(err) {
                 if (err) {
                     request.log(['error'], err);
-                    return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+                    // return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+                    return reply.redirect('/error404');
                 }
             });
         } else {
@@ -48,7 +49,8 @@ exports.list = {
             }).catch(function(err) {
                 if (err) {
                     request.log(['error'], err);
-                    return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+                    // return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+                    return reply.redirect('/error404');
                 }
             });
         }

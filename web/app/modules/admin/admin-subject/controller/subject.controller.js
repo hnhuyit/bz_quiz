@@ -5,6 +5,7 @@ const util = require('util');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const Subject = mongoose.model('Subject');
+const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const _ = require('lodash');
 exports.getAll = {
     handler: function(request, reply) {

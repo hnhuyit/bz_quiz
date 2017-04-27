@@ -24,7 +24,7 @@ function TeacherController($scope, SubjectFactory, QuizFactory, QuestionFactory)
     });
 
 }
-function StudentController($scope, SubjectFactory, QuizFactory) {
+function StudentController($scope, SubjectFactory, QuizFactory, toastr) {
 
     SubjectFactory.getSubjectsByStudent(function(data){
         $scope.listSubjects = data.items;
@@ -39,7 +39,10 @@ function StudentController($scope, SubjectFactory, QuizFactory) {
         
         SubjectFactory.getSubjectByKey({key:key}, function(data) {
             let message = 'Bạn đã tham gia môn học ' + data.name;
-            toastr.success(message, 'Thong bao');
+            toastr.success(message, 'Thông báo');
+        }, function(err) {
+            console.log(err);
+            toastr.error(err.data.message, 'Thông báo');
         });
     }
 

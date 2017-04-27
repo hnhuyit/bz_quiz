@@ -97,6 +97,25 @@ exports.add = {
         reply.view('web/html/web-question/add', {meta: meta});
     }
 }
+exports.import = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
+    handler: function(request, reply) {
+
+        // console.log(request.auth);
+        let meta = {
+            context: 'question',
+            controller: 'Import Câu hỏi',
+            action: 'Import câu hỏi',
+            title : 'Import câu hỏi',
+            description: 'Import câu hỏi',
+        };
+
+        reply.view('web/html/web-question/import', {meta: meta});
+    }
+}
 exports.create = {
     auth: {
         strategy: 'jwt',
