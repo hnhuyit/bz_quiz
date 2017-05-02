@@ -33,6 +33,17 @@ exports.register = function(server, options, next) {
         config: QuestionsController.update,
 
     });
+    server.route({
+        method: ['GET'],
+        path: '/question/change-status/{id}/{status}',
+        config: QuestionsController.changeStatus
+
+    });
+    server.route({
+        method: 'PUT',
+        path: '/question/changeStatus',
+        config: QuestionsController.changeStatus,
+    });
     next();
 };
 

@@ -10,7 +10,7 @@ const _ = require('lodash');
 exports.getAll = {
     auth: {
         strategy: 'jwt',
-        scope: ['user', 'admin']
+        scope: ['guest', 'user', 'admin']
     },
     handler: function(request, reply) {
         let page = request.query.page || 1;
@@ -18,9 +18,13 @@ exports.getAll = {
         let itemsPerPage =  config.get('web.paging.itemsPerPage');
         let numberVisiblePages = config.get('web.paging.numberVisiblePages');
        
-        let options = {status: 1, user_id: request.auth.credentials.uid};
+        let options = {status: 1};
+        let quiz_id = request.query.quiz_id || request.payload.quiz_id;
+        if(quiz_id) {
+            options = {quiz_id: quiz_id};
+        }
 
-        QuizQuestion.find(options).sort('id').paginate(page, itemsPerPage, function(err, items, total) {
+        QuizQuestion.find(options).sort('id').populate('question_id').paginate(page, itemsPerPage, function(err, items, total) {
             if (err) {
                 request.log(['error', 'list', 'page'], err);
                 reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));

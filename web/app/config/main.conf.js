@@ -17,9 +17,9 @@ config.web = {
         strictHeader: true // don't allow violations of RFC 6265
     },
     paging: {
-        defaultPageSize: 25,
-        numberVisiblePages: 10,
-        itemsPerPage: 25
+        defaultPageSize: 7,
+        numberVisiblePages: 2,
+        itemsPerPage: 5
     },
     db: {
         uri: 'mongodb://localhost/db_quiz',

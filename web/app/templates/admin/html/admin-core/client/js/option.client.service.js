@@ -10,7 +10,7 @@ angular.module('core').factory("Option", function ($rootScope) {
 
     var yesno = [{name: "Yes", value: 1}, {'name': "No", value: 0}];
 
-    var roles = [{name: 'Admin', value: 'admin'}, {name: 'User', value: 'user'}];
+    var roles = [{name: 'Admin', value: 'admin'}, {name: 'Teacher', value: 'user'}, {name: 'Student', value: 'guest'}];
 
     var genders = [{name: 'male', value: 'male'}, {name: 'female', value: 'female'}];
 

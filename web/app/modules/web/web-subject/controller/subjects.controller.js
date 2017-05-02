@@ -16,11 +16,11 @@ exports.list = {
     handler: function(request, reply) {
 
         let meta = {
-            title: 'Subjects',
-            description: 'Subjects description',
+            title: 'Danh sách môn học',
+            description: 'Mô tả môn học',
             context: 'subject',
-            controller: 'Subjects',
-            action: 'List Subject',
+            controller: 'Môn học',
+            action: 'Danh sách môn học',
         }
 
         let options = { status: 1};
@@ -74,10 +74,10 @@ exports.view = {
         let meta = {};
             meta = {
                 context: 'subject',
-                controller: 'Subjects',
-                action: 'View Subject',
-                title : 'View Subject',
-                description: 'View Subject',
+                controller: 'Môn học',
+                action: 'Xem môn học',
+                title : 'Xem môn học',
+                description: 'Xem môn học',
             };
         return reply.view('web/html/web-subject/view', { subject: subject, meta: meta });
     },
@@ -92,10 +92,10 @@ exports.add = {
         console.log(request.auth);
         let meta = {
             context: 'subject',
-            controller: 'Subjects',
-            action: 'Add Subject',
-            title : 'Add Subject',
-            description: 'Add Subject',
+                controller: 'Môn học',
+            action: 'Thêm môn học',
+            title : 'Thêm môn học',
+            description: 'Thêm môn học',
         };
             
         return reply.view('web/html/web-subject/add', {meta: meta});
@@ -138,11 +138,11 @@ exports.edit = {
             return reply(Boom.notFound('subject is not be found'));
         }
         let meta = {
-            controller: 'Subjects',
-            action: 'Edit Subject',
+            controller: 'Môn học',
+            action: 'Sửa môn học',
             context: 'subject',
-            title : 'Edit Subject',
-            description : 'Edit Subject'
+            title : 'Sửa môn học',
+            description : 'Sửa môn học'
         };
         return reply.view('web/html/web-subject/edit', {meta: meta, subject: subject});
     }

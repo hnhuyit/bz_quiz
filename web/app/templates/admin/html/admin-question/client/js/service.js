@@ -10,7 +10,14 @@ angular.module('question').factory('Question', ['$resource',
             },
             query: {
                 isArray: false,
-            }
+            },
+            changeStatus: {
+                url: window.cmsprefix + '/question/changeStatus',
+                method: 'PUT',
+                params: {
+                    id: '@id',
+                }
+            },
         });
     }
 ]);

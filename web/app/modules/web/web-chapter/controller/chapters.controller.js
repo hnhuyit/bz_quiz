@@ -16,7 +16,7 @@ exports.list = {
     handler: function(request, reply) {
         let meta = {
             context: 'chapter',
-            controller: 'Chapter',
+            controller: 'Danh sách chương',
             action: 'List Chapters',
             title : 'List Chapters',
             description: 'List Chapters',
@@ -64,10 +64,10 @@ exports.view = {
         let meta = {};
             meta = {
             context: 'chapter',
-            controller: 'Chapter',
-            action: 'View chapter',
-            title : 'View chapter',
-            description: 'View chapter',
+            controller: 'Danh sách chương',
+            action: 'Xem chương',
+            title : 'Xem chương',
+            description: 'Xem chương',
         };
         return reply.view('web/html/web-chapter/view', { chapter: chapter, meta: meta });
     },
@@ -82,10 +82,10 @@ exports.add = {
         // console.log(request.auth);
         let meta = {
             context: 'chapter',
-            controller: 'Chapters',
-            action: 'Add Chapter',
-            title : 'Add Chapter',
-            description: 'Add Chapter',
+            controller: 'Danh sách chương',
+            action: 'Thêm chương',
+            title : 'Thêm chương',
+            description: 'Thêm chương',
         };
 
         reply.view('web/html/web-chapter/add', {meta: meta});
@@ -125,11 +125,11 @@ exports.edit = {
             return reply(Boom.notFound('chapter is not be found'));
         }
         let meta = {
-            controller: 'Chapters',
-            action: 'Edit Chapter',
+            controller: 'Danh sách chương',
+            action: 'Sửa chương',
             context: 'chapter',
-            title : 'Edit Chapter',
-            description : 'Edit Chapter'
+            title : 'Sửa chương',
+            description : 'Sửa chương'
         };
 
 

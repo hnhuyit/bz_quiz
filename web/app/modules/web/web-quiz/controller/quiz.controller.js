@@ -8,6 +8,7 @@ const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const Quiz = mongoose.model('Quiz');
 const Subject = mongoose.model('Subject');
 const Question = mongoose.model('Question');
+const User = mongoose.model('User');
 const QuizQuestion = mongoose.model('QuizQuestion');
 const _ = require('lodash');
 exports.list = {
@@ -99,13 +100,17 @@ exports.listQuizzesByStudent = {
 exports.view = {
     auth: {
         strategy: 'jwt',
-        scope: ['user', 'admin']
+        scope: ['user', 'guest']
     },
     pre: [
-        { method: getItem, assign: 'quiz' }
+        { method: getItem, assign: 'quiz' },
+        { method: getUserLogin, assign: 'user' }
     ],
     handler: function(request, reply) {
         let quiz = request.pre.quiz;
+        let user = request.pre.user;
+
+        console.log('user', user)
         if (!quiz) {
             return reply(Boom.notFound('quiz is not be found'));
         }
@@ -127,7 +132,7 @@ exports.view = {
                 questions[i] = qq[i].question_id;
             }
             // console.log(questions); 
-            return reply.view('web/html/web-quiz/view', { quiz: quiz, questionsByQuiz: questions,  meta: meta });
+            return reply.view('web/html/web-quiz/view', { quiz: quiz, user: user, questionsByQuiz: questions,  meta: meta });
         });
 
         //return reply.view('web/html/web-quiz/view', { quiz: quiz, meta: meta });
@@ -138,9 +143,11 @@ exports.attempt = {
         strategy: 'jwt',
     },
     pre: [
-        { method: getItem, assign: 'quiz' }
+        {method: getItem, assign: 'quiz'},
+        {method: getUserLogin, assign: 'user'}
     ],
     handler: function(request, reply) {
+        let user = request.pre.user;
         let quiz = request.pre.quiz;
         if (!quiz) {
             return reply(Boom.notFound('quiz is not be found'));
@@ -148,23 +155,24 @@ exports.attempt = {
         let meta = {};
             meta = {
             context: 'quiz',
-            controller: 'Dự thi: ' + quiz.name,
-            action: 'Dự thi ' + quiz.name,
-            title : 'Dự thi ' + quiz.name,
-            description: 'Dự thi ' + quiz.name,
+            controller: quiz.name,
+            action: quiz.name,
+            title : quiz.name,
+            description: quiz.name,
         };
 
-        let qqPromise = QuizQuestion.find({quiz_id: request.params.id}).populate('question_id').exec();
+        return reply.view('web/html/web-quiz/attempt', { user: user, meta: meta });
+        // let qqPromise = QuizQuestion.find({quiz_id: request.params.id}).populate('question_id').exec();
 
-        qqPromise.then(qq => {
-            // console.log('qq', qq);
-            let questions = [];
-            for(let i=0; i<qq.length; i++) {
-                questions[i] = qq[i].question_id;
-            }
-            // console.log(questions); 
-            return reply.view('web/html/web-quiz/attempt', { quiz: quiz, questionsByQuiz: questions,  meta: meta });
-        });
+        // qqPromise.then(qq => {
+        //     // console.log('qq', qq);
+        //     let questionsByQuiz = [];
+        //     for(let i=0; i<qq.length; i++) {
+        //         questionsByQuiz[i] = qq[i].question_id;
+        //     }
+        //     // console.log('questionsByQuiz', questionsByQuiz); 
+        //     return reply.view('web/html/web-quiz/attempt', { quiz: quiz, user: user, questionsByQuiz: questionsByQuiz, meta: meta });
+        // });
     },
 }
 exports.addQuestion = {
@@ -276,10 +284,10 @@ exports.add = {
         // console.log(request.auth);
         let meta = {
             context: 'quiz',
-            controller: 'Quiz',
-            action: 'Add Quiz',
-            title : 'Add Quiz',
-            description: 'Add Quiz',
+            controller: 'Đề thi',
+            action: 'Thêm đề thi',
+            title : 'Thêm đề thi',
+            description: 'Thêm đề thi',
         };
 
         reply.view('web/html/web-quiz/add', {meta: meta});
@@ -406,6 +414,20 @@ function getItem(request, reply) {
     let promise = Quiz.findOne(options).populate('subject_id').populate('group_id').exec();
     promise.then(function(quiz) {
         reply(quiz);
+    }).catch(function(err) {
+        request.log(['error'], err);
+        return reply(err);
+    })
+}
+function getUserLogin(request, reply) {
+    const id = request.auth.credentials.uid;
+    let options = {
+        _id: id,
+        status: 1
+    };
+    let promise = User.findOne(options).exec();
+    promise.then(function(user) {
+        reply(user);
     }).catch(function(err) {
         request.log(['error'], err);
         return reply(err);

@@ -105,7 +105,6 @@ exports.save = {
             status: Joi.number().integer().min(0).max(1),
             roles: Joi.any().description('Roles'),
             phone: Joi.any().description('Phone'),
-            unit: Joi.any().description('Unit'),
             address: Joi.any().description('Address'),
         }
     }
@@ -124,6 +123,8 @@ exports.update = {
             return reply(Boom.badRequest('Confirm new password does not match'));
         }
         delete request.payload.cfpassword;
+        console.log('request', request.payload);
+        console.log('user', user);
         user = _.assignIn(user, request.payload);
         console.log(user);
         let saveUser = function (user) {
@@ -154,7 +155,6 @@ exports.update = {
             status: Joi.number().integer().min(0).max(1),
             roles: Joi.any().description('Roles'),
             phone: Joi.any().description('Phone'),
-            unit: Joi.any().description('Unit'),
             address: Joi.any().description('Address'),
         },
         options: {

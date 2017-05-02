@@ -28,6 +28,7 @@ function StudentController($scope, SubjectFactory, QuizFactory, toastr) {
 
     SubjectFactory.getSubjectsByStudent(function(data){
         $scope.listSubjects = data.items;
+        console.log(data);
     });
 
     QuizFactory.getQuizzesBySubject(function(data){

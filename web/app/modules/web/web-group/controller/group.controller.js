@@ -17,11 +17,11 @@ exports.list = {
         let page = request.query.page || 1;
 
         let meta = {
-            title: 'Groups',
-            description: 'Groups description',
+            title: 'Danh sách nhóm',
+            description: 'Mô tả nhóm',
             context: 'group',
-            controller: 'Groups',
-            action: 'List Group',
+            controller: 'Nhóm thí sinh',
+            action: 'Danh sách nhóm',
         }
 
         let options = { status: 1, user_id: request.auth.credentials.uid };
@@ -87,10 +87,10 @@ exports.view = {
         let meta = {};
             meta = {
                 context: 'group',
-                controller: 'Groups',
-                action: 'View Group',
-                title : 'View Group',
-                description: 'View Group',
+                controller: 'Nhóm thí sinh',
+                action: 'Xem nhóm',
+                title : 'Xem nhóm',
+                description: 'Xem nhóm',
             };
         return reply.view('web/html/web-group/view', { group: group, meta: meta });
     },
@@ -105,10 +105,10 @@ exports.add = {
         console.log(request.auth);
         let meta = {
             context: 'group',
-            controller: 'Groups',
-            action: 'Add Group',
-            title : 'Add Group',
-            description: 'Add Group',
+            controller: 'Nhóm thí sinh',
+            action: 'Thêm nhóm',
+            title : 'Thêm nhóm',
+            description: 'Thêm nhóm',
         };
             
         return reply.view('web/html/web-group/add', {meta: meta});
@@ -146,11 +146,11 @@ exports.edit = {
             return reply(Boom.notFound('group is not be found'));
         }
         let meta = {
-            controller: 'Groups',
-            action: 'Edit Group',
+            controller: 'Nhóm thí sinh',
+            action: 'Sửa nhóm',
             context: 'group',
-            title : 'Edit Group',
-            description : 'Edit Group'
+            title : 'Sửa nhóm',
+            description : 'Sửa nhóm'
         };
         return reply.view('web/html/web-group/edit', {meta: meta, group: group});
     }

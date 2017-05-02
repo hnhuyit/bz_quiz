@@ -14,19 +14,69 @@
 	                    <h3 class="box-title"><$ meta.action $></h3>
 	                </div>
 	                <form name="addForm" novalidate>
-	                    <div class="box-body">
-	                        
-	        				<div class="col-md-8 col-sm-12">
+ 
+	                	<div class="box-header with-border">
+	                        <div class="col-md-3 col-xs-6">
 								<div class="form-group">
-									<label class="control-label" for="name">Name</label>
+									<label class="control-label" for="subject_id">Chọn môn học</label>
 									<div class="controls">
-										<input type="text" data-ng-model="question.name" name="name" id="name" class="form-control" placeholder="Name">
+										<select class="form-control" data-ng-change="getChapter()" data-ng-model="question.subject_id" name="subject_id" id="subject_id" required >
+											<option value="">-- môn học --</option>
+											<option data-ng-repeat="item in subjectList" value="{{item._id}}">{{item.name}}</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+	                        <div class="col-md-3 col-xs-6">
+								<div class="form-group">
+									<label class="control-label" for="chapter_id">Chương danh mục</label>
+									<div class="controls">
+										<select class="form-control" data-ng-model="question.chapter_id" name="chapter_id" id="chapter_id" required >
+										<option value="">-- danh mục --</option>
+											<option data-ng-repeat="item in chapterList" value="{{item._id}}">{{item.name}}</option>
+										</select>
+									</div>
+								</div>
+							</div>
+	                        <div class="col-md-3 col-xs-6">
+								<div class="form-group">
+									<label class="control-label" for="question_type">Loại câu hỏi</label>
+									<div class="controls">
+										<select class="form-control" data-ng-model="question.question_type" name="question_type" id="question_type" required >
+											<option value="">-- loại câu hỏi --</option>
+											<option data-ng-repeat="item in typeQuestions" value="{{item.value}}">{{item.name}}</option>
+										</select>
+									</div>
+									
+								</div>
+							</div>
+
+	                        <div class="col-md-3 col-xs-6">
+								<div class="form-group">
+									<label class="control-label" for="level">Mức độ câu hỏi</label>
+									<div class="controls">
+										<select class="form-control" data-ng-model="question.level" name="level" id="level" required >
+											<option value="">-- mức độ câu hỏi --</option>
+											<option data-ng-repeat="item in levels" value="{{item.value}}">{{item.name}}</option>
+										</select>
+									</div>
+									
+								</div>
+							</div>
+	                	</div>
+	                    <div class="box-body ">
+	        				<div class="col-sm-12">
+								<div class="form-group">
+									<label class="control-label" for="name">Tên câu hỏi</label>
+									<div class="controls">
+										<input type="text" data-ng-model="question.name" name="name" id="name" class="form-control" placeholder="Tên câu hỏi">
 									</div>
 												
 								</div>
 								
 								<div class="form-group">
-									<label class="control-label" for="desc">Description</label>
+									<label class="control-label" for="desc">Mô tả câu hỏi</label>
 									<div class="controls">
 										<textarea class="form-control ck-editor" data-ng-model="question.desc" name="desc" rows="3"> </textarea>
 									</div>
@@ -36,7 +86,7 @@
 								<div class="form-group">
 									<label class="control-label" for="name">Đáp án 1</label>
 									<div class="controls">
-										<input type="text" name="option1" data-ng-model="options.name1" id="name" class="form-control" placeholder="Name">
+										<textarea class="form-control ck-editor" data-ng-model="options.name1" name="option1" rows="3"> </textarea>
 									</div>
 									<div class="checkbox">
 										<label>
@@ -50,7 +100,7 @@
 								<div class="form-group">
 									<label class="control-label" for="name">Đáp án 2</label>
 									<div class="controls">
-										<input type="text" name="option2" data-ng-model="options.name2" id="name" class="form-control" placeholder="Name">
+										<textarea class="form-control ck-editor" data-ng-model="options.name2" name="option2" rows="3"> </textarea>
 									</div>
 									<div class="checkbox">
 										<label>
@@ -64,7 +114,7 @@
 								<div class="form-group">
 									<label class="control-label" for="name">Đáp án 3</label>
 									<div class="controls">
-										<input type="text" name="option3" data-ng-model="options.name3" id="name" class="form-control" placeholder="Name">
+										<textarea class="form-control ck-editor" data-ng-model="options.name3" name="option3" rows="3"> </textarea>
 									</div>
 									<div class="checkbox">
 										<label>
@@ -78,7 +128,7 @@
 								<div class="form-group">
 									<label class="control-label" for="name">Đáp án 4</label>
 									<div class="controls">
-										<input type="text" name="option4" data-ng-model="options.name4" id="name" class="form-control" placeholder="Name">
+										<textarea class="form-control ck-editor" data-ng-model="options.name4" name="option4" rows="3"> </textarea>
 									</div>
 									<div class="checkbox">
 										<label>
@@ -89,57 +139,15 @@
 												
 								</div>
 	        				</div>
-
-	                        <div class="col-md-4 col-sm-12">
-								<div class="form-group">
-									<label class="control-label" for="subject_id">Subject</label>
-									<div class="controls">
-										<select class="form-control" data-ng-change="getChapter()" data-ng-model="question.subject_id" name="subject_id" id="subject_id" required >
-											<option value="">-- subject --</option>
-											<option data-ng-repeat="item in subjectList" value="{{item._id}}">{{item.name}}</option>
-										</select>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="control-label" for="chapter_id">Chapter</label>
-									<div class="controls">
-										<select class="form-control" data-ng-model="question.chapter_id" name="chapter_id" id="chapter_id" required >
-										<option value="">-- chapter --</option>
-											<option data-ng-repeat="item in chapterList" value="{{item._id}}">{{item.name}}</option>
-										</select>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="control-label" for="question_type">Question type</label>
-									<div class="controls">
-										<select class="form-control" data-ng-model="question.question_type" name="question_type" id="question_type" required >
-											<option value="">-- Question type --</option>
-											<option data-ng-repeat="item in typeQuestions" value="{{item.value}}">{{item.name}}</option>
-										</select>
-									</div>
-									
-								</div>
-
-								<div class="form-group">
-									<label class="control-label" for="level">Level</label>
-									<div class="controls">
-										<select class="form-control" data-ng-model="question.level" name="level" id="level" required >
-											<option value="">-- Level --</option>
-											<option data-ng-repeat="item in levels" value="{{item.value}}">{{item.name}}</option>
-										</select>
-									</div>
-									
-								</div>
-							</div>
 	                    </div>
 
 	                    <div class="box-footer">
 	                        <div class="form-group">
-	                            <input type="submit" data-ng-click="create()" class="btn btn-primary">
-	                            <a href="/questions" class="btn btn-default">Cancel</a>
+	                            <input type="submit" data-ng-click="create()" value="Thêm mới" class="btn btn-primary">
+	                            <a href="/questions" class="btn btn-default">Thoát</a>
 								
 								<div class="pull-right">
-									<a class="btn btn-success" href="/<$ meta.context $>/import">Import...</a>
+									<a class="btn btn-success" href="/<$ meta.context $>/import">Nhập câu hỏi...</a>
 								</div>
 	                        </div>
 	                    </div>

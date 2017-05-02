@@ -79,7 +79,7 @@
                                             <textarea data-ng-model="user.address" id="address" class="form-control"></textarea>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label class="control-label" for="province">Province</label>
                                         <div class="controls">
                                             <select class="form-control" data-ng-model="user.province" id="province" ng-options="province._id as province.name for province in provinces.items" ng-change="provinceChanged(user.province)">
@@ -103,7 +103,7 @@
                                         <div class="controls">
                                             <textarea data-ng-model="user.bio" id="bio" class="form-control"></textarea>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -120,13 +120,6 @@
                                 </div>
                                 <div class="error-messages message" ng-messages="UserForm.roles.$error" ng-messages-multiple ng-if="submitted">
                                     <error-message require-msg="You did not select a field" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="status">Unit</label>
-                                <div class="controls">
-                                    <select class="form-control" name="status" data-ng-model="user.unit" id="status" ng-options="item.value as item.name for item in units" required>
-                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">

@@ -17,24 +17,20 @@
                         
                             <div><strong>Tên câu hỏi: </strong> <$ question.name $></div>
 
-                            <!-- <div><strong>Desc: </strong> <$ question.desc $></div> -->
-<!-- 
-                            <div><strong>Slug: </strong> <$ question.slug $></div> -->
+                             <div><strong>Mô tả: </strong> <$ question.desc $></div> 
 
-                            <!-- <div><strong>Status: </strong> <$ question.status $></div> -->
+                            <div><strong>Ngày tạo: </strong> <$ question.created $></div>
+
+                            <div><strong>Ngày sửa: </strong> <$ question.modified $></div>
+                        </div>
+						
+                        <div class="col-md-4">
+                            <h3>&nbsp</h3>
 
                             <div><strong>Môn học: </strong> <$ question.subject_id.name $></div>
 
                             <div><strong>Danh mục: </strong> <$ question.chapter_id.name $></div>
-
-                            <div><strong>Created: </strong> <$ question.created $></div>
-
-                            <div><strong>Modified: </strong> <$ question.modified $></div>
-                        </div>
-						
-                        <div class="col-md-4">
                             
-                            <h3>&nbsp</h3>
                             <% if question.question_type === 1 %>
                             <div><strong>Loại câu hỏi: </strong> Nhiều lựa chọn một đáp án</div>
                             <% elseif question.question_type === 2 %>

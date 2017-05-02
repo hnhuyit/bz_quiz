@@ -57,7 +57,7 @@ exports.getSubjectsByStudent = {
         options.status = 1;
         options.students = { $in: [request.auth.credentials.uid] };
 
-        Subject.find(options, function(err, items) {
+        Subject.find(options).populate('user_id').exec(function(err, items) {
             if (err) {
                 request.log(['error'], err);
                 return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));

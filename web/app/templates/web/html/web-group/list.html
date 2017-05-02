@@ -14,14 +14,14 @@
                     <div class="box-header">
                         <h3 class="box-title"><$ meta.action $></h3>
                         <div class="pull-right">
-                            <a class="btn btn-block btn-primary" href="/<$ meta.context $>/add">New</a>
+                            <a class="btn btn-block btn-primary" href="/<$ meta.context $>/add">Thêm mới</a>
                         </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="box-tools">
                             <div class="input-group" style="width: 150px;">
-                                <input type="text" name="query" class="form-control input-sm pull-right" placeholder="Search" />
+                                <input type="text" name="query" class="form-control input-sm pull-right" placeholder="Tìm kiếm" />
                                 <div class="input-group-btn">
                                     <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
                                 </div>
@@ -31,7 +31,6 @@
                         <table id="table-list" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
                                     
                                     <th>Name</th>
                                     
@@ -43,20 +42,17 @@
                                     
                                     <!-- <th>Status</th> -->
                                     
-                                    <th>Created</th>
+                                    <th>Ngày tạo</th>
                                     
-                                    <th>Modified</th>
+                                    <th>Ngày sửa</th>
                                     
-                                    <th>Action</th>
+                                    <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% asyncEach item in items %>
                                 <tr>
-                                    <td><a href="subject/<$ item._id $>/view"><$ item._id $></a></td>
-                                    
-                                    
-                                    <td><a href="subject/<$ item._id $>/view"><$ item.name $></a></td>
+                                   <td><a href="subject/<$ item._id $>/view"><$ item.name $></a></td>
                                     
                                     
                                     

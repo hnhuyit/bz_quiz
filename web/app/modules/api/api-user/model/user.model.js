@@ -77,10 +77,6 @@ var UserSchema = new Schema({
         }],
         default: ['user']
     },
-    // unit: {
-    //     type: String,
-    //     default: 'teacher'
-    // },
     group_id: {
         type: Schema.ObjectId,
         ref: 'Group',

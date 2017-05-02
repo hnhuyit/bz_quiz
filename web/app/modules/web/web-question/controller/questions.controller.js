@@ -21,31 +21,31 @@ exports.list = {
             title : 'Danh sách câu hỏi',
             description: 'Danh sách câu hỏi',
         };
-        let page = request.query.page || 1;
-        let config = request.server.configManager;
-        let itemsPerPage =  config.get('web.paging.itemsPerPage');
-        let numberVisiblePages = config.get('web.paging.numberVisiblePages');
+        // let page = request.query.page || 1;
+        // let config = request.server.configManager;
+        // let itemsPerPage =  config.get('web.paging.itemsPerPage');
+        // let numberVisiblePages = config.get('web.paging.numberVisiblePages');
        
-        let options = {};
-        if (request.query.keyword && request.query.keyword.length > 0) {
-            let re = new RegExp(request.query.keyword, 'i');
-            options.title = re;
-        }
-        options = {
-            user_id: request.auth.credentials.uid,
-            status: 1,
-        };
-        Question.find(options).populate('subject_id').populate('chapter_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
-            if (err) {
-                request.log(['error', 'list'], err);
-                reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
-            }
-            let totalPage = Math.ceil(total / itemsPerPage);
-            let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items, meta:meta };
-            reply.view('web/html/web-question/list',dataRes);
-        });
+        // let options = {};
+        // if (request.query.keyword && request.query.keyword.length > 0) {
+        //     let re = new RegExp(request.query.keyword, 'i');
+        //     options.title = re;
+        // }
+        // options = {
+        //     user_id: request.auth.credentials.uid,
+        //     status: 1,
+        // };
+        // Question.find(options).populate('subject_id').populate('chapter_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
+        //     if (err) {
+        //         request.log(['error', 'list'], err);
+        //         reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+        //     }
+        //     let totalPage = Math.ceil(total / itemsPerPage);
+        //     let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items, meta:meta };
+        //     reply.view('web/html/web-question/list',dataRes);
+        // });
 
-
+        reply.view('web/html/web-question/list', {meta:meta});
     }
 }
 exports.view = {
@@ -107,10 +107,10 @@ exports.import = {
         // console.log(request.auth);
         let meta = {
             context: 'question',
-            controller: 'Import Câu hỏi',
-            action: 'Import câu hỏi',
-            title : 'Import câu hỏi',
-            description: 'Import câu hỏi',
+            controller: 'Nhập Câu hỏi',
+            action: 'Nhập câu hỏi',
+            title : 'Nhập câu hỏi',
+            description: 'Nhập câu hỏi',
         };
 
         reply.view('web/html/web-question/import', {meta: meta});

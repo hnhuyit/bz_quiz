@@ -63,12 +63,16 @@
                          
                     </div>
                     <div class="box-footer">
+                    <% if user.roles[0] === 'user' %>
                         <a class="btn btn-primary" href="quiz/<$ quiz._id $>/edit">
                             <i class="glyphicon glyphicon-edit"></i>
                         </a>
                         <a class="btn btn-primary" href="quiz/<$ quiz._id $>">
                             <i class="glyphicon glyphicon-trash"></i>
                         </a>
+                    <% else %>
+                        <a class="btn btn-success btn-flat text-center" href="quiz/<$ quiz._id $>/attempt">Tham gia</a>
+                    <% endif %>
   					</div>
                 </div>
             </div>
@@ -79,6 +83,7 @@
 
 
     <!-- List Question by Quiz -->
+    <% if user.roles[0] === 'user' %>
     <section class="content">
         <div class="row">
             <div class="col-xs-12">
@@ -103,7 +108,6 @@
                         <table id="table-list" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
                                     
                                     <th>Tên câu hỏi</th>
                                     
@@ -119,8 +123,6 @@
                             <tbody>
                             <% asyncEach item in questionsByQuiz %>
                                 <tr>
-                                    <td><a href="question/<$ item._id $>/view"><$ item._id $></a></td>
-                                    
                                     
                                     <td><a href="question/<$ item._id $>/view"><$ item.name $></a></td>
                                     
@@ -163,7 +165,7 @@
         </div>
         <% endif %>
     </section>
-</section>
+    <% endif %>
 </section>
 
 <% endblock %>

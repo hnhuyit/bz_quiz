@@ -7,7 +7,7 @@ exports.login = {
             title: 'Login',
             description: ''
         }
-        console.log(request.auth)
+        // console.log(request.auth)
         if(request.auth.isAuthenticated) {
             return reply.redirect('/');
         }

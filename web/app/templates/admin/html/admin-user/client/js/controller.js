@@ -17,6 +17,7 @@ angular.module('users').controller('UsersController', ['$rootScope', '$scope', '
         $scope.statuses = Option.getStatus();
         $scope.userRoles = Option.getRoles();
         $scope.rowsSelected = {};
+        
         $scope.create = create;
         $scope.update = update;
         $scope.findOne = findOne;
@@ -74,6 +75,7 @@ angular.module('users').controller('UsersController', ['$rootScope', '$scope', '
                 }
 
             }, function (errorResponse) {
+                $scope.gotoList();
                 Notice.setNotice(errorResponse.data.message, "ERROR");
             });
         };

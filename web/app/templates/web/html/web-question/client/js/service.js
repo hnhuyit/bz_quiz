@@ -18,7 +18,6 @@ function QuestionFactory($resource, $window) {
     }, {
         update: {
             method: 'PUT',
-            headers:{'Content-Type':'application/x-www-form-urlencoded'} 
         },
         query: {
             isArray: false,

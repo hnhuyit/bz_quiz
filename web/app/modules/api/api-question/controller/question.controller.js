@@ -7,7 +7,13 @@ const mongoose = require('mongoose');
 const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const Question = mongoose.model('Question');
 const _ = require('lodash');
+const pagination = require('pagination');
+const regexp = require(BASE_PATH + '/app/utils/regexp');
 exports.getAll = {
+    pre: [{
+        method: getOptions,
+        assign: 'options'
+    }],
     auth: {
         strategy: 'jwt',
         scope: ['user', 'admin', 'guest']
@@ -17,25 +23,16 @@ exports.getAll = {
         let config = request.server.configManager;
         let itemsPerPage =  config.get('web.paging.itemsPerPage');
         let numberVisiblePages = config.get('web.paging.numberVisiblePages');
-       
-        let options = {status: 1, user_id: request.auth.credentials.uid};
-        let {keyword, subject_id} = request.payload || request.query;
-
-        if(subject_id) {
-            options.subject_id = subject_id;
-        }
         
-        if (keyword && keyword.length > 0) {
-            let re = new RegExp(request.query.keyword, 'i');
-            options.title = re;
-        }
+        let options = request.pre.options;
+        
         Question.find(options).populate('subject_id').populate('chapter_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
             if (err) {
                 request.log(['error', 'list', 'page'], err);
                 return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
             }
             let totalPage = Math.ceil(total / itemsPerPage);
-            let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
+            let dataRes = { status: 1, totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
             reply(dataRes);
         });
 
@@ -214,4 +211,46 @@ function getById(request, reply) {
     })
 
 
+}
+
+
+
+function getOptions(request, reply) {
+    let options = {
+        status: 1
+    };
+    let {
+        keyword,
+        question_type,
+        level
+    } = request.payload || request.query;
+
+    let tmpKeyword = regexp.RegExp("", 'i');
+    let idKeyword = null;
+    if (keyword &&
+        keyword.length > 0) {
+
+        options.$or = [{
+            desc: regexp.RegExp(keyword, 'i')
+        },
+        {
+            name: regexp.RegExp(keyword, 'i')
+        }
+        ];
+
+        if (mongoose.Types.ObjectId.isValid(keyword)) {
+            options.$or.push({
+                _id: keyword
+            });
+        }
+    }
+
+    if (question_type) {
+        options.question_type = question_type;
+    }
+
+    if (level) {
+        options.level = level;
+    }
+    return reply(options);
 }

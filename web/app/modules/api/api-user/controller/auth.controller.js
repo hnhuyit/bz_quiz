@@ -433,10 +433,10 @@ exports.profile = {
     auth: 'jwt',
     handler: function (request, reply) {
         const user = request.pre.user;
-        if (user) {
-            reply(user);
+        if (!user) {
+            return reply(Boom.unauthorized('User is not found'));
         }
-        reply(Boom.unauthorized('User is not found'));
+        reply(user);
     },
     description: 'Get Profile',
     tags: ['api'],

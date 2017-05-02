@@ -8,7 +8,7 @@ const _ = require('lodash');
 
 exports.home = {
     handler: function (request, reply) {
-    	console.log('request', request.auth)
+    	// console.log('request', request.auth)
         if (request.auth.credentials && request.auth.credentials.uid !== '') {
             let scope = [];
             scope = request.auth.credentials.scope;

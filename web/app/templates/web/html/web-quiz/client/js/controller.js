@@ -1,6 +1,7 @@
 angular
     .module('Quiz')
-    .controller('QuizController', QuizController);
+    .controller('QuizController', QuizController)
+    .controller('AttemptQuizController', AttemptQuizController);
 
 function QuizController($scope, $filter, QuizService, QuizFactory, QuizQuestionFactory, GroupFactory, SubjectFactory, QuestionFactory, $cookies, toastr) {
 
@@ -83,3 +84,35 @@ function QuizController($scope, $filter, QuizService, QuizFactory, QuizQuestionF
 
     };
 }
+
+function AttemptQuizController($scope, $filter, $window, $location, QuizFactory, QuizQuestionFactory, GroupFactory, SubjectFactory, QuestionFactory, toastr) {
+
+    //Ser permission
+    //
+    //
+
+    //Var
+    var url = $location.$$absUrl;
+    var idQuiz = url.substr(url.length-32,24);
+
+    //Method
+    $scope.getQuestionbyQuiz = function() {
+        QuizQuestionFactory.query({quiz_id: idQuiz}, function(data) {
+            let qqs = data.items;
+            let questions = [];
+            qqs.forEach(function(qq) {
+                questions.push(qq.question_id);
+            });
+            // console.log(questions);
+            $scope.questions = questions;
+        });
+    }
+    $scope.find = function() {
+        $scope.quiz = QuizFactory.get({itemId: idQuiz});
+        $scope.getQuestionbyQuiz();
+    }
+
+
+    //Init data
+    // $scope.find();
+};

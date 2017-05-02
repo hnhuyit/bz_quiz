@@ -1,7 +1,7 @@
 <% extends 'web/layouts/layout.html' %>
 
 <% block content %>
-<section data-ng-controller="QuestionsController">
+<section data-ng-controller="QuestionsController" data-ng-init="find()">
     <section class="content-header">
         <h1><$ meta.controller $></h1>
     </section>
@@ -14,24 +14,54 @@
                         <h3 class="box-title"><$ meta.action $></h3>
                         <div class="pull-right">
                             <a class="btn btn-primary" href="/<$ meta.context $>/add">Thêm mới</a>
-                            <a class="btn btn-success" href="/<$ meta.context $>/import">Import...</a>
+                            <a class="btn btn-success" href="/<$ meta.context $>/import">Nhập câu hỏi...</a>
                         </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
+                        <bz-message/>
                         <div class="box-tools">
-                            <div class="input-group" style="width: 150px;">
-                                <input type="text" name="query" class="form-control input-sm pull-right" placeholder="Search" />
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-inline filter-layout">
+                                        <div class="form-group">
+                                            <label class="control-label" for="keyword">Keyword</label>
+                                            <input type="text" ng-change="filter()" name="keyword" data-ng-model="search.keyword" id="keyword" class="form-control" placeholder="Search" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="question_type">Question Type</label>
+                                            <select ng-change="filter()" class="form-control" data-ng-model="search.question_type" id="question_type" ng-options="item.value as item.name for item in typeQuestions">
+                                                    <option value="">All type</option>
+                                                </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="level">Level</label>
+                                            <select ng-change="filter()" class="form-control" data-ng-model="search.level" id="level" ng-options="item.value as item.name for item in levels">
+                                                    <option value="">All level</option>
+                                                </select>
+                                        </div>
+                                        <hr/>
+                                        <div class="form-group filter-submit">
+                                            <a class="btn btn-primary" ng-click="filter()">Filter</a> &nbsp;&nbsp;
+                                            <a class="btn btn-primary" ng-click="reset2()">Reset</a>
+                                        </div>
+                                        <hr/>
+                                    </div>
+
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            <h4><b>Summary</b></h4>
+                            <p><b>Items Per Page</b>: <span ng-bind="itemsPerPage"></span></p>
+                            <p><b>Total Page</b>: <span ng-bind="totalPage"></span></p>
+                            <p><b>Total Items</b>: <span ng-bind="totalItems"></span></p>
                         </div>
                         <div>&nbsp;</div>
                         <table id="table-list" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
                                     
                                     <th>Tên câu hỏi</th>
                                     
@@ -53,82 +83,67 @@
                                     
                                     <!-- <th>Status</th> -->
                                     
-                                    <th>Created</th>
+                                    <th>Ngày tạo</th>
                                     
-                                    <th>Modified</th>
+                                    <th>Ngày sửa</th>
                                     
-                                    <th>Action</th>
+                                    <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <% asyncEach item in items %>
-                                <tr>
-                                    <td><a href="question/<$ item._id $>/view"><$ item._id $></a></td>
-                                    
-                                    
-                                    <td><a href="question/<$ item._id $>/view"><$ item.name $></a></td>
+                                <tr data-ng-repeat="question in questions">
+                                    <td><a href="question/{{question._id}}/view" ng-bind="question.name"></a></td>
                                     
                                     
                                     
-                                    <!-- <td><$ item.desc $></td> -->
+                                    <!-- <td>{{question.desc}}</td> -->
                                     
                                     
 
-                                    <th><$ item.subject_id.name $></th>
+                                    <th ng-bind="question.subject_id.name"></th>
 
-                                    <th><$ item.chapter_id.name $></th>
+                                    <th ng-bind="question.chapter_id.name"></th>
 
 
-                                    <% if item.question_type === 1 %>
-                                    <td><span class="label label-info">Nhiều lựa chọn một đáp án</span></td>
-                                    <% elseif item.question_type === 2 %>
-                                    <td><span class="label label-primary">Nhiều lựa chọn nhiều đáp án</span></td>
-                                    <% elseif item.question_type === 3 %>
-                                    <td><span class="label label-success">Ghép hợp</span></td>
-                                    <% else %>
-                                    <td><span class="label label-danger">Điền vào chỗ trống</span></td>
-                                    <% endif %>
-                                    
-
-                                    <% if item.level === 1 %>
-                                    <td><span class="label label-info">Dễ</span></td>
-                                    <% elseif item.level === 2 %>
-                                    <td><span class="label label-primary">Trung bình</span></td>
-                                    <% elseif item.level === 3 %>
-                                    <td><span class="label label-success">Khó</span></td>
-                                    <% else %>
-                                    <td><span class="label label-danger">Rất khó</span></td>
-                                    <% endif %>
+                                    <td>
+                                         <span ng-if="question.question_type == 1" class="label label-primary">Nhiều lựa chọn một đáp án</span>
+                                         <span ng-if="question.question_type == 2" class="label label-primary">Nhiều lựa chọn nhiều đáp án</span>
+                                         <span ng-if="question.question_type == 3" class="label label-primary">Ghép hợp</span>
+                                         <span ng-if="question.question_type == 4" class="label label-primary">Điền vào chỗ trống</span>
+                                    </td>
                                     
                                     
+                                    <td>
+                                         <span ng-if="question.level == 1" class="label label-primary">Dễ</span>
+                                         <span ng-if="question.level == 2" class="label label-primary">Trung bình</span>
+                                         <span ng-if="question.level == 3" class="label label-primary">Khó</span>
+                                         <span ng-if="question.level == 4" class="label label-primary">Rất khó</span>
+                                    </td>
                                     
-                                    <!-- <td><$ slug $></td> -->
+                                    <!-- <td>{{slug}}</td> -->
                                     
                                     
                                         
-                                    <!-- <td><$ status $></td> -->
+                                    <!-- <td>{{status}}</td> -->
+                                    
+                                    <td ng-bind="question.created | date:'short'"></td>
                                     
                                     
                                     
-                                    <td><$ item.created $></td>
-                                    
-                                    
-                                    
-                                    <td><$ item.modified $></td>
+                                    <td ng-bind="question.modified | date:'short'"></td>
                                     
                                       
                                     <td>
-                                        <a href="question/<$ item._id $>/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
-                                        <a href="question/<$ item._id $>/view" title="Delete">
+                                        <a href="question/{{question._id}}/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
+                                        <a href="question/{{question._id}}/view" title="Delete">
                                             <i class="glyphicon glyphicon-trash"></i>
                                         </a>
                                     </td>
                                 </tr>
-                            <% endeach %> 
                             </tbody>
                         </table>
 
-                        <bz-pagination max-page="10" name="post_page" current-page="currentPage" total-page="totalPage" page-changed="pageChanged">
+                        <bz-pagination max-page="10" name="user_page" current-page="currentPage" total-page="totalPage" page-changed="pageChanged">
                         </bz-pagination>
                     </div>
                     <!-- /.box-body -->
@@ -137,16 +152,17 @@
             </div>
             <!-- /.col -->
         </div>
-        <%  if not items %>
         <div class="row">
             <div class="col-xs-12">
-                <div class="alert alert-warning text-center">
+                <div class="alert alert-warning text-center" data-ng-hide="!questions.$resolved || questions.length">
                     There is no item found, why don't you <a href="question/add">create one</a>?
                 </div>
             </div>
         </div>
-        <% endif %>
     </section>
+    <!-- Popup Confirm-->
+    <div data-ng-include="'/templates/web-core/popupConfirm.html'">
+    </div>
 </section>
 
 <% endblock %>

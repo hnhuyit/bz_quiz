@@ -4,7 +4,7 @@
 
 	<section data-ng-controller="HomeController">
 	    <section class="content-header">
-	        <h1>Dashboard<small>Control panel</small></h1>
+	        <h1>Bảng điều khiển</h1>
 	    </section>
 	    <!-- Main content -->
 	    <section class="content">
@@ -68,9 +68,11 @@
 		              <ul class="nav nav-stacked">
 
 		                <li data-ng-repeat="quiz in listQuizzes" ng-show="quiz.subject_id == item._id">
-		                	<a href="/quiz/{{quiz._id}}/attempt" data-ng-bind="quiz.name">
-		                		<span class="pull-right badge bg-blue" data-ng-bind=""></span>
-		                	</a>
+	                		<span class="text" data-ng-bind="quiz.name"></span>
+		                	<div class="pull-right">
+		                		<a href="/quiz/{{quiz._id}}/view"><small class="label label-default"><i class="fa fa-info"></i> Chi tiết</small></a>
+		                		<a href="/quiz/{{quiz._id}}/attempt"><small class="label label-success"><i class="fa fa-pencil"></i> Tham gia</small></a>
+		                	</div>
 	            		</li>
 		              </ul>
 		            </div>

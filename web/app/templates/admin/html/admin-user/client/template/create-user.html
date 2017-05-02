@@ -46,7 +46,7 @@
                                             <error-message/>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label class="control-label" for="avatar">Cover</label>
                                         <div class="controls">
                                             <input type="file" name="file" nv-file-select uploader="uploader" onchange="angular.element(this).scope().handleFileSelect(event,'cover')" />
@@ -60,7 +60,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <label class="control-label" for="password">Password</label>
                                         <div class="controls">
@@ -97,15 +97,15 @@
                                             <textarea data-ng-model="address" name="address" id="address" class="form-control"></textarea>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label class="control-label" for="province">Province</label>
                                         <div class="controls">
                                             <select class="form-control" name="province" data-ng-model="province" id="province" ng-options="province._id as province.name for province in provinces.items" ng-change="provinceChanged(province)">
                                         <option value="">all province</option>
                                         </select>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
+                                    </div> -->
+                                    <!-- <div class="form-group">
                                         <label class="control-label" for="district ">District </label>
                                         <div class="controls">
                                             <select class="form-control" name="district" data-ng-model="district " id="district " ng-options="district ._id as district .name for district  in cities.items">
@@ -115,13 +115,13 @@
                                         <div class="error-messages message" ng-messages-multiple ng-if="province && !district && submitted">
                                             <div>You must select this field</div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
+                                    </div> -->
+                                    <!-- <div class="form-group">
                                         <label class="control-label" for="bio">Bio</label>
                                         <div class="controls">
                                             <textarea data-ng-model="bio" name="bio" id="bio" class="form-control"></textarea>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -138,13 +138,6 @@
                                 </div>
                                 <div class="error-messages message" ng-messages="UserForm.roles.$error" ng-messages-multiple ng-if="submitted">
                                     <error-message require-msg="You did not select a field" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="unit">Unit</label>
-                                <div class="controls">
-                                    <select class="form-control" name="unit" data-ng-model="user.unit" id="unit" ng-options="item.value as item.name for item in units" required>
-                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">

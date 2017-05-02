@@ -125,7 +125,7 @@ exports.getQuizzesByStudent = {
 exports.edit = {
     auth: {
         strategy: 'jwt',
-        scope: ['user', 'admin']
+        scope: ['guest', 'user', 'admin']
     },
     pre: [
         { method: getById, assign: 'quiz' }
@@ -138,7 +138,7 @@ exports.edit = {
             reply(Boom.notFound('Quiz is not found'));
         }
     },
-    description: 'Edit Quiz',
+    description: 'Get Quiz',
     tags: ['api'],
     plugins: {
         'hapi-swagger': {
@@ -285,7 +285,7 @@ exports.delete = {
  */
 function getById(request, reply) {
     const id = request.params.id || request.payload.id;
-    let promise = Quiz.findOne({ '_id': id }).populate('group_id').populate('user_id');
+    let promise = Quiz.findOne({ '_id': id }).populate('subject_id').populate('group_id').populate('user_id');
     promise.then(function(quiz) {
         reply(quiz);
     }).catch(function(err) {

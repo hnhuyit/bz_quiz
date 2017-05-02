@@ -6,31 +6,70 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 const Question = mongoose.model('Question');
 const _ = require('lodash');
+const pagination = require('pagination');
+const regexp = require(BASE_PATH + '/app/utils/regexp');
+const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 exports.getAll = {
+    pre: [{
+        method: getOptions,
+        assign: 'options'
+    }],
     handler: function(request, reply) {
         let page = request.query.page || 1;
         let config = request.server.configManager;
         let itemsPerPage =  config.get('web.paging.itemsPerPage');
         let numberVisiblePages = config.get('web.paging.numberVisiblePages');
-       
-        let options = {};
-        if (request.query.keyword && request.query.keyword.length > 0) {
-            let re = new RegExp(request.query.keyword, 'i');
-            options.title = re;
-        }
+
+        let options = request.pre.options;
+
         Question.find(options).populate('subject_id').populate('chapter_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
             if (err) {
-                request.log(['error', 'list', 'page'], err);
+                request.log(['error', 'list', 'page'], exceptionHandlerProviderrr);
                 reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
             }
             let totalPage = Math.ceil(total / itemsPerPage);
-            let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
+            let dataRes = { status: 1, totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
             reply(dataRes);
         });
 
 
     }
 }
+
+exports.changeStatus = {
+    handler: function (request, reply) {
+
+        Question.update({ _id: request.params.id }, { $set: { status: request.params.status } }, function (err) {
+            if (err) {
+                return reply(Boom.forbidden("403"));
+            }
+        });
+        return reply.redirect('/question');
+    },
+}
+
+exports.changeStatus = {
+    pre: [{
+        method: getById,
+        assign: 'question'
+    }],
+    handler: function (request, reply) {
+
+        const question = request.pre.question;
+        let status = request.payload.currentStatus == 1 ? 0 : 1;
+        if (question) {
+            question.status = status;
+            question.save().then(function () {
+                return reply({
+                    status: true,
+                    message: 'This question has been change status'
+                });
+            })
+        } else {
+            return reply(Boom.notFound('Question is not found'));
+        }
+    }
+};
 exports.edit = {
     pre: [
         { method: getById, assign: 'question' }
@@ -181,4 +220,52 @@ function getById(request, reply) {
     })
 
 
+}
+
+
+function getOptions(request, reply) {
+    let options = {
+        status: {
+            $ne: 3
+        }
+    };
+    let {
+        status,
+        keyword,
+        question_type,
+        level
+    } = request.payload || request.query;
+
+    let tmpKeyword = regexp.RegExp("", 'i');
+    let idKeyword = null;
+    if (keyword &&
+        keyword.length > 0) {
+
+        options.$or = [{
+            desc: regexp.RegExp(keyword, 'i')
+        },
+        {
+            name: regexp.RegExp(keyword, 'i')
+        }
+        ];
+
+        if (mongoose.Types.ObjectId.isValid(keyword)) {
+            options.$or.push({
+                _id: keyword
+            });
+        }
+    }
+
+    if (status) {
+        options.status = status;
+    }
+
+    if (question_type) {
+        options.question_type = question_type;
+    }
+
+    if (level) {
+        options.level = level;
+    }
+    return reply(options);
 }
