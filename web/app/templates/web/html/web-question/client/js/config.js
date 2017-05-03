@@ -1,2 +1,2 @@
 angular
-    .module('Question', ['Core', 'Subject', 'Chapter']);
+    .module('Question', ['Core']);

@@ -5,6 +5,7 @@ const util = require('util');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const Subject = mongoose.model('Subject');
+const User = mongoose.model('User');
 const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const _ = require('lodash');
 
@@ -23,51 +24,57 @@ exports.list = {
             action: 'Danh sách môn học',
         }
 
-        let options = { status: 1};
+        // let options = { status: 1};
 
+        // if(request.auth.credentials && request.auth.credentials.scope.includes('user')) {
+        //     options.user_id =  request.auth.credentials.uid;
+        //     let promiseSubjects = Subject.find(options).populate('user_id');
+        //     promiseSubjects.then(function(items) {
+                
+        //         let dataRes = { status: '1', items: items, meta:meta };
+        //         reply.view('web/html/web-subject/list', dataRes);
+        //     }).catch(function(err) {
+        //         if (err) {
+        //             request.log(['error'], err);
+        //             // return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+        //             return reply.redirect('/error404');
+        //         }
+        //     });
+        // } else {
+        //     options.students =  request.auth.credentials.uid;
+        //     let promiseSubjects = Subject.find(options).populate('user_id');
+        //     promiseSubjects.then(function(items) {
+                
+        //         let dataRes = { status: '1', items: items, meta:meta };
+        //         reply.view('web/html/web-subject/subjects-by-student', dataRes);
+        //     }).catch(function(err) {
+        //         if (err) {
+        //             request.log(['error'], err);
+        //             // return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+        //             return reply.redirect('/error404');
+        //         }
+        //     });
+        // }
         if(request.auth.credentials && request.auth.credentials.scope.includes('user')) {
-            options.user_id =  request.auth.credentials.uid;
-            let promiseSubjects = Subject.find(options).populate('user_id');
-            promiseSubjects.then(function(items) {
-                
-                let dataRes = { status: '1', items: items, meta:meta };
-                reply.view('web/html/web-subject/list', dataRes);
-            }).catch(function(err) {
-                if (err) {
-                    request.log(['error'], err);
-                    // return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
-                    return reply.redirect('/error404');
-                }
-            });
+            reply.view('web/html/web-subject/list', {meta:meta});
         } else {
-            options.students =  request.auth.credentials.uid;
-            let promiseSubjects = Subject.find(options).populate('user_id');
-            promiseSubjects.then(function(items) {
-                
-                let dataRes = { status: '1', items: items, meta:meta };
-                reply.view('web/html/web-subject/subjects-by-student', dataRes);
-            }).catch(function(err) {
-                if (err) {
-                    request.log(['error'], err);
-                    // return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
-                    return reply.redirect('/error404');
-                }
-            });
+            reply.view('web/html/web-subject/subjects-by-student', {meta:meta});
         }
-        
 
     }
 }
 exports.view = {
     auth: {
         strategy: 'jwt',
-        scope: ['user', 'admin']
+        scope: ['user', 'admin', 'guest']
     },
     pre: [
-        { method: getItem, assign: 'subject' }
+        { method: getItem, assign: 'subject' },
+        { method: getUserLogin, assign: 'user' }
     ],
     handler: function(request, reply) {
         let subject = request.pre.subject;
+        let user = request.pre.user;
         if (!subject) {
             return reply(Boom.notFound('subject is not be found'));
         }
@@ -79,7 +86,7 @@ exports.view = {
                 title : 'Xem môn học',
                 description: 'Xem môn học',
             };
-        return reply.view('web/html/web-subject/view', { subject: subject, meta: meta });
+        return reply.view('web/html/web-subject/view', { subject: subject, user: user, meta: meta });
     },
 }
 exports.add = {
@@ -216,6 +223,21 @@ function getItem(request, reply) {
     let promise = Subject.findOne(options).exec();
     promise.then(function(subject) {
         reply(subject);
+    }).catch(function(err) {
+        request.log(['error'], err);
+        return reply(err);
+    })
+}
+
+function getUserLogin(request, reply) {
+    const id = request.auth.credentials.uid;
+    let options = {
+        _id: id,
+        status: 1
+    };
+    let promise = User.findOne(options).exec();
+    promise.then(function(user) {
+        reply(user);
     }).catch(function(err) {
         request.log(['error'], err);
         return reply(err);

@@ -5,6 +5,8 @@
     <section class="content-header">
         <h1><$ meta.controller $></h1>
     </section>
+    <!-- Loading -->
+    <!-- <ng-loading loading-done="isLoading" /> -->
     <!-- Main content -->
     <section class="content">
         <div class="row">
@@ -30,15 +32,15 @@
                                             <input type="text" ng-change="filter()" name="keyword" data-ng-model="search.keyword" id="keyword" class="form-control" placeholder="Search" />
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label" for="question_type">Question Type</label>
+                                            <label class="control-label" for="question_type">Loại câu hỏi</label>
                                             <select ng-change="filter()" class="form-control" data-ng-model="search.question_type" id="question_type" ng-options="item.value as item.name for item in typeQuestions">
-                                                    <option value="">All type</option>
+                                                    <option value="">tất cả các loại</option>
                                                 </select>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label" for="level">Level</label>
+                                            <label class="control-label" for="level">Mức độ</label>
                                             <select ng-change="filter()" class="form-control" data-ng-model="search.level" id="level" ng-options="item.value as item.name for item in levels">
-                                                    <option value="">All level</option>
+                                                    <option value="">tất cả mức độ</option>
                                                 </select>
                                         </div>
                                         <hr/>
@@ -154,7 +156,7 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <div class="alert alert-warning text-center" data-ng-hide="!questions.$resolved || questions.length">
+                <div class="alert alert-warning text-center hide" data-ng-hide="!questions.$resolved || questions.length">
                     There is no item found, why don't you <a href="question/add">create one</a>?
                 </div>
             </div>

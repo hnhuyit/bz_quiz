@@ -11,7 +11,8 @@ var app = angular.module('myapp', [
 		'Chapter', 
 		'Quiz', 
 		'Home', 
-		'Question'
+		'Question',
+		'Option'
 	]).config(function($httpProvider) {
 		$httpProvider.defaults.withCredentials = true;
 	}).config(['$qProvider', function ($qProvider) {

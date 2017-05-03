@@ -14,7 +14,7 @@ const _ = require('lodash');
 exports.list = {
     auth: {
         strategy: 'jwt',
-        scope: ['user', 'admin']
+        scope: ['user']
     },
     handler: function(request, reply) {
         let meta = {
@@ -24,31 +24,31 @@ exports.list = {
             title : 'Danh sách đề thi',
             description: 'Danh sách đề thi',
         };
-        let page = request.query.page || 1;
-        let config = request.server.configManager;
-        let itemsPerPage =  config.get('web.paging.itemsPerPage');
-        let numberVisiblePages = config.get('web.paging.numberVisiblePages');
+        // let page = request.query.page || 1;
+        // let config = request.server.configManager;
+        // let itemsPerPage =  config.get('web.paging.itemsPerPage');
+        // let numberVisiblePages = config.get('web.paging.numberVisiblePages');
        
-        let options = {};
-        if (request.query.keyword && request.query.keyword.length > 0) {
-            let re = new RegExp(request.query.keyword, 'i');
-            options.title = re;
-        }
-        options = {
-            user_id: request.auth.credentials.uid,
-            status: 1,
-        };
-        Quiz.find(options).populate('subject_id').populate('group_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
-            if (err) {
-                request.log(['error', 'list'], err);
-                reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
-            }
-            let totalPage = Math.ceil(total / itemsPerPage);
-            let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items, meta:meta };
-            reply.view('web/html/web-quiz/list',dataRes);
-        });
+        // let options = {};
+        // if (request.query.keyword && request.query.keyword.length > 0) {
+        //     let re = new RegExp(request.query.keyword, 'i');
+        //     options.title = re;
+        // }
+        // options = {
+        //     user_id: request.auth.credentials.uid,
+        //     status: 1,
+        // };
+        // Quiz.find(options).populate('subject_id').populate('group_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
+        //     if (err) {
+        //         request.log(['error', 'list'], err);
+        //         reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+        //     }
+        //     let totalPage = Math.ceil(total / itemsPerPage);
+        //     let dataRes = { status: 1, totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items, meta:meta };
+        //     reply.view('web/html/web-quiz/list',dataRes);
+        // });
 
-
+        reply.view('web/html/web-quiz/list',{meta: meta});
     }
 }
 exports.listQuizzesByStudent = {
@@ -139,9 +139,9 @@ exports.view = {
     },
 }
 exports.attempt = {
-    auth: {
-        strategy: 'jwt',
-    },
+    // auth: {
+    //     strategy: 'jwt',
+    // },
     pre: [
         {method: getItem, assign: 'quiz'},
         {method: getUserLogin, assign: 'user'}
@@ -160,8 +160,6 @@ exports.attempt = {
             title : quiz.name,
             description: quiz.name,
         };
-
-        return reply.view('web/html/web-quiz/attempt', { user: user, meta: meta });
         // let qqPromise = QuizQuestion.find({quiz_id: request.params.id}).populate('question_id').exec();
 
         // qqPromise.then(qq => {
@@ -173,6 +171,10 @@ exports.attempt = {
         //     // console.log('questionsByQuiz', questionsByQuiz); 
         //     return reply.view('web/html/web-quiz/attempt', { quiz: quiz, user: user, questionsByQuiz: questionsByQuiz, meta: meta });
         // });
+        // 
+        
+
+        return reply.view('web/html/web-quiz/attempt', { user: user, meta: meta });
     },
 }
 exports.addQuestion = {
@@ -260,7 +262,6 @@ exports.createQuestion = {
             return reply(Boom.notFound('quiz is not be found'));
         }
         let qq = new QuizQuestion();
-            qq.question_id = [];
             qq.question_id = [request.payload.question_id];
             qq.quiz_id     = quiz.id;
             qq.user_id     =  request.auth.credentials.uid;

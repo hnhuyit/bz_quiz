@@ -7,7 +7,12 @@ const mongoose = require('mongoose');
 const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const Group = mongoose.model('Group');
 const _ = require('lodash');
+const regexp = require(BASE_PATH + '/app/utils/regexp');
 exports.getAll = {
+    pre: [{
+        method: getOptions,
+        assign: 'options'
+    }],
     auth: {
         strategy: 'jwt',
         scope: ['user', 'admin']
@@ -18,18 +23,15 @@ exports.getAll = {
         let itemsPerPage =  config.get('web.paging.itemsPerPage');
         let numberVisiblePages = config.get('web.paging.numberVisiblePages');
        
-        let options = {status : 1};
-        if (request.query.keyword && request.query.keyword.length > 0) {
-            let re = new RegExp(request.query.keyword, 'i');
-            options.title = re;
-        }
-        Group.find(options).sort('id').paginate(page, itemsPerPage, function(err, items, total) {
+        let options = request.pre.options;
+            options.user_id =  request.auth.credentials.uid;
+        Group.find(options).populate('user_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
             if (err) {
                 request.log(['error', 'list', 'page'], err);
                 reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
             }
             let totalPage = Math.ceil(total / itemsPerPage);
-            let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
+            let dataRes = { status: 1, totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
             reply(dataRes);
         });
 
@@ -198,4 +200,33 @@ function getById(request, reply) {
     })
 
 
+}
+
+function getOptions(request, reply) {
+    let options = {
+        status: 1
+    };
+    let {
+        keyword,
+    } = request.payload || request.query;
+
+    let tmpKeyword = regexp.RegExp("", 'i');
+    let idKeyword = null;
+    if (keyword &&
+        keyword.length > 0) {
+
+        options.$or = [
+        {
+            name: regexp.RegExp(keyword, 'i')
+        }
+        ];
+
+        if (mongoose.Types.ObjectId.isValid(keyword)) {
+            options.$or.push({
+                _id: keyword
+            });
+        }
+    }
+
+    return reply(options);
 }

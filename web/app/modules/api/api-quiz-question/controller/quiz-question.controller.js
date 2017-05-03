@@ -13,24 +13,18 @@ exports.getAll = {
         scope: ['guest', 'user', 'admin']
     },
     handler: function(request, reply) {
-        let page = request.query.page || 1;
-        let config = request.server.configManager;
-        let itemsPerPage =  config.get('web.paging.itemsPerPage');
-        let numberVisiblePages = config.get('web.paging.numberVisiblePages');
-       
         let options = {status: 1};
         let quiz_id = request.query.quiz_id || request.payload.quiz_id;
         if(quiz_id) {
-            options = {quiz_id: quiz_id};
+            options.quiz_id = quiz_id;
         }
 
-        QuizQuestion.find(options).sort('id').populate('question_id').paginate(page, itemsPerPage, function(err, items, total) {
+        QuizQuestion.find(options).populate('question_id').exec(function(err, items) {
             if (err) {
-                request.log(['error', 'list', 'page'], err);
+                request.log(['error'], err);
                 reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
             }
-            let totalPage = Math.ceil(total / itemsPerPage);
-            let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
+            let dataRes = { status: '1', items: items };
             reply(dataRes);
         });
 
@@ -138,18 +132,18 @@ exports.save = {
 //     }
 // }
 
-// /**
-//  * Middleware
-//  */
-// function getById(request, reply) {
-//     const id = request.params.id || request.payload.id;
-//     let promise = Quiz.findOne({ '_id': id }).populate('group_id').populate('user_id');
-//     promise.then(function(quiz) {
-//         reply(quiz);
-//     }).catch(function(err) {
-//         request.log(['error'], err);
-//         return reply.continue();
-//     })
+/**
+ * Middleware
+ */
+function getById(request, reply) {
+    const id = request.params.id || request.payload.id;
+    let promise = Quiz.findOne({ '_id': id }).populate('group_id').populate('user_id');
+    promise.then(function(quiz) {
+        reply(quiz);
+    }).catch(function(err) {
+        request.log(['error'], err);
+        return reply.continue();
+    })
 
 
-// }
+}

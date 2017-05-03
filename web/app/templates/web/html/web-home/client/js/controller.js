@@ -6,7 +6,8 @@ angular
 
 function HomeController($scope, $filter, SubjectFactory, QuizFactory, QuestionFactory, AuthFactory, $cookies, Notice, toastr, localStorageService) {
 
-
+    $scope.quizLists = QuizFactory.getQuizzesByNoLogin({});
+    console.log($scope.quizLists);
 
 }
 function TeacherController($scope, SubjectFactory, QuizFactory, QuestionFactory) {
@@ -26,14 +27,8 @@ function TeacherController($scope, SubjectFactory, QuizFactory, QuestionFactory)
 }
 function StudentController($scope, SubjectFactory, QuizFactory, toastr) {
 
-    SubjectFactory.getSubjectsByStudent(function(data){
-        $scope.listSubjects = data.items;
-        console.log(data);
-    });
-
-    QuizFactory.getQuizzesBySubject(function(data){
-        $scope.listQuizzes = data.items;
-    });
+    $scope.listSubjects = SubjectFactory.getSubjectsByStudent({});
+    $scope.listQuizzes = QuizFactory.getQuizzesBySubject({});
 
     $scope.joinSubject = function joinSubject() {
         let key = $scope.key;

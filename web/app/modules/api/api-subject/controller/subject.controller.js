@@ -7,10 +7,15 @@ const mongoose = require('mongoose');
 const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const Subject = mongoose.model('Subject');
 const _ = require('lodash');
+const regexp = require(BASE_PATH + '/app/utils/regexp');
 exports.getAll = {
+    pre: [{
+        method: getOptions,
+        assign: 'options'
+    }],
     auth: {
         strategy: 'jwt',
-        scope: ['user', 'admin', 'guest']
+        scope: ['user']
     },
     handler: function(request, reply) {
         let page = request.query.page || 1;
@@ -18,22 +23,15 @@ exports.getAll = {
         let itemsPerPage =  config.get('web.paging.itemsPerPage');
         let numberVisiblePages = config.get('web.paging.numberVisiblePages');
        
-        let options = {status: 1};
-        let user_id = request.auth.credentials.uid
-        if(user_id) {
-            options.user_id = user_id;
-        }
-        if (request.query.keyword && request.query.keyword.length > 0) {
-            let re = new RegExp(request.query.keyword, 'i');
-            options.title = re;
-        }
+        let options = request.pre.options;
+            options.user_id =  request.auth.credentials.uid;
         Subject.find(options).populate('user_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
             if (err) {
                 request.log(['error', 'list', 'page'], err);
-                return reply(Boom.badRequest('ErrorHandler.getErrorMessage(err)'));
+                return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
             }
             let totalPage = Math.ceil(total / itemsPerPage);
-            let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
+            let dataRes = { status: 1, totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
             reply(dataRes);
         });
 
@@ -52,21 +50,23 @@ exports.getSubjectsByStudent = {
         scope: ['guest']
     },
     handler: function(request, reply) {
-       
-        let options = {};
-        options.status = 1;
-        options.students = { $in: [request.auth.credentials.uid] };
+        let page = request.query.page || 1;
+        let config = request.server.configManager;
+        let itemsPerPage =  config.get('web.paging.itemsPerPage');
+        let numberVisiblePages = config.get('web.paging.numberVisiblePages');
 
-        Subject.find(options).populate('user_id').exec(function(err, items) {
+        let options = {status: 1};
+            options.students = { $in: [request.auth.credentials.uid] };
+
+        Subject.find(options).populate('user_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
             if (err) {
-                request.log(['error'], err);
+                request.log(['error', 'list', 'page'], err);
                 return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
             }
-            let dataRes = { status: '1', items: items };
+            let totalPage = Math.ceil(total / itemsPerPage);
+            let dataRes = { status: 1, totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
             reply(dataRes);
         });
-
-
     },
     description: 'List Subjects By Student',
     tags: ['api'],
@@ -277,4 +277,39 @@ function getById(request, reply) {
     })
 
 
+}
+
+
+function getOptions(request, reply) {
+    let options = {
+        status: 1
+    };
+    let {
+        keyword,
+        key
+    } = request.payload || request.query;
+
+    let tmpKeyword = regexp.RegExp("", 'i');
+    let idKeyword = null;
+    if (keyword &&
+        keyword.length > 0) {
+
+        options.$or = [
+        {
+            name: regexp.RegExp(keyword, 'i')
+        }
+        ];
+
+        if (mongoose.Types.ObjectId.isValid(keyword)) {
+            options.$or.push({
+                _id: keyword
+            });
+        }
+    }
+
+    if (key) {
+        options.key = key;
+    }
+
+    return reply(options);
 }

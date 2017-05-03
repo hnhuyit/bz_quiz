@@ -2,10 +2,12 @@
 
 <% block content %>
 
-<section data-ng-controller="QuizController">
+<section data-ng-controller="QuizController" data-ng-init="find()">
     <section class="content-header">
         <h1><$ meta.controller $></h1>
     </section>
+    <!-- Loading -->
+    <!-- <ng-loading loading-done="isLoading" /> -->
     <!-- Main content -->
     <section class="content">
         <div class="row">
@@ -20,12 +22,40 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="box-tools">
-                            <div class="input-group" style="width: 150px;">
-                                <input type="text" name="query" class="form-control input-sm pull-right" placeholder="Tìm kiếm" />
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-inline filter-layout">
+                                        <div class="form-group">
+                                            <label class="control-label" for="keyword">Từ khóa</label>
+                                            <input type="text" ng-change="filter()" name="keyword" data-ng-model="search.keyword" id="keyword" class="form-control" placeholder="Từ khóa" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="subject_id">Môn học</label>
+                                            <select ng-change="filter()" class="form-control" data-ng-model="search.subject_id" id="subject_id" ng-options="subject._id as subject.name for subject in subjectLists">
+                                                    <option value="">tất cả môn học</option>
+                                                </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="group_id">Nhóm</label>
+                                            <select ng-change="filter()" class="form-control" data-ng-model="search.group_id" id="group_id" ng-options="group._id as group.name for group in groupLists">
+                                                    <option value="">tất cả các nhóm</option>
+                                                </select>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group filter-submit">
+                                            <a class="btn btn-primary" ng-click="filter()">Filter</a> &nbsp;&nbsp;
+                                            <a class="btn btn-primary" ng-click="reset()">Reset</a>
+                                        </div>
+                                        <hr/>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            <h4><b>Summary</b></h4>
+                            <p><b>Items Per Page</b>: <span ng-bind="itemsPerPage"></span></p>
+                            <p><b>Total Page</b>: <span ng-bind="totalPage"></span></p>
+                            <p><b>Total Items</b>: <span ng-bind="totalItems"></span></p>
                         </div>
                         <div>&nbsp;</div>
                         <table id="table-list" class="table table-bordered table-hover">
@@ -53,26 +83,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <% asyncEach item in items %>
-                                <tr>
-                                    <td><a href="quiz/<$ item._id $>/view"><$ item.name $></a></td>
+                                <tr data-ng-repeat="quiz in quizzes">
+                                    <td><a href="quiz/{{quiz._id}}/view" ng-bind="quiz.name"></a></td>
                                     
                                     
                                     
-                                     <td><span class="badge bg-green"><$ item.number_of_question $></span></td>
+                                     <td><span class="badge bg-green" ng-bind="quiz.number_of_question"></span></td>
                                     
                                     
                                     
-                                    <td><span class="label label-warning"><$ item.subject_id.name $></span></td>
+                                    <td><span class="label label-warning" ng-bind="quiz.subject_id.name"></span></td>
                                     
                                     
                                     
                                     <!-- <td>{{user_id}}</td> -->
                                     
                                     <td>
-                                        <% asyncEach group in item.group_id %>
-                                        <span class="label label-warning"><$ group.name $></span>
-                                        <% endeach %>
+                                        <span data-ng-repeat="group in quiz.group_id" class="label label-warning" ng-bind="group.name"></span>
                                     </td>
                                     
                                     <!-- <td>{{slug}}</td> -->
@@ -81,27 +108,26 @@
                                         
                                     <!-- <td>{{status}}</td> -->
                                     
-                                    
-                                    
-                                    <td><$ item.created $></td>
+                                    <td ng-bind="quiz.created | date:'short'"></td>
                                     
                                     
                                     
-                                    <td><$ item.modified $></td>
+                                    <td ng-bind="quiz.modified | date:'short'"></td>
                                     
                                       
                                     <td>
-                                        <a href="quiz/<$ item._id $>/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
-                                        <a href="quiz/<$ item._id $>/view" title="Delete">
+                                        <a href="quiz/{{quiz._id}}/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
+                                        <a href="quiz/{{quiz._id}}/view" title="Delete">
                                             <i class="glyphicon glyphicon-trash"></i>
                                         </a>
                                     </td>
                                 </tr>
-                            <% endeach %> 
                             </tbody>
                         </table>
 
-                        <$ paginator | safe $>
+                        <bz-pagination max-page="10" name="user_page" current-page="currentPage" total-page="totalPage" page-changed="pageChanged">
+                        </bz-pagination>
+
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -109,15 +135,13 @@
             </div>
             <!-- /.col -->
         </div>
-        <%  if not items %>
         <div class="row">
             <div class="col-xs-12">
-                <div class="alert alert-warning text-center">
+                <div class="alert alert-warning text-center hide" data-ng-hide="!quizzes.$resolved || quizzes.length">
                     There is no item found, why don't you <a href="quiz/add">create one</a>?
                 </div>
             </div>
         </div>
-        <% endif %>
     </section>
 </section>
 

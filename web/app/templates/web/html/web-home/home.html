@@ -2,31 +2,29 @@
 
 <% block content %>
 
-	<section>
+	<section data-ng-controller="HomeController">
 	    <section class="content-header">
 		    <h1>Danh sách đề thi có sẵn</h1>
 	    </section>
 	    <!-- Main content -->
 	    <section class="content">
 	        <div class="row">
-
-				<% asyncEach quiz in quizzes %>
-				<div class="col-md-4">
+				<div class="col-md-6" data-ng-repeat="quiz in quizLists.items">
 					<!-- Widget: user widget style 1 -->
 					<div class="box box-widget widget-user">
 						<!-- Add the bg color to the header using any of the bg-* classes -->
 						<div class="widget-user-header bg-aqua-active">
-							<h3 class="widget-user-username"><$ quiz.name $></h3>
-							<h5 class="widget-user-desc"><$ quiz.subject_id.name $> / <$ quiz.user_id.name $></h5>
+							<h3 class="widget-user-username" ng-bind="quiz.name"></h3>
+							<h5 class="widget-user-desc"><span ng-bind="quiz.user_id.name"></span> / <span ng-bind="quiz.subject_id.name"></span></h5>
 						</div>
 						<div class="widget-user-image">
-							<span class="info-box-icon bg-aqua"><a href="/quiz/<$ quiz._id $>/attempt"><i class="fa fa-hand-pointer-o"></i></a></span>
+							<span class="info-box-icon bg-aqua"><a href="/quiz/{{quiz._id}}/attempt"><i class="fa fa-hand-pointer-o"></i></a></span>
 						</div>
 						<div class="box-footer">
 							<div class="row">
 								<div class="col-sm-4 border-right">
 									<div class="description-block">
-										<h5 class="description-header"><$ quiz.duration $></h5>
+										<h5 class="description-header" ng-bind="quiz.duration"></h5>
 										<span class="description-text">Thời gian làm bài</span>
 									</div>
 									<!-- /.description-block -->
@@ -42,7 +40,7 @@
 								<!-- /.col -->
 								<div class="col-sm-4">
 									<div class="description-block">
-										<h5 class="description-header"><$ quiz.number_of_question $></h5>
+										<h5 class="description-header" ng-bind="quiz.number_of_question"></h5>
 										<span class="description-text">Số lượng câu hỏi</span>
 									</div>
 									<!-- /.description-block -->
@@ -51,14 +49,17 @@
 							</div>
 						<!-- /.row -->
 						</div>
-						<div class="box-body">
-							<h2 class="text-green text-center"><$ quiz.estimated_time $></h2>
+						<div class="box-header">
+							<h2 class="text-red text-center" ng-bind="quiz.estimated_time | date:'short'"></h2>
 						</div>
+						<div class="box-footer text-center">
+		                  <p>
+		                    <a href="/quiz/{{quiz._id}}/attempt" class="btn bg-olive btn-flat margin btn-lg">Tham gia</a>
+		                  </p>
+		                </div>
 					</div>
 				<!-- /.widget-user -->
 				</div>
-				<% endeach %>
-
 	        </div>
 	    </section>
 	</section>

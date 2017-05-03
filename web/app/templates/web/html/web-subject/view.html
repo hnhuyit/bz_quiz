@@ -27,12 +27,17 @@
                          
                     </div>
                     <div class="box-footer">
-                        <a class="btn btn-primary" href="subject/<$ subject._id $>/edit">
-                            <i class="glyphicon glyphicon-edit"></i>
-                        </a>
-                        <a class="btn btn-primary" href="subject/<$ subject._id $>">
-                            <i class="glyphicon glyphicon-trash"></i>
-                        </a>
+
+                        
+                        <% if user.roles[0] === 'user' %>
+
+                            <a class="btn btn-primary" href="subject/<$ subject._id $>/edit">
+                                <i class="glyphicon glyphicon-edit"></i>
+                            </a>
+                            <a class="btn btn-primary" href="subject/<$ subject._id $>">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        <% endif %>
                     </div>
                 </div>
             </div>

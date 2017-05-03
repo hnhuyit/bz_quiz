@@ -177,4 +177,15 @@ function QuestionsController($scope, $filter, $window, $location, $timeout, Ques
         //     $scope.error = errorResponse.data.message;
         // });
     };
+    var radios = $('input[name="score"]');
+
+    for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+            console.log('111111111');
+        } else {
+            console.log('000000000');
+
+        }
+    }
 }
+

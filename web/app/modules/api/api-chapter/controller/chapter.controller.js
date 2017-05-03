@@ -7,7 +7,12 @@ const mongoose = require('mongoose');
 const Chapter = mongoose.model('Chapter');
 const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const _ = require('lodash');
+const regexp = require(BASE_PATH + '/app/utils/regexp');
 exports.getAll = {
+    pre: [{
+        method: getOptions,
+        assign: 'options'
+    }],
     auth: {
         strategy: 'jwt',
         scope: ['user', 'admin']
@@ -18,18 +23,9 @@ exports.getAll = {
         let itemsPerPage =  config.get('web.paging.itemsPerPage');
         let numberVisiblePages = config.get('web.paging.numberVisiblePages');
         
-        let options = {user_id: request.auth.credentials.uid};
-
-        let {keyword, subject_id} = request.payload || request.query;
-        if(subject_id) {
-            options.subject_id = subject_id;
-        }
-        
-        if (keyword && keyword.length > 0) {
-            let re = new RegExp(request.query.keyword, 'i');
-            options.title = re;
-        }
-        Chapter.find(options).populate('user_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
+        let options = request.pre.options;
+            options.user_id =  request.auth.credentials.uid;
+        Chapter.find(options).populate('subject_id').populate('user_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
             if (err) {
                 request.log(['error', 'list', 'page'], err);
                 reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
@@ -201,4 +197,39 @@ function getById(request, reply) {
     })
 
 
+}
+
+
+function getOptions(request, reply) {
+    let options = {
+        status: 1
+    };
+    let {
+        keyword,
+        subject_id
+    } = request.payload || request.query;
+
+    let tmpKeyword = regexp.RegExp("", 'i');
+    let idKeyword = null;
+    if (keyword &&
+        keyword.length > 0) {
+
+        options.$or = [
+        {
+            name: regexp.RegExp(keyword, 'i')
+        }
+        ];
+
+        if (mongoose.Types.ObjectId.isValid(keyword)) {
+            options.$or.push({
+                _id: keyword
+            });
+        }
+    }
+
+    if (subject_id && mongoose.Types.ObjectId.isValid(subject_id)) {
+        options.subject_id = new mongoose.mongo.ObjectId(subject_id);
+    }
+
+    return reply(options);
 }

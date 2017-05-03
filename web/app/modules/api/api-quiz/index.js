@@ -20,6 +20,11 @@ exports.register = function(server, options, next) {
         config: QuizzesController.getQuizzesByStudent,
     });
     server.route({
+        method: 'GET',
+        path: '/quiz/get-quizzes-by-no-login',
+        config: QuizzesController.getQuizzesByNoLogin,
+    });
+    server.route({
         method: ['GET'],
         path: '/quiz/{id}',
         config: QuizzesController.edit,

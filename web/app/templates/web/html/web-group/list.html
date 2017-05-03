@@ -2,10 +2,12 @@
 
 <% block content %>
 
-<section data-ng-controller="GroupController">
+<section data-ng-controller="GroupController" data-ng-init="find()">
     <section class="content-header">
         <h1><$ meta.controller $></h1>
     </section>
+    <!-- Loading -->
+    <!-- <ng-loading loading-done="isLoading" /> -->
     <!-- Main content -->
     <section class="content">
         <div class="row">
@@ -20,27 +22,44 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="box-tools">
-                            <div class="input-group" style="width: 150px;">
-                                <input type="text" name="query" class="form-control input-sm pull-right" placeholder="Tìm kiếm" />
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-inline filter-layout">
+                                        <div class="form-group">
+                                            <label class="control-label" for="keyword">Từ khóa</label>
+                                            <input type="text" ng-change="filter()" name="keyword" data-ng-model="search.keyword" id="keyword" class="form-control" placeholder="Từ khóa" />
+                                        </div>
+                                        <hr/>
+                                        <div class="form-group filter-submit">
+                                            <a class="btn btn-primary" ng-click="filter()">Filter</a> &nbsp;&nbsp;
+                                            <a class="btn btn-primary" ng-click="reset()">Reset</a>
+                                        </div>
+                                        <hr/>
+                                    </div>
+
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            <h4><b>Summary</b></h4>
+                            <p><b>Items Per Page</b>: <span ng-bind="itemsPerPage"></span></p>
+                            <p><b>Total Page</b>: <span ng-bind="totalPage"></span></p>
+                            <p><b>Total Items</b>: <span ng-bind="totalItems"></span></p>
                         </div>
                         <div>&nbsp;</div>
                         <table id="table-list" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     
-                                    <th>Name</th>
+                                    <th>Ten nhom</th>
                                     
-                                    <th>Desc</th>
+                                    <!-- <th>Mo ta</th> -->
                                     
                                     <!-- <th>User Id</th> -->
                                     
-                                    <!-- <th>Slug</th> -->
+                                    <th>Gia</th>
                                     
-                                    <!-- <th>Status</th> -->
+                                    <th>Ngay ap dung</th>
                                     
                                     <th>Ngày tạo</th>
                                     
@@ -50,43 +69,44 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% asyncEach item in items %>
-                                <tr>
-                                   <td><a href="subject/<$ item._id $>/view"><$ item.name $></a></td>
+                                <tr data-ng-repeat="group in groups">
+                                   <td><a href="group/{{group._id}}/view" ng-bind="group.name"></a></td>
                                     
                                     
                                     
-                                    <td><$ item.desc $></td>
+                                    <td ng-bind="group.price"></td>
+                                    
+                                    
+                                    <td ng-bind="group.valid_for_days"></td>
                                     
                                     
                                     
-                                    <!-- <td><$ item.user_id $></td> -->
+                                    <!-- <td>{{group.user_id}}</td> -->
                                     
                                     
                                     
-                                    <!-- <td><$ item.slug $></td> -->
+                                    <!-- <td>{{group.slug}}</td> -->
                                     
                                     
                                         
-                                    <!-- <td><$ item.status $></td> -->
+                                    <!-- <td>{{group.status}}</td> -->
                                     
                                     
                                     
-                                    <td><$ item.created $></td>
+                                    <td ng-bind="group.created | date:'short'"></td>
                                     
                                     
                                     
-                                    <td><$ item.modified $></td>
+                                    <td ng-bind="group.modified | date:'short'"></td>
                                     
                                       
                                     <td>
-                                        <a href="subject/<$ item._id $>/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
-                                        <a href="subject/<$ item._id $>/view" title="Delete">
+                                        <a href="group/{{group._id}}/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
+                                        <a href="group/{{group._id}}/view" title="Delete">
                                             <i class="glyphicon glyphicon-trash"></i>
                                         </a>
                                     </td>
                                 </tr>
-                            <% endeach %> 
                             </tbody>
                         </table>
 
@@ -99,15 +119,13 @@
             </div>
             <!-- /.col -->
         </div>
-        <%  if not items %>
         <div class="row">
             <div class="col-xs-12">
-                <div class="alert alert-warning text-center">
-                    There is no item found, why don't you <a href="subject/create">create one</a>?
+                <div class="alert alert-warning text-center hide" data-ng-hide="!groups.$resolved || groups.length">
+                    There is no item found, why don't you <a href="group/create">create one</a>?
                 </div>
             </div>
         </div>
-        <% endif %>
     </section>
 </section>
 

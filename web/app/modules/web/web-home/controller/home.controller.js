@@ -29,15 +29,17 @@ exports.home = {
                 return reply.view('web/html/web-home/index', {scope: 'teacher'});
             }   
         } else {
-            Quiz.find({with_login: 1}).populate('user_id').populate('subject_id').exec(function(err, quizzes) {
-                if(err) {
-                    request.log(['error'], err);
-                    return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
-                }
-                // console.log('quizzes', quizzes);
-                return reply.view('web/html/web-home/home', {quizzes: quizzes});
+            // Quiz.find({with_login: 1}).populate('user_id').populate('subject_id').exec(function(err, quizzes) {
+            //     if(err) {
+            //         request.log(['error'], err);
+            //         return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+            //     }
+            //     // console.log('quizzes', quizzes);
+            //     return reply.view('web/html/web-home/home', {quizzes: quizzes});
 
-            });
+            // });
+
+            return reply.view('web/html/web-home/home');
         }
     },
 }

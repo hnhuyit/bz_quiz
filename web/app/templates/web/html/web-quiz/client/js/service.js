@@ -29,6 +29,10 @@ function QuizFactory($resource, $window) {
         getQuizzesByStudent: {
             url: $window.settings.services.userApi + '/api/quiz/get-quizzes-by-student',
             method: 'GET'
+        },
+        getQuizzesByNoLogin: {
+            url: $window.settings.services.userApi + '/api/quiz/get-quizzes-by-no-login',
+            method: 'GET'
         }
     });
 }

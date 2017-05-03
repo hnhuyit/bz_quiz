@@ -10,43 +10,62 @@
     <section class="content">
         <div class="row">
             
-            <% asyncEach item in items %>
-            <div class="col-md-6 col-sm-12">
+            <% asyncEach quiz in items %>
+            <div class="col-md-6">
               <!-- Widget: user widget style 1 -->
-              <div class="box box-widget widget-user-2">
+              <div class="box box-widget widget-user">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header bg-aqua">
-                  <!-- <div class="widget-user-image">
-                    <img class="img-circle" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
-                  </div> -->
-                  <!-- /.widget-user-image -->
-                  <h3 class="widget-user-username"><$ item.name $></h3>
-                  <h5 class="widget-user-desc"><$ item.subject_id.name $> / <$ item.user_id.name $></h5>
+                <div class="widget-user-header bg-aqua-active">
+                  <h3 class="widget-user-username"><$ quiz.name $></h3>
+                  <h5 class="widget-user-desc"><$ quiz.user_id.name $> / <$ quiz.subject_id.name $></h5>
                 </div>
-                <div class="box-body no-padding">
-                  <ul class="nav nav-stacked">
-                    <li><a href="#">Thời gian làm bài <span class="pull-right badge bg-blue"><$ item.duration $></span></a></li>
-                    <li><a href="#">Ngày bắt đầu <span class="pull-right badge bg-aqua"><$ item.start_date $></span></a></li>
-                    <li><a href="#">Ngày kết thúc <span class="pull-right badge bg-green"><$ item.end_date $></span></a></li>
-                    <li><a href="#">Số lượng thí sinh tham dự tối đa <span class="pull-right badge bg-red"><$ item.maximum_attempts $></span></a></li>
-                    <li><a href="#">Tý lệ bắt buộc phải vượt qua <span class="pull-right badge bg-red"><$ item.pass_percentage $></span></a></li>
-                  </ul>
+                <div class="widget-user-image">
+                  <span class="info-box-icon bg-aqua"><a href="/quiz/<$ quiz._id $>/attempt"><i class="fa fa-hand-pointer-o"></i></a></span>
+                </div>
+                <div class="box-footer">
+                  <div class="row">
+                    <div class="col-sm-4 border-right">
+                      <div class="description-block">
+                        <h5 class="description-header"><$ quiz.duration $></h5>
+                        <span class="description-text">Thời gian làm bài</span>
+                      </div>
+                      <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4 border-right">
+                      <div class="description-block">
+                        <h5 class="description-header"><$ quiz.duration $></h5>
+                        <span class="description-text">Sinh viên đã đăng ký</span>
+                      </div>
+                      <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4">
+                      <div class="description-block">
+                        <h5 class="description-header"><$ quiz.number_of_question $></h5>
+                        <span class="description-text">Số lượng câu hỏi</span>
+                      </div>
+                      <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                <!-- /.row -->
+                </div>
+                <div class="box-header">
+                  <h2 class="text-red text-center"><$ quiz.estimated_time $></h2>
                 </div>
                 <div class="box-footer text-center">
                   <p>
-                    <a href="/quiz/<$ item._id $>/view" class="btn btn-lg btn-default btn-flat">Chi tiết</a>
-                    <a href="/quiz/<$ item._id $>/attempt" class="btn bg-olive btn-flat margin btn-lg">Tham gia</a>
+                    <a href="/quiz/<$ quiz._id $>/view" class="btn btn-lg btn-default btn-flat">Chi tiết</a>
+                    <a href="/quiz/<$ quiz._id $>/attempt" class="btn bg-olive btn-flat margin btn-lg">Tham gia</a>
                   </p>
                 </div>
               </div>
-              <!-- /.widget-user -->
+            <!-- /.widget-user -->
             </div>
-
             <% endeach %>
-
         </div>
     </section>
-</section>
 </section>
 
 <% endblock %>

@@ -28,6 +28,10 @@ var GroupSchema = new Schema({
         type: 'Number',
         default: 0
     },
+    user_id: {
+        type: Schema.ObjectId,
+        ref: 'User'
+    },
     price: {
         type: 'Number',
         default: 0

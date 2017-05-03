@@ -49,6 +49,7 @@ config.web = {
                 'adminassets/admin-lte/dist/css/skins/_all-skins.min.css',
                 'adminassets/angular-toastr/dist/angular-toastr.min.css',
                 'app/templates/web/html/web-*/client/css/*.scss',
+                'app/templates/web/html/web-*/client/css/*.css',
             ],
             js: [
                 'adminassets/ckeditor/ckeditor.js',

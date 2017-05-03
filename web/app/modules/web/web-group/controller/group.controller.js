@@ -7,8 +7,6 @@ const mongoose = require('mongoose');
 const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const Group = mongoose.model('Group');
 const _ = require('lodash');
-// const async = require('async');
-// const paginator = require('super-pagination').paginator;
 exports.list = {
     handler: function(request, reply) {
         let config = request.server.configManager;
@@ -24,55 +22,24 @@ exports.list = {
             action: 'Danh sách nhóm',
         }
 
-        let options = { status: 1, user_id: request.auth.credentials.uid };
+        // let options = { status: 1, user_id: request.auth.credentials.uid };
 
         // if (request.query.keyword && request.query.keyword.length > 0) {
         //     let re = new RegExp(request.query.keyword, 'i');
         //     options.title = re;
         // }
 
-        Group.find(options).sort('id').paginate(page, itemsPerPage, function(err, items, total) {
-            if (err) {
-                request.log(['error', 'list'], err);
-                reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
-            }
-            let totalPage = Math.ceil(total / itemsPerPage);
-            let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items, meta:meta };
-            reply.view('web/html/web-group/list',dataRes);
-        });
-
-        // async.parallel({
-        //     groups: function(callback) {
-        //         Group
-        //             .find(options)
-        //             .sort('-created')
-        //             .lean()
-        //             .paginate(page, itemsPerPage, callback);
+        // Group.find(options).sort('id').paginate(page, itemsPerPage, function(err, items, total) {
+        //     if (err) {
+        //         request.log(['error', 'list'], err);
+        //         reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
         //     }
-        // }), function(err, result) {
-        //     if(err) {
-        //         console.log(err);
-        //         throw err;
-        //     }
-        //     let items = result;
         //     let totalPage = Math.ceil(total / itemsPerPage);
-        //     let pagination = new paginator().set({
-        //         per_page: itemsPerPage,
-        //         current_page: page,
-        //         total: total,
-        //         number_of_pages: totalPage,
-        //         show_empty: false,
-        //         url: '/groups' + getPrelink(request)
-        //     });
-        //     let meta = {
-        //         title: 'Groups',
-        //         description: 'Groups description'
-        //     }
+        //     let dataRes = { status: 1, totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items, meta:meta };
+        //     reply.view('web/html/web-group/list',dataRes);
+        // });
 
-        //     let dataRes = { posts: items, meta: meta, paginator: pagination.render() };
-        //     return reply.view('web/html/web-group/list',dataRes);
-        // }
-
+        reply.view('web/html/web-group/list',{meta: meta});
     }
 }
 exports.view = {
