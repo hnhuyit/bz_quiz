@@ -4,7 +4,7 @@ let config = {};
 
 config.web = {
     name: 'BZCMS',
-    port: process.env.FRONT_PORT || 9006,
+    port: process.env.FRONT_PORT || 9076,
     sessionKey: '6ketaq3cgrggdfgdfgdfgdfgo315rk9',
     cookieOptions: {
         ttl: 365 * 24 * 60 * 60 * 1000, // expires a year from today
@@ -17,9 +17,9 @@ config.web = {
         strictHeader: true // don't allow violations of RFC 6265
     },
     paging: {
-        defaultPageSize: 7,
-        numberVisiblePages: 2,
-        itemsPerPage: 5
+        defaultPageSize: 25,
+        numberVisiblePages: 10,
+        itemsPerPage: 4
     },
     db: {
         uri: 'mongodb://localhost/db_quiz',
@@ -77,7 +77,7 @@ config.web = {
         productPath: process.cwd() + '/public/files/product/'
     },
     connections: [{
-        port: process.env.CMS_WEB_PORT || 9006,
+        port: process.env.CMS_WEB_PORT || 9076,
         labels: ['web'],
         routes: {
             cors: {
@@ -90,7 +90,7 @@ config.web = {
         }
     },
     {
-        port: process.env.CMS_ADMIN_PORT || 9000,
+        port: process.env.CMS_ADMIN_PORT || 9070,
         labels: ['admin'],
         routes: {
             cors: {
@@ -103,7 +103,7 @@ config.web = {
         }
     },
     {
-        port: process.env.CMS_API_PORT || 9001,
+        port: process.env.CMS_API_PORT || 9071,
         labels: 'api',
         routes: {
             cors: {
@@ -111,8 +111,7 @@ config.web = {
                 credentials: true
             }
         }
-    }
-    ],
+    }],
     jwt: {
         secret: process.env.JWT_SECRET_CMS || 'jKErFlFEktfafasfaKLfghLoPrlafasflsdf0werr'
     },
@@ -122,7 +121,7 @@ config.web = {
             url: '/error404' //404 URL
         },
         notpermission: {
-            url: '/error403' //404 URL
+            url: '/error403' //403 URL
         },
         user: {
             login: '/login' // Login URL
@@ -132,17 +131,17 @@ config.web = {
     context: {
         cmsprefix: '/admin',
         app: {
-            title: 'TEST ONLINE',
+            title: 'BZ CMS',
             description: 'This is description bz cms',
             keywords: ''
         },
         settings: {
             services: {
-                userApi: 'http://localhost:9001/v1',
-                contactApi: 'http://localhost:9001/v1',
-                socketApi: 'http://localhost:9001/v1',
-                uploadApi: 'http://localhost:9001/v1',
-                webUrl: 'http://localhost:9006'
+                userApi: 'http://localhost:9071/v1',
+                contactApi: 'http://localhost:9071/v1',
+                socketApi: 'http://localhost:9071/v1',
+                uploadApi: 'http://localhost:9071/v1',
+                webUrl: 'http://localhost:9076'
             }
 
         }
