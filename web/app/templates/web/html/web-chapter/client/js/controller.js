@@ -13,7 +13,6 @@ function ChapterController($scope, $filter, $timeout, ChapterService, ChapterFac
     $scope.currentPage = 1;   
 
     $scope.subjectLists = SubjectFactory.query({});
-    // console.log($scope.subjectLists);
 
     //Method
     $scope.setPage = setPage;

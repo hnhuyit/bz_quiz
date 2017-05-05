@@ -14,9 +14,9 @@ function QuestionsController($scope, $filter, $window, $location, $timeout, Ques
     $scope.chapterList = [];
 
     $scope.typeQuestions = Option.getTypeQuestions();
-    $scope.levels = Option.getLevels();
+    $scope.levels        = Option.getLevels();
     SubjectFactory.query(function(data){
-    	$scope.subjectList = data.items;
+    	$scope.subjectLists = data.items;
     });
 
 
@@ -105,7 +105,7 @@ function QuestionsController($scope, $filter, $window, $location, $timeout, Ques
         $scope.itemsPerPage = data.itemsPerPage;
         $scope.numberVisiblePages = data.numberVisiblePages;
     }
-    $scope.reset2 = function reset2() {
+    $scope.reset = function reset() {
         $scope.search.keyword = "";
         $scope.search.question_type = "";
         $scope.search.level = "";
@@ -114,21 +114,20 @@ function QuestionsController($scope, $filter, $window, $location, $timeout, Ques
         setFilterToLocalStorage();
         getListData();
     };
-    $scope.getChapter = function() {
-        // console.log(11111);
-        ChapterFactory.query({subject_id: $scope.question.subject_id}, function(data){
-            $scope.chapterList = data.items;
-            // console.log(data);
-        });
-    }
 
-    $scope.reset = function() {
-        $scope.question.name = "";
-        $scope.question.desc = "";
-        $scope.options.name1 = "";
-        $scope.options.name2 = "";
-        $scope.options.name3 = "";
-        $scope.options.name4 = "";
+    ////////////////
+    $scope.resetQuestion = function() {
+        $scope.question.subject_id    = "";
+        $scope.question.question_type = "";
+        $scope.question.level         = "";
+        $scope.question.chapter_id    = "";
+        $scope.question.name          = "";
+        $scope.question.desc          = "";
+        $scope.options.name1          = "";
+        $scope.options.name2          = "";
+        $scope.options.name3          = "";
+        $scope.options.name4          = "";
+        setAddQuestion();
     };
 
     $scope.create = function() {
@@ -160,7 +159,7 @@ function QuestionsController($scope, $filter, $window, $location, $timeout, Ques
                         console.log(err);
                     });
             }
-            $scope.reset();
+            $scope.resetQuestion();
             toastr.success(response.message, 'Thông báo');
         }, function(err) {
             console.log(err);
@@ -177,15 +176,52 @@ function QuestionsController($scope, $filter, $window, $location, $timeout, Ques
         //     $scope.error = errorResponse.data.message;
         // });
     };
-    var radios = $('input[name="score"]');
 
-    for (var i = 0, length = radios.length; i < length; i++) {
-        if (radios[i].checked) {
-            console.log('111111111');
-        } else {
-            console.log('000000000');
 
+    var addQuestion = "question.addQuestion";
+    $scope.question = {};
+
+    $scope.getChapter = function() {
+        ChapterFactory.query({subject_id: $scope.question.subject_id}, function(data){
+            $scope.chapterLists = data.items;
+        });
+    }
+
+    function setAddQuestion() {
+        localStorageService.set(addQuestion, {
+            question: $scope.question
+        });
+    }
+
+    function getAddQuestion() {
+        var createQuestion = localStorageService.get(addQuestion);
+        // console.log(createQuestion);
+        if (createQuestion.question) {
+            $scope.question.question_type = createQuestion.question.question_type  ?  Number(createQuestion.question.question_type ): 0;
+            $scope.question.level         = createQuestion.question.level         ?  Number(createQuestion.question.level) : 0;
+            $scope.question.chapter_id    = createQuestion.question.chapter_id      ? createQuestion.question.chapter_id : null;
+            $scope.question.subject_id    = createQuestion.question.subject_id      ? createQuestion.question.subject_id : null;
         }
     }
+    
+    $scope.filterAddQuestion = function() {
+        $scope.getChapter();
+        setAddQuestion();
+        getAddQuestion();
+    };
+    $scope.findAddQuestion = function() {
+        getAddQuestion();
+    };
+
+    // var radios = $('input[name="score"]');
+
+    // for (var i = 0, length = radios.length; i < length; i++) {
+    //     if (radios[i].checked) {
+    //         console.log('111111111');
+    //     } else {
+    //         console.log('000000000');
+
+    //     }
+    // }
 }
 

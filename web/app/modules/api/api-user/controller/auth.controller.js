@@ -86,7 +86,8 @@ exports.register = {
         let user = new User(request.payload);
         user.provider = 'local';
         let auth = request.server.plugins['api-user'].auth;
-        auth.hashPassword(request.payload.password).then(hash => {
+        auth.hashPassword(request.payload.password)
+        .then(hash => {
             user.password = hash;
             const token = auth.getRandomString(20);
             user.activeToken = token;

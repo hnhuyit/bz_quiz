@@ -1,0 +1,46 @@
+<section data-ng-controller="ResultsController" data-ng-init="findOne()">
+    <section class="content-header">
+        <h1>Results</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <h3 data-ng-bind="result._id"></h3>
+                        
+                                    <div><strong>Quiz Id: </strong> {{result.quiz_id}}</div>
+                         
+                                    <div><strong>User Id: </strong> {{result.user_id}}</div>
+                         
+                                    <div><strong>Result Status: </strong> {{result.result_status}}</div>
+                         
+                                    <div><strong>Start: </strong> {{result.start}}</div>
+                         
+                                    <div><strong>End: </strong> {{result.end}}</div>
+                         
+                                    <div><strong>Score Obtained: </strong> {{result.score_obtained}}</div>
+                         
+                                    <div><strong>Percentage Obtained: </strong> {{result.percentage_obtained}}</div>
+                         
+                                    <div><strong>Total Time: </strong> {{result.total_time}}</div>
+                         
+                                    <div><strong>Created: </strong> {{result.created}}</div>
+                         
+                                    <div><strong>Modified: </strong> {{result.modified}}</div>
+                         
+                    </div>
+                    <div class="box-footer">
+                        <a class="btn btn-primary" data-ui-sref="editResult({itemId: result._id})">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a class="btn btn-primary" data-ng-click="remove();">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

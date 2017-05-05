@@ -69,6 +69,12 @@ var QuizSchema = new Schema({
         type: 'Number',
         default: 0
     },
+    question_ids: [{
+        type: Schema.ObjectId,
+        ref: 'Question',
+        default: [], 
+        unique: true
+    }],
     status: {
         type: 'Number',
         default: 1

@@ -43,6 +43,12 @@ exports.register = function(server, options, next) {
 
     });
     server.route({
+        method: 'PUT',
+        path: '/quiz/createQuestion',
+        config: QuizzesController.createQuestion,
+
+    });
+    server.route({
         method: ['PUT', 'POST'],
         path: '/quiz/{id}',
         config: QuizzesController.update,

@@ -1,0 +1,93 @@
+<!-- Modal Move to trash -->
+<div class="modal fade bs-example-modal-sm in" role="dialog" tabindex="-1" aria-labelledby="mySmallModalLabel" id="movetoTrashPopup">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="mySmallModalLabel">Information</h4>
+            </div>
+            <div class="modal-body">Do you want to move to trash this user ?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" ng-click="remove(currentId)">Move to trash</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Delete Permanent-->
+<div class="modal fade bs-example-modal-sm in" role="dialog" tabindex="-1" aria-labelledby="mySmallModalLabel" id="deletePermanentPopup">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="mySmallModalLabel">Information</h4>
+            </div>
+            <div class="modal-body">Do you want to delete permanent this user ?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" ng-click="remove(currentId, isDelePermanent)">Delete Permanent</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Change Status -->
+<div class="modal fade bs-example-modal-sm in" role="dialog" tabindex="-1" aria-labelledby="mySmallModalLabel" id="changeStatusPopup">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="mySmallModalLabel">Information</h4>
+            </div>
+            <div class="modal-body" ng-bind-html="confirmMessage"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="processChangeStatus()">Change</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal change Status -->
+<div class="modal fade bs-example-modal-sm in" role="dialog" tabindex="-1" aria-labelledby="mySmallModalLabel" id="publishPopup">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="mySmallModalLabel">Information</h4>
+            </div>
+            <div class="modal-body">Do you want to change status these items?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="changeStatusMultiRows(typePublish)">Change</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Delete Multi Rows Permanent -->
+<div class="modal fade bs-example-modal-sm in" role="dialog" tabindex="-1" aria-labelledby="mySmallModalLabel" id="deletePermanentMultiRowsPopup">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="mySmallModalLabel">Information</h4>
+            </div>
+            <div class="modal-body">Do you want to delete permanent?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="remove()">Delete Permanent</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Delete Multi Rows-->
+<div class="modal fade bs-example-modal-sm in" role="dialog" tabindex="-1" aria-labelledby="mySmallModalLabel" id="movetoTrashMultiRowsPopup">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="mySmallModalLabel">Information</h4>
+            </div>
+            <div class="modal-body">Do you want to move to trash these items?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="movetoTrashMultiRows()">Move to trash</button>
+            </div>
+        </div>
+    </div>
+</div>

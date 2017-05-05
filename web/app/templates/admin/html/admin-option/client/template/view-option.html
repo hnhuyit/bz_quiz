@@ -1,0 +1,46 @@
+<section data-ng-controller="OptionsController" data-ng-init="findOne()">
+    <section class="content-header">
+        <h1>Options</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <h3 data-ng-bind="option.name"></h3>
+                        
+                                    <div><strong>Name: </strong> {{option.name}}</div>
+                         
+                                    <div><strong>Name Match: </strong> {{option.name_match}}</div>
+                         
+                                    <div><strong>Question Id: </strong> {{option.question_id}}</div>
+                         
+                                    <div><strong>User Id: </strong> {{option.user_id}}</div>
+                         
+                                    <div><strong>Is Correct: </strong> {{option.is_correct}}</div>
+                         
+                                    <div><strong>Score: </strong> {{option.score}}</div>
+                         
+                                    <div><strong>Slug: </strong> {{option.slug}}</div>
+                         
+                                    <div><strong>Status: </strong> {{option.status}}</div>
+                         
+                                    <div><strong>Created: </strong> {{option.created}}</div>
+                         
+                                    <div><strong>Modified: </strong> {{option.modified}}</div>
+                         
+                    </div>
+                    <div class="box-footer">
+                        <a class="btn btn-primary" data-ui-sref="editOption({itemId: option._id})">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a class="btn btn-primary" data-ng-click="remove();">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

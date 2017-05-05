@@ -1,7 +1,7 @@
 <% extends 'web/layouts/layout.html' %>
 
 <% block content %>
-<section ng-controller="QuestionsController">
+<section ng-controller="QuestionsController" data-ng-init="findAddQuestion()">
 	<section class="content-header">
 	    <h1><$ meta.controller $></h1>
 	</section>
@@ -20,9 +20,8 @@
 								<div class="form-group">
 									<label class="control-label" for="subject_id">Chọn môn học</label>
 									<div class="controls">
-										<select class="form-control" data-ng-change="getChapter()" data-ng-model="question.subject_id" name="subject_id" id="subject_id" required >
+										<select class="form-control" data-ng-change="filterAddQuestion()" data-ng-model="question.subject_id" name="subject_id" id="subject_id" ng-options="subject._id as subject.name for subject in subjectLists" required >
 											<option value="">-- môn học --</option>
-											<option data-ng-repeat="item in subjectList" value="{{item._id}}">{{item.name}}</option>
 										</select>
 									</div>
 								</div>
@@ -32,9 +31,8 @@
 								<div class="form-group">
 									<label class="control-label" for="chapter_id">Chương danh mục</label>
 									<div class="controls">
-										<select class="form-control" data-ng-model="question.chapter_id" name="chapter_id" id="chapter_id" required >
-										<option value="">-- danh mục --</option>
-											<option data-ng-repeat="item in chapterList" value="{{item._id}}">{{item.name}}</option>
+										<select class="form-control" ng-change="filterAddQuestion()" data-ng-model="question.chapter_id" name="chapter_id" id="chapter_id" ng-options="chapter._id as chapter.name for chapter in chapterLists" required >
+											<option value="">-- danh mục --</option>
 										</select>
 									</div>
 								</div>
@@ -43,9 +41,8 @@
 								<div class="form-group">
 									<label class="control-label" for="question_type">Loại câu hỏi</label>
 									<div class="controls">
-										<select class="form-control" data-ng-model="question.question_type" name="question_type" id="question_type" required >
+										<select class="form-control" ng-change="filterAddQuestion()" data-ng-model="question.question_type" name="question_type" id="question_type" ng-options="type.value as type.name for type in typeQuestions" required >
 											<option value="">-- loại câu hỏi --</option>
-											<option data-ng-repeat="item in typeQuestions" value="{{item.value}}">{{item.name}}</option>
 										</select>
 									</div>
 									
@@ -56,13 +53,17 @@
 								<div class="form-group">
 									<label class="control-label" for="level">Mức độ câu hỏi</label>
 									<div class="controls">
-										<select class="form-control" data-ng-model="question.level" name="level" id="level" required >
+										<select class="form-control" ng-change="filterAddQuestion()" data-ng-model="question.level" name="level" id="level" ng-options="level.value as level.name for level in levels" required >
 											<option value="">-- mức độ câu hỏi --</option>
-											<option data-ng-repeat="item in levels" value="{{item.value}}">{{item.name}}</option>
 										</select>
 									</div>
 									
 								</div>
+							</div>
+	                        <div class="col-md-12">
+                                <div class="form-group filter-submit">
+                                    <a class="btn btn-primary" ng-click="resetQuestion()">Reset</a>
+                                </div>
 							</div>
 	                	</div>
 	                    <div class="box-body ">

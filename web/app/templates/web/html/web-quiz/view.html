@@ -111,7 +111,7 @@
                                     
                                     <th>Tên câu hỏi</th>
                                     
-                                    <th>Danh mục</th>
+                                    <!-- <th>Danh mục</th> -->
 
                                     <th>Loại câu hỏi</th>
 
@@ -121,19 +121,34 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <% asyncEach item in questionsByQuiz %>
+                            <% asyncEach item in quiz.question_ids %>
                                 <tr>
                                     
                                     <td><a href="question/<$ item._id $>/view"><$ item.name $></a></td>
                                     
                                     
-                                    <td><$ item.chapter_id $></td>
+                                    <!-- <td><$ item.chapter_id $></td> -->
                                     
                                 
-                                    <td><$ item.question_type $></td>
+
+                                    <td>
+                                         <span ng-if="<$ item.question_type $> == 1" class="label label-primary">Nhiều lựa chọn một đáp án</span>
+                                         <span ng-if="<$ item.question_type $> == 2" class="label label-primary">Nhiều lựa chọn nhiều đáp án</span>
+                                         <span ng-if="<$ item.question_type $> == 3" class="label label-primary">Ghép hợp</span>
+                                         <span ng-if="<$ item.question_type $> == 4" class="label label-primary">Điền vào chỗ trống</span>
+                                    </td>
                                     
                                     
-                                    <td><$ item.level $></td>
+                                    <td>
+                                         <span ng-if="<$ item.level $> == 1" class="label label-primary">Dễ</span>
+                                         <span ng-if="<$ item.level $> == 2" class="label label-primary">Trung bình</span>
+                                         <span ng-if="<$ item.level $> == 3" class="label label-primary">Khó</span>
+                                         <span ng-if="<$ item.level $> == 4" class="label label-primary">Rất khó</span>
+                                    </td>
+                                    <!-- <td><$ item.question_type $></td>
+                                    
+                                    
+                                    <td><$ item.level $></td> -->
                                     
                                     <td>
                                         <a href="question/<$ item._id $>/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
@@ -155,7 +170,7 @@
             </div>
             <!-- /.col -->
         </div>
-        <%  if not questionsByQuiz %>
+        <%  if not quiz.question_ids %>
         <div class="row">
             <div class="col-xs-12">
                 <div class="alert alert-warning text-center">

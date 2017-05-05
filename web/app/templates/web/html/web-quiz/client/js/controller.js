@@ -3,7 +3,7 @@ angular
     .controller('QuizController', QuizController)
     .controller('AttemptQuizController', AttemptQuizController);
 
-function QuizController($scope, $filter, $timeout, QuizService, QuizFactory, QuizQuestionFactory, GroupFactory, SubjectFactory, QuestionFactory, $cookies, toastr, localStorageService) {
+function QuizController($scope, $filter, $timeout, QuizService, QuizFactory, GroupFactory, SubjectFactory, QuestionFactory, $cookies, toastr, localStorageService) {
 
 
     //Var
@@ -124,63 +124,22 @@ function QuizController($scope, $filter, $timeout, QuizService, QuizFactory, Qui
     // 	console.log(data);
     // });
     
-    $scope.addQuestion = function(question_id, quiz_id) {
-            
-        let qq = new QuizQuestionFactory({
+    $scope.createQuestion = function(question_id, quiz_id) {
+        let options = {
             question_id: question_id,
             quiz_id: quiz_id
-        });
+        }
+        QuizFactory.createQuestion(options, function(quiz) {
+            
+            toastr.success(quiz.message, 'Thông báo');
 
-        qq.$save(function(response) {
-            $scope.item = response;
-            console.log(response);
-            toastr.success(response.message, 'Thông báo');
         }, function(err) {
             $scope.error = errorResponse.data.message;
         });
-
-        // if(quiz_id) {
-        //     QuizQuestionFactory.query(function(data){
-
-        //         let quiz_ids = [];
-        //         for(var i=0; i<data.totalItems; i++) {
-        //             quiz_ids[i] = data.items[i].quiz_id;
-        //         }
-
-        //         if(!quiz_ids.includes(quiz_id)) {
-        //             let qq = new QuizQuestionFactory({
-        //                 question_id: [question_id],
-        //                 quiz_id: quiz_id
-        //             });
-
-        //             qq.$save(function(response) {
-        //                 console.log(response);
-        //             }, function(err) {
-        //                 $scope.error = errorResponse.data.message;
-        //             });
-        //         }
-        //          else {
-
-        //             let qq = new QuizQuestionFactory({
-        //                 question_id: [question_id],
-        //                 quiz_id: quiz_id
-        //             });
-                    
-        //             qq.$update(function(response) {
-        //                 console.log(response);
-
-        //             }, function(errorResponse) {
-        //                 $scope.error = errorResponse.data.message;
-        //             });
-        //         }
-        //     });
-        // }
-
-
-    };
+    }
 }
 
-function AttemptQuizController($scope, $filter, $timeout, $window, $location, QuizFactory, QuizQuestionFactory, OptionFactory, toastr) {
+function AttemptQuizController($scope, $timeout, $location, QuizFactory, OptionFactory, AnwserFactory, toastr) {
 
     //Ser permission
     
@@ -190,28 +149,33 @@ function AttemptQuizController($scope, $filter, $timeout, $window, $location, Qu
     var idQuiz = url.substr(url.length-32,24);
 
     //Method
-    $scope.getQuestionbyQuiz = function() {
-        QuizQuestionFactory.query({quiz_id: idQuiz}, function(data) {
-            let qqs = data.items;
-            let questions = [];
-            qqs.forEach(function(qq) {
-                questions.push(qq.question_id);
-            });
-            console.log(questions);
-            $scope.questions = questions;
-        });
-    }
     $scope.getOptionsbyQuestion = function() {
         $scope.options = OptionFactory.query({});
-        console.log('options', $scope.options);
+        // console.log('options', $scope.options);
     }
 
     $scope.find = function() {
         $scope.quiz = QuizFactory.get({itemId: idQuiz});
-        $scope.getQuestionbyQuiz();
         $scope.getOptionsbyQuestion();
     }
 
+    ///Get point of option
+    // $scope.option = OptionFactory.get({itemId: '590993ec747d157092a6ac30'});
+    // console.log('option', $scope.option);
+    
     //Init data
     // $scope.find();
+    $scope.submitQuiz = function() {
+        let anwser = new AnwserFactory();
+        anwser.quiz_id = idQuiz;
+        anwser.question_name = $scope.question_name;
+        anwser.option_name = $scope.option_name;
+
+        console.log(anwser);
+        anwser.$save(function(anwser) {
+            // console.log(anwser);
+        }, function(err) {
+            console.log(err);
+        });
+    }
 };

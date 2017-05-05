@@ -30,11 +30,11 @@ exports.register = function (server, options, next) {
         path: '/quiz/{id}/question/add',
         config: QuizzesController.addQuestion
     });
-    server.route({
-        method: 'POST',
-        path: '/quiz/{id}/question/create',
-        config: QuizzesController.createQuestion
-    });
+    // server.route({
+    //     method: 'POST',
+    //     path: '/quiz/{id}/question/create',
+    //     config: QuizzesController.createQuestion
+    // });
     server.route({
         method: 'GET',
         path: '/quiz/add',

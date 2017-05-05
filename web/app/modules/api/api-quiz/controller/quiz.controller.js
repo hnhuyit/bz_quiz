@@ -230,6 +230,38 @@ exports.save = {
         }
     }
 }
+exports.createQuestion = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['user', 'admin']
+    },
+    handler: function(request, reply) {
+        let {quiz_id, question_id} = request.payload;
+
+        Quiz.findById(quiz_id, function(err, quiz) {
+
+            if (err) {
+                return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+            }
+            quiz.question_ids.push(question_id);
+
+            let promise = quiz.save();
+            promise.then(function(quiz) {
+                reply({status: 1, message: 'Them thanh cong', quiz: quiz});
+            }).catch(function(err) {
+                return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+            });
+        });
+    },
+    description: 'Add Question',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+            responses: { '400': { 'description': 'Bad Request' } },
+            payloadType: 'form'
+        }
+    }
+}
 exports.update = {
     auth: {
         strategy: 'jwt',
@@ -318,7 +350,7 @@ exports.delete = {
  */
 function getById(request, reply) {
     const id = request.params.id || request.payload.id;
-    let promise = Quiz.findOne({ '_id': id }).populate('subject_id').populate('group_id').populate('user_id');
+    let promise = Quiz.findOne({ '_id': id }).populate(['subject_id', 'group_id', 'user_id', 'question_ids']);
     promise.then(function(quiz) {
         reply(quiz);
     }).catch(function(err) {

@@ -1,0 +1,63 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+
+<section data-ng-controller="ChapterController" data-ng-init="find()">
+    <section class="content-header">
+        <h1><$ meta.controller $></h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title"><$ meta.action $></h3>
+	                </div>
+	                <form method="POST" name="addForm" action="/<$ meta.context $>" novalidate>
+	                    <div class="box-body">
+	                        
+	                        <div class="form-group">
+	                            <label class="control-label" for="subject_id">Chọn môn học</label>
+	                            <div class="controls">
+	                                <select class="form-control" data-ng-model="subject_id" name="subject_id" id="subject_id" required >
+	                                <option value="">-- môn học --</option>
+	                                	<option data-ng-repeat="item in subjectLists" value="{{item._id}}">{{item.name}}</option>
+                                    </select>
+	                            </div>
+	                        </div>
+				           <div class="form-group">
+				             <label class="control-label" for="name">Tên chương</label>
+				            <div class="controls">
+				                <input type="text" name="name" id="name" class="form-control" placeholder="Tên chương">
+				             </div>
+				                          
+				           </div>
+				          
+				           <div class="form-group">
+				             <label class="control-label" for="desc">Mô tả</label>
+				            <div class="controls">
+				                <textarea class="form-control ck-editor" name="desc" rows="3"> </textarea>
+				             </div>
+				                          
+				           </div>
+	          
+	                    </div>
+	                    <div class="box-footer">
+	                        <div class="form-group">
+	                            <input type="submit" class="btn btn-primary" value="Thêm mới">
+	                            <a href="chapters" class="btn btn-default">Thoát</a>
+	                        </div>
+	                        <!-- div class="alert alert-danger alert-dismissable" data-ng-show="error">
+	                            <h4><i class="icon fa fa-ban"></i> Error!</h4>
+	                            <div data-ng-bind="error"></div>
+	                        </div> -->
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</section>
+</section>
+
+<% endblock %>

@@ -1,0 +1,139 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+
+<section data-ng-controller="ChapterController" data-ng-init="find()">
+    <section class="content-header">
+        <h1><$ meta.controller $></h1>
+    </section>
+    <!-- Loading -->
+    <!-- <ng-loading loading-done="isLoading" /> -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title"><$ meta.action $></h3>
+                        <div class="pull-right">
+                            <a class="btn btn-block btn-primary" href="/<$ meta.context $>/add">Thêm mới</a>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="box-tools">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-inline filter-layout">
+                                        <div class="form-group">
+                                            <label class="control-label" for="keyword">Keyword</label>
+                                            <input type="text" ng-change="filter()" name="keyword" data-ng-model="search.keyword" id="keyword" class="form-control" placeholder="Search" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="subject_id">Subject</label>
+                                            <select ng-change="filter()" class="form-control" data-ng-model="search.subject_id" id="subject_id" ng-options="subject._id as subject.name for subject in subjectLists.items">
+                                                    <option value="">All subjects</option>
+                                                </select>
+                                        </div>
+                                        <hr/>
+                                        <div class="form-group filter-submit">
+                                            <a class="btn btn-primary" ng-click="filter()">Filter</a> &nbsp;&nbsp;
+                                            <a class="btn btn-primary" ng-click="reset()">Reset</a>
+                                        </div>
+                                        <hr/>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4><b>Summary</b></h4>
+                            <p><b>Items Per Page</b>: <span ng-bind="itemsPerPage"></span></p>
+                            <p><b>Total Page</b>: <span ng-bind="totalPage"></span></p>
+                            <p><b>Total Items</b>: <span ng-bind="totalItems"></span></p>
+                        </div>
+                        <div>&nbsp;</div>
+                        <table id="table-list" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    
+                                    <th>Tên danh mục</th>
+                                    
+                                    <!-- <th>Desc</th> -->
+
+                                    <th>Môn học</th>
+                                    
+                                    <!-- <th>User Id</th> -->
+                                    
+                                    <!-- <th>Slug</th> -->
+                                    
+                                    <!-- <th>Status</th> -->
+                                    
+                                    <th>Ngày tạo</th>
+                                    
+                                    <th>Ngày sửa</th>
+                                    
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="chapter in chapters">
+                                    
+                                    <td><a href="chapter/{{chapter._id}}/view" ng-bind="chapter.name"></a></td>
+                                    
+                                    
+                                    
+                                    <!-- <td>{{chapter.desc}}</td> -->
+                                    
+                                    
+                                    <td><span class="label label-warning" ng-bind="chapter.subject_id.name"></span></td>
+                                    
+                                    
+                                    
+                                    <!-- <td>{{user_id}}</td> -->
+                                    
+                                    
+                                    
+                                    <!-- <td>{{slug}}</td> -->
+                                    
+                                    
+                                        
+                                    <!-- <td>{{status}}</td> -->
+                                    
+                                    <td ng-bind="chapter.created | date:'short'"></td>
+                                    
+                                    
+                                    
+                                    <td ng-bind="chapter.modified | date:'short'"></td>
+                                    
+                                      
+                                    <td>
+                                        <a href="chapter/{{chapter._id}}/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
+                                        <a href="chapter/{{chapter._id}}/view" title="Delete">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <bz-pagination max-page="10" name="user_page" current-page="currentPage" total-page="totalPage" page-changed="pageChanged">
+                        </bz-pagination>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="alert alert-warning text-center hide" data-ng-hide="!chpaters.$resolved || chpaters.length">
+                    There is no item found, why don't you <a href="chapter/add">create one</a>?
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<% endblock %>

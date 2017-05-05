@@ -1,0 +1,113 @@
+<% extends 'web/layouts/layout.html' %>
+
+<% block content %>
+
+<section data-ng-controller="SubjectController">
+    <section class="content-header">
+        <h1><$ meta.controller $></h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title"><$ meta.action $></h3>
+                        <div class="pull-right">
+                            <a class="btn btn-block btn-primary" href="/<$ meta.context $>/add">Thêm mới</a>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="box-tools">
+                            <div class="input-group" style="width: 150px;">
+                                <input type="text" name="query" class="form-control input-sm pull-right" placeholder="Tìm kiếm" />
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>&nbsp;</div>
+                        <table id="table-list" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tên môn học</th>
+                                    
+                                    <th>Khóa môn học</th>
+                                    
+                                    <!-- <th>User Id</th> -->
+                                    
+                                    <!-- <th>Slug</th> -->
+                                    
+                                    <!-- <th>Status</th> -->
+                                    
+                                    <th>Ngày tạo</th>
+                                    
+                                    <th>Ngày sửa</th>
+                                    
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% asyncEach item in items %>
+                                <tr>
+                                    <td><a href="subject/<$ item._id $>/view"><$ item.name $></a></td>
+                                    
+                                    
+                                    
+                                    <td><span class="label label-info"><$ item.key $></span></td>
+                                    
+                                    
+                                    
+                                    <!-- <td><$ item.user_id $></td> -->
+                                    
+                                    
+                                    
+                                    <!-- <td><$ item.slug $></td> -->
+                                    
+                                    
+                                        
+                                    <!-- <td><$ item.status $></td> -->
+                                    
+                                    
+                                    
+                                    <td><$ item.created $></td>
+                                    
+                                    
+                                    
+                                    <td><$ item.modified $></td>
+                                    
+                                      
+                                    <td>
+                                        <a href="subject/<$ item._id $>/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
+                                        <a href="subject/<$ item._id $>/view" title="Delete">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% endeach %> 
+                            </tbody>
+                        </table>
+
+                        <bz-pagination max-page="10" name="post_page" current-page="currentPage" total-page="totalPage" page-changed="pageChanged">
+                        </bz-pagination>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <%  if not items %>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="alert alert-warning text-center">
+                    There is no item found, why don't you <a href="subject/create">create one</a>?
+                </div>
+            </div>
+        </div>
+        <% endif %>
+    </section>
+</section>
+
+<% endblock %>

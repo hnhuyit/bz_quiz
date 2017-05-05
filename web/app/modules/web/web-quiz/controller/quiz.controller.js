@@ -9,7 +9,6 @@ const Quiz = mongoose.model('Quiz');
 const Subject = mongoose.model('Subject');
 const Question = mongoose.model('Question');
 const User = mongoose.model('User');
-const QuizQuestion = mongoose.model('QuizQuestion');
 const _ = require('lodash');
 exports.list = {
     auth: {
@@ -24,30 +23,6 @@ exports.list = {
             title : 'Danh sách đề thi',
             description: 'Danh sách đề thi',
         };
-        // let page = request.query.page || 1;
-        // let config = request.server.configManager;
-        // let itemsPerPage =  config.get('web.paging.itemsPerPage');
-        // let numberVisiblePages = config.get('web.paging.numberVisiblePages');
-       
-        // let options = {};
-        // if (request.query.keyword && request.query.keyword.length > 0) {
-        //     let re = new RegExp(request.query.keyword, 'i');
-        //     options.title = re;
-        // }
-        // options = {
-        //     user_id: request.auth.credentials.uid,
-        //     status: 1,
-        // };
-        // Quiz.find(options).populate('subject_id').populate('group_id').sort('id').paginate(page, itemsPerPage, function(err, items, total) {
-        //     if (err) {
-        //         request.log(['error', 'list'], err);
-        //         reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
-        //     }
-        //     let totalPage = Math.ceil(total / itemsPerPage);
-        //     let dataRes = { status: 1, totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items, meta:meta };
-        //     reply.view('web/html/web-quiz/list',dataRes);
-        // });
-
         reply.view('web/html/web-quiz/list',{meta: meta});
     }
 }
@@ -122,20 +97,7 @@ exports.view = {
             title : 'Thông tin đề thi',
             description: 'Thông tin đề thi',
         };
-
-        let qqPromise = QuizQuestion.find({quiz_id: request.params.id, user_id: request.auth.credentials.uid}).populate('question_id').exec();
-
-        qqPromise.then(qq => {
-            // console.log('qq', qq);
-            let questions = [];
-            for(let i=0; i<qq.length; i++) {
-                questions[i] = qq[i].question_id;
-            }
-            // console.log(questions); 
-            return reply.view('web/html/web-quiz/view', { quiz: quiz, user: user, questionsByQuiz: questions,  meta: meta });
-        });
-
-        //return reply.view('web/html/web-quiz/view', { quiz: quiz, meta: meta });
+        return reply.view('web/html/web-quiz/view', { quiz: quiz, user: user,  meta: meta });
     },
 }
 exports.attempt = {
@@ -160,20 +122,6 @@ exports.attempt = {
             title : quiz.name,
             description: quiz.name,
         };
-        // let qqPromise = QuizQuestion.find({quiz_id: request.params.id}).populate('question_id').exec();
-
-        // qqPromise.then(qq => {
-        //     // console.log('qq', qq);
-        //     let questionsByQuiz = [];
-        //     for(let i=0; i<qq.length; i++) {
-        //         questionsByQuiz[i] = qq[i].question_id;
-        //     }
-        //     // console.log('questionsByQuiz', questionsByQuiz); 
-        //     return reply.view('web/html/web-quiz/attempt', { quiz: quiz, user: user, questionsByQuiz: questionsByQuiz, meta: meta });
-        // });
-        // 
-        
-
         return reply.view('web/html/web-quiz/attempt', { user: user, meta: meta });
     },
 }
@@ -199,79 +147,27 @@ exports.addQuestion = {
             description: 'Thêm câu hỏi vào đề thi',
         };
 
-
         let subjectPromise = Subject.findById(quiz.subject_id).exec();
         subjectPromise.then(function(subject) {
-            // console.log(subject);
-            let questionPromise = Question.find({subject_id: subject._id, user_id: request.auth.credentials.uid}).populate('chapter_id').exec();
-                ///Lay nhung cau hoi thuoc mon hoc do: questions
-                questionPromise.then(questions => {
-                    //Lay danh sach cac cau hoi da duoc them vao de thi
-                    //let qqPromise = QuizQuestion.find({quiz_id: request.params.id, user_id: request.auth.credentials.uid}).exec();
-
-                    // console.log('questions', questions);
-                    // qqPromise.then(qq => {
-                    //     console.log('qq', qq);
-                    //     let qIdsByQuiz = [];
-                    //     for(let i=0; i<questions.length; i++) {
-                    //         qIdsByQuiz[i] = questions[i]._id;
-                    //     }
-
-                    //     console.log('qIdsByQuiz', qIdsByQuiz);
-
-                    //     let qIdsByQQ = [];
-                    //     for(let i=0; i<qq.length; i++) {
-
-                    //         qIdsByQQ[i] = qq[i].question_id;
-                    //         // if(qIds.includes(qq[i].question_id)) {
-
-                    //         // }
-                    //     }
-                    //     console.log('qIdsByQQ', qIdsByQQ);
-
-                    //     for(let i=0; i<qIdsByQQ.length; i++) {
-                    //         if(qIdsByQuiz.includes(qIdsByQQ[i])) {
-                    //             return reply.view('web/html/web-quiz/add-question', { quiz: quiz, status: 1, questions: questions, meta: meta });
-                    //         } else {
-                    //             return reply.view('web/html/web-quiz/add-question', { quiz: quiz, status: 0, questions: questions, meta: meta });
-                    //         }
-                    //     }
-                    //     reply.view('web/html/web-quiz/add-question', { quiz: quiz, status: 1, questions: questions, meta: meta });
-                        
-                    // });
-                    reply.view('web/html/web-quiz/add-question', { quiz: quiz, questions: questions, meta: meta });
-                });
+            let questions = Question.find({
+                subject_id  : subject._id, 
+                user_id     : request.auth.credentials.uid
+            }).exec();
+               
+            return questions;
+        }).then(function(questions){
+            let questionsByQuiz = [];
+            // console.log(quiz.question_ids);
+            // quiz.question_ids.forEach(function(question) {
+            //     questionsByQuiz.push(question);
+            // });
+            let data = { quiz: quiz, questionsByQuiz: questionsByQuiz, questions: questions, meta: meta };
+            // console.log(questionsByQuiz);
+            return reply.view('web/html/web-quiz/add-question', data);
         }).catch(function(err) {
             request.log(['error'], err);
-            return reply(err);
+            return reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
         });
-
-    }
-}
-exports.createQuestion = {
-    auth: {
-        strategy: 'jwt',
-        scope: ['user', 'admin']
-    },
-    pre: [
-        { method: getItem, assign: 'quiz' }
-    ],
-    handler: (request, reply) => {
-        let quiz = request.pre.quiz;
-        if (!quiz) {
-            return reply(Boom.notFound('quiz is not be found'));
-        }
-        let qq = new QuizQuestion();
-            qq.question_id = [request.payload.question_id];
-            qq.quiz_id     = quiz.id;
-            qq.user_id     =  request.auth.credentials.uid;
-
-            console.log(qq);
-        
-        let promiseQQ = qq.save();
-        promiseQQ.then(function(qq) {
-            return reply.redirect('quiz/'+ qq.quiz_id +'/view');
-        })
 
     }
 }
@@ -412,7 +308,7 @@ function getItem(request, reply) {
         _id: id,
         status: 1
     };
-    let promise = Quiz.findOne(options).populate('subject_id').populate('group_id').exec();
+    let promise = Quiz.findOne(options).populate(['subject_id', 'group_id', 'user_id', 'question_ids']).exec();
     promise.then(function(quiz) {
         reply(quiz);
     }).catch(function(err) {
