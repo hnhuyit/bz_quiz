@@ -3,7 +3,3 @@ var/*.log
 *.log
 .vscode
 .idea
-app/config/development.conf.js
-app/config/staging.conf.js
-app/config/production.conf.js
-app/config/main.conf.js
