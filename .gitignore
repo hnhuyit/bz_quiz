@@ -2,6 +2,10 @@
 .DS_Store
 **/.DS_Store
 misc/backup/node_modules/*
+web/app/config/development.conf.js
+web/app/config/staging.conf.js
+web/app/config/production.conf.js
+web/app/config/main.conf.js
 
 web/node_modules
 web/var/*.log
@@ -11,8 +15,3 @@ web/test.js
 *.log
 .vscode
 .idea
-
-web/app/config/development.conf.js
-web/app/config/staging.conf.js
-web/app/config/production.conf.js
-web/app/config/main.conf.js
