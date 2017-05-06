@@ -1,0 +1,30 @@
+{
+        "name": {"type": "String", "trim": true, "index": true, "required": true},
+        
+        "description": {"type": "String","editor": 1},
+
+        "start_date": {"type": "Date"},
+
+        "end_date": {"type": "Date"},
+
+        "duration": {"type": "Number"},
+
+        "maximum_attempts": {"type": "Number"},
+
+        "pass_percentage": {"type": "Number"},
+
+        "group_id": {"type": "Schema.ObjectId", "required": true},
+
+        "view_answer": {"type": "Number", "default": 1},
+
+        "with_login": {"type": "Number", "default": 1},
+
+        "number_of_question": {"type": "Number", "required": true},
+
+        "slug": {"type": "String","slug": "#name"},
+
+        "status": {"type": "Number","default": 1},
+
+        "created": {"type": "Date"},
+        "modified": {"type": "Date"}
+}

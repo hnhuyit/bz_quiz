@@ -1,0 +1,11 @@
+{
+    "name": {"type": "String", "trim": true, "index": true, "required": true},
+    "email": {"type": "String", "trim": true},
+    "phone": {"type": "String", "trim": true},
+    "image": {"type": "String", "upload": true},
+    "status": {"type": "Number","default": 1},
+    "slug": {"type": "String","slug": "#title"},
+    "division": {"type": "String", "trim": true},
+    "created": {"type": "Date"},
+    "modified": {"type": "Date"}
+}

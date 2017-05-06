@@ -1,0 +1,19 @@
+<div class="page-header">
+     <h1>List <%= humanizedPluralName %></h1> 
+</div>
+<div class="row row-offcanvas row-offcanvas-right">
+    <div class="col-xs-12 col-sm-9">
+        {{#each items}}
+        <div class="media">
+            <div class="media-body">
+                <h4 class="media-heading">{{<%= title %>}}</h4>
+                 <p><a href="/<%= routeName %>/{{<% if(slug){ %>slug<% }else{ %>_id<% } %>}}">View detail»</a></p>
+            </div>
+        </div>
+        {{/each}} {{{paginator}}}
+    </div>
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+       
+    </div>
+
+</div>

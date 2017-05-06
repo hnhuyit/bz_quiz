@@ -28,7 +28,7 @@ node export    # Run this command to export your cms data and share to team memb
 - Default CMS Account
 ```bash
 
-admin@gmail.com/iii3studi1
+admin@gmail.com/123123
 
 ```
 
@@ -39,6 +39,6 @@ yarn start           # In the web folder
 ```
 
 ## List Connections:
-- API Server: [http://localhost:9001/](http://localhost:9001/documentation)
-- CMS: [http://localhost:9000/](http://localhost:9000/)
-- Web:  [http://localhost:9006/](http://localhost:9006/)
+- API Server: [http://localhost:9071/](http://localhost:9071/documentation)
+- CMS: [http://localhost:9070/](http://localhost:9070/admin)
+- Web:  [http://localhost:9076/](http://localhost:9076/)

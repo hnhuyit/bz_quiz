@@ -1,0 +1,12 @@
+{
+        "quiz_id": {"type": "Schema.ObjectId"},
+
+        "question_id": {"type": "Schema.ObjectId"},
+
+        "status": {"type": "Number","default": 1},
+
+        "desc": {"type": "String","textarea": 1},
+
+        "created_at": {"type": "Date"},
+        "updated_at": {"type": "Date"}
+}

@@ -1,0 +1,10 @@
+{
+        "title": {"type": "String", "trim": true, "index": true, "required": true},
+        "firstname": {"type": "String"},
+        "lastname": {"type": "String"},
+        "slug": {"type": "String","slug": "#firstname"},
+        "age": {"type": "Number"},
+        "image": {"type": "String", "upload": true},
+        "desc": {"type": "String","textarea": 1},
+        "body": {"type": "String","editor": 1}
+}

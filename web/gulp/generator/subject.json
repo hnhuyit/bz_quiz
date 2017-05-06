@@ -1,0 +1,10 @@
+{
+        "name": {"type": "String", "trim": true, "index": true, "required": true},
+        "desc": {"type": "String","textarea": 1},
+        "user_id": {"type": "Schema.ObjectId", "required": true},
+        "slug": {"type": "String","slug": "#name"},
+        "status": {"type": "Number","default": 1},
+        
+        "created": {"type": "Date"},
+        "modified": {"type": "Date"}
+}

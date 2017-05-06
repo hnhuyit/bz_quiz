@@ -24,9 +24,9 @@ bower install
 ```bash
 yarn start
 ```
-Website: `http://localhost:9006/`
-API: `http://localhost:9001/`
-CMS: `http://localhost:9000/`
+Website: `http://localhost:9076/`
+API: `http://localhost:9071/`
+CMS: `http://localhost:9070/admin`
 
 
 ## Notes
