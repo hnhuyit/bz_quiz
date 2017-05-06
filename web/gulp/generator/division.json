@@ -1,0 +1,8 @@
+{
+    "name": {"type": "String", "trim": true, "index": true, "required": true},
+    "note": {"type": "String","textarea": 1},
+    "status": {"type": "Number","default": 1},
+    "slug": {"type": "String","slug": "#title"},
+    "created": {"type": "Date"},
+    "modified": {"type": "Date"}
+}

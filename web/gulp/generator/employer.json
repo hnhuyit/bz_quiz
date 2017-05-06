@@ -1,0 +1,8 @@
+{
+        "name": {"type": "String", "trim": true, "index": true, "required": true},
+        "email": {"type": "String", "trim": true},
+        "address": {"type": "String", "trim": true},
+        "phone": {"type": "String", "trim": true},
+        "created": {"type": "Date"},
+        "modified": {"type": "Date"}
+}

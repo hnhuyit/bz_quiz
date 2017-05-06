@@ -1,0 +1,19 @@
+{
+        "string": {"type": "String", "trim": true, "index": true, "required": true},
+        
+        "slug": {"type": "String","slug": "#title"},
+
+        "status": {"type": "Number","default": 1},
+
+        "date": {"type": "Date"},
+        "desc": {"type": "String","textarea": 1},
+
+        "image": {"type": "String", "upload": true},
+
+        "body": {"type": "String","editor": 1},
+
+        "ObjectId": {"type": "Schema.ObjectId"},
+
+        "created": {"type": "Date"},
+        "modified": {"type": "Date"}
+}

@@ -1,0 +1,13 @@
+{
+        "quiz_id": {"type": "Schema.ObjectId"},
+        "user_id": {"type": "Schema.ObjectId"},
+        "result_status": {"type": "String","default": ""},
+        "start": {"type": "Date"},
+        "end": {"type": "Date"},
+        "score_obtained": {"type": "Number"},
+        "percentage_obtained": {"type": "Number"},
+        "total_time": {"type": "Number"},
+        
+        "created": {"type": "Date"},
+        "modified": {"type": "Date"}
+}

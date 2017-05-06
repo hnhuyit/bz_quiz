@@ -1,0 +1,10 @@
+{
+        "name": {"type": "String", "trim": true, "index": true, "required": true},
+        "slug": {"type": "String","slug": "#name"},
+        "status": {"type": "Number","default": 1},
+        "valid_for_days": {"type": "Number","default": 0},
+        "price": {"type": "Number", "default": 0},
+        "description": {"type": "String","textarea": 1},
+        "created": {"type": "Date"},
+        "modified": {"type": "Date"}
+}

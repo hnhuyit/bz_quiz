@@ -1,0 +1,11 @@
+{
+        "user_id": {"type": "Schema.ObjectId"},
+
+        "quiz_id": {"type": "Schema.ObjectId"},
+
+        "user_answer": {"type": "Schema.ObjectId"},
+
+        "status": {"type": "Number","default": 1},
+        "created": {"type": "Date"},
+        "modified": {"type": "Date"}
+}

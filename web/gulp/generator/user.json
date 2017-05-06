@@ -1,0 +1,22 @@
+{
+        "name": {"type": "String", "trim": true, "index": true, "required": true},
+        
+        "email": {"type": "String", "required": true},
+
+        "student_code": {"type": "String", "required": true},
+
+        "password": {"type": "String", "required": true},
+        "phone": {"type": "String"},
+        "role": {"type": "String", "required": true},
+
+        "group_id": {"type": "Schema.ObjectId"},
+        
+
+        "image": {"type": "String", "upload": true},
+        "slug": {"type": "String","slug": "#name"},
+
+        "status": {"type": "Number","default": 1},
+
+        "created": {"type": "Date"},
+        "modified": {"type": "Date"}
+}

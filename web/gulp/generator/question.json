@@ -1,0 +1,29 @@
+{
+        "name": {"type": "String", "trim": true, "index": true, "required": true},
+        
+        "slug": {"type": "String","slug": "#name"},
+        
+        "question_type": {"type": "String", "required": true},
+
+        "chapter_id": {"type": "Schema.ObjectId", "required": true},
+
+        "subject_id": {"type": "Schema.ObjectId", "required": true},
+
+        "level": {"type": "String", "required": true},
+
+        "description": {"type": "String","editor": 1},
+
+        "no_time_corrected": {"type": "Number"},
+
+        "no_time_incorrected": {"type": "Number"},
+
+        "no_time_unattempted": {"type": "Number"},
+
+        "options": {"type": "Schema.ObjectId", "required": true},
+
+
+        "status": {"type": "Number", "default": 1},
+
+        "created": {"type": "Date"},
+        "modified": {"type": "Date"}
+}
