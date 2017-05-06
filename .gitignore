@@ -8,7 +8,7 @@ web/var/*.log
 web/public/assets/lib
 web/public/files/*
 web/test.js
-web/app/config/*.config.js
+web/app/config/*.conf.js
 *.log
 .vscode
 .idea
