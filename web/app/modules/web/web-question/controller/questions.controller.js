@@ -5,7 +5,6 @@ const util = require('util');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const Question = mongoose.model('Question');
-const Option = mongoose.model('Option');
 const ErrorHandler = require(BASE_PATH + '/app/utils/error.js');
 const _ = require('lodash');
 exports.list = {
@@ -69,12 +68,8 @@ exports.view = {
             title : 'Xem thông tin câu hỏi',
             description: 'Xem thông tin câu hỏi',
         };
-        let promise = Option.find({question_id: question._id});
-        promise.then(function(options) {
-            return reply.view('web/html/web-question/view', { question: question, options: options, meta: meta });
-        }).catch(function() {
-            //
-        });
+
+        return reply.view('web/html/web-question/view', { question: question, meta: meta });
 
     },
 }

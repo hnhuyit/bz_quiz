@@ -37,18 +37,18 @@
 
                     
                     <div class="box-body" data-ng-repeat="(key_question,question) in quiz.question_ids">
-                        <p>Câu hỏi <span ng-bind="key+1"></span>: </p>
+                        <p>Câu hỏi <span ng-bind="key_question+1"></span>: </p>
                         <h3 ng-bind="question.name"></h3>
                         <ol style="list-style-type:upper-alpha;">
-                            <label style="display: block;" data-ng-repeat="(key_option, option) in options.items" ng-if="option.question_id === question._id">
+                            <label style="display: block;" data-ng-repeat="(key_option, option) in question.options">
                                 <div>
                                     <input id="option" type="radio" name="option">
                                     <span for="option" ng-bind="option.name"></span>
-                                    <input type="hidden" ng-model="option_name[{{key_option}}]" value="{{option._id}}">
+                                    <input type="hidden" ng-model="options.name" value="{{option._id}}">
                                 </div>
                             </label>
                         </ol>
-                        <input type="hidden" ng-model="question.name" value="{{question._id}}">
+                        <input type="hidden" ng-model="questions.name" value="{{question._id}}">
   					</div>
                     
 
@@ -64,8 +64,8 @@
                         <a class="btn bg-olive btn-flat margin"> D </a>
                     </div> -->
                     <div class="box-footer">
-                        <a class="btn btn-info btn-flat">Câu trước</a>
-                        <a class="btn btn-primary btn-flat">Câu tiếp theo</a>
+                        <!-- <a class="btn btn-info btn-flat">Câu trước</a>
+                        <a class="btn btn-primary btn-flat">Câu tiếp theo</a> -->
                         <a style="" data-ng-click="submitQuiz()" class="btn btn-success btn-flat pull-right">Nộp bài</a>
   					</div>
                 </div>
@@ -84,7 +84,7 @@
                         <p>Kết quả: Đạt</p>
                     </div>
                 </div>
-                <div class="box box-header">
+                <!-- <div class="box box-header">
                     <div class="box-header with-border">
                         <h3>Bảng câu hỏi</h3>
                     </div>
@@ -98,7 +98,7 @@
                         <p><a class="btn bg-olive btn-flat margin"></a>Chưa trả lời</p>
                         <p><a class="btn bg-orange btn-flat margin"></a>Chưa chọn</p>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>

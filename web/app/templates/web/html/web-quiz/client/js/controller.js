@@ -148,34 +148,25 @@ function AttemptQuizController($scope, $timeout, $location, QuizFactory, OptionF
     var url = $location.$$absUrl;
     var idQuiz = url.substr(url.length-32,24);
 
-    //Method
-    $scope.getOptionsbyQuestion = function() {
-        $scope.options = OptionFactory.query({});
-        // console.log('options', $scope.options);
-    }
-
     $scope.find = function() {
         $scope.quiz = QuizFactory.get({itemId: idQuiz});
-        $scope.getOptionsbyQuestion();
     }
 
-    ///Get point of option
-    // $scope.option = OptionFactory.get({itemId: '590993ec747d157092a6ac30'});
-    // console.log('option', $scope.option);
     
     //Init data
-    // $scope.find();
     $scope.submitQuiz = function() {
         let anwser = new AnwserFactory();
         anwser.quiz_id = idQuiz;
-        anwser.question_name = $scope.question_name;
-        anwser.option_name = $scope.option_name;
+        anwser.question_name = $scope.questions.name;
+        anwser.option_name = $scope.options.name;
 
         console.log(anwser);
-        anwser.$save(function(anwser) {
-            // console.log(anwser);
-        }, function(err) {
-            console.log(err);
-        });
+
+        
+        // anwser.$save(function(anwser) {
+        //     // console.log(anwser);
+        // }, function(err) {
+        //     console.log(err);
+        // });
     }
 };

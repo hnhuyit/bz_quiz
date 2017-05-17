@@ -131,40 +131,49 @@ function QuestionsController($scope, $filter, $window, $location, $timeout, Ques
     };
 
     $scope.create = function() {
-        // let question = $scope.question;
-        let options = [
-            {name: $scope.options.name1, score: $scope.options.score1 || 0},
-            {name: $scope.options.name2, score: $scope.options.score2 || 0},
-            {name: $scope.options.name3, score: $scope.options.score3 || 0},
-            {name: $scope.options.name4, score: $scope.options.score4 || 0}
-        ];
         let question = new QuestionFactory($scope.question);
+            question.options = [
+                {name: $scope.options.name1, score: $scope.options.score1 == '1' ? 1 : 0},
+                {name: $scope.options.name2, score: $scope.options.score2 == '1' ? 1 : 0},
+                {name: $scope.options.name3, score: $scope.options.score3 == '1' ? 1 : 0},
+                {name: $scope.options.name4, score: $scope.options.score4 == '1' ? 1 : 0}
+            ];
 
         question.$save(function(response){
             console.log(response);
-            
-            for(let i=0; i<options.length; i++) {
-                let option = new OptionFactory(options[i]);
-                    option.question_id = response.question._id;
-                    option.$save(function(response) {
-                        console.log(response);
-                        // if(response.is_correct) {
-                        //     question.correct_option = response._id;
-                        //     question.$update(function(response) {
-                        //         console.log(response);
-                        //     });
-                        // }
-
-                    }, function(err) {
-                        console.log(err);
-                    });
-            }
             $scope.resetQuestion();
             toastr.success(response.message, 'Thông báo');
         }, function(err) {
             console.log(err);
             toastr.error(response.data.message, 'Thông báo');
         });
+
+
+        // question.$save(function(response){
+        //     console.log(response);
+            
+        //     for(let i=0; i<options.length; i++) {
+        //         let option = new OptionFactory(options[i]);
+        //             option.question_id = response.question._id;
+        //             option.$save(function(response) {
+        //                 console.log(response);
+        //                 // if(response.is_correct) {
+        //                 //     question.correct_option = response._id;
+        //                 //     question.$update(function(response) {
+        //                 //         console.log(response);
+        //                 //     });
+        //                 // }
+
+        //             }, function(err) {
+        //                 console.log(err);
+        //             });
+        //     }
+        //     $scope.resetQuestion();
+        //     toastr.success(response.message, 'Thông báo');
+        // }, function(err) {
+        //     console.log(err);
+        //     toastr.error(response.data.message, 'Thông báo');
+        // });
 
         // console.log('options', options, question);
 
