@@ -36,24 +36,61 @@
 
 
                     
-                    <div class="box-body" data-ng-repeat="(key_question,question) in quiz.question_ids">
-                        <p>Câu hỏi <span ng-bind="key_question+1"></span>: </p>
-                        <h3 ng-bind="question.name"></h3>
-                        <ol style="list-style-type:upper-alpha;">
-                            <label style="display: block;" data-ng-repeat="(key_option, option) in question.options">
-                                <div>
-                                    <input id="option" type="radio" name="option">
-                                    <span for="option" ng-bind="option.name"></span>
-                                    <input type="hidden" ng-model="options.name" value="{{option._id}}">
+                    <div class="box-body" ng-show="mode=='quiz'">
+
+                        <div ng-repeat="question in filteredQuestions">
+                            <div class="label label-warning">Question <span ng-bind="currentPage"></span> of <span ng-bind="totalItems"></span>.</div>
+                            <div class="question">
+                                <h2><span ng-bind="currentPage"></span>. <span ng-bind="question.name"></span></h2>
+                                <div class="options">
+                                    <div ng-repeat="option in question.options">
+                                        <label for="{{option._id}}">
+                                            <input id="{{option._id}}" type="checkbox" ng-model="option.selected" ng-change="onSelect(question, option);" />
+                                            <span ng-bind="option.name"></span>
+                                        </label>
+                                    </div>
                                 </div>
-                            </label>
-                        </ol>
-                        <input type="hidden" ng-model="questions.name" value="{{question._id}}">
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="quizNav">
+                            <div class="text-center">
+                                <button class="btn btn-default" ng-show="config.allowBack" ng-click="goTo(1);">First</button>
+                                <button class="btn btn-default" ng-show="config.allowBack" ng-click="goTo(currentPage - 1);">Prev</button>
+                                <button class="btn btn-primary"                            ng-click="goTo(currentPage + 1);">Next</button>
+                                <button class="btn btn-default" ng-show="config.allowBack" ng-click="goTo(totalItems);">Last</button>
+                            </div>
+                            <br />
+                            <pagination ng-show="config.showPager" direction-links="false" total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+                        </div>
   					</div>
                     
 
 
-
+                    
+                    <!-- <div class="box-body review" ng-show="mode=='review'">
+                        <div ng-repeat="question in questions">
+                            <div ng-click="goTo($index + 1)" class="{{ isAnswered($index) == 'Answered'? 'answered': 'not-answered' }}">{{$index + 1}}. {{ isAnswered($index) }}</div>
+                        </div>
+                    </div> -->
+                    
+                    <div class="box-body result" ng-show="mode=='result'">
+                        <h2>Quiz Result</h2>
+                        <div ng-repeat="question in questions">
+                            <div class="result-question">
+                                <h3><span ng-bind="$index + 1"></span>.<span ng-bind="question.name"></span></h3>
+                                <div class="result-options">
+                                    <div ng-repeat="option in question.options">
+                                        <label ng-click="onSelect(option);" class="{{ (option.selected == option.is_correct)? 'result-correct': 'result-incorrect' }}">
+                                            <input id="{{option._id}}" type="checkbox" disabled="disabled" readonly="readonly" ng-model="option.selected" />
+                                            <span ng-bind="option.name"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <h4 class="alert {{ isCorrect(question) == 'correct'? 'alert-success': 'alert-danger'}}">Your answer is <span ng-bind="isCorrect(question)"></span>.</h4>
+                            </div>
+                        </div>
+                    </div>
 
 
                     <!-- <div class="box-body">
@@ -64,9 +101,11 @@
                         <a class="btn bg-olive btn-flat margin"> D </a>
                     </div> -->
                     <div class="box-footer">
-                        <!-- <a class="btn btn-info btn-flat">Câu trước</a>
-                        <a class="btn btn-primary btn-flat">Câu tiếp theo</a> -->
-                        <a style="" data-ng-click="submitQuiz()" class="btn btn-success btn-flat pull-right">Nộp bài</a>
+                        <div class="" ng-show="mode!='result'">
+                            <!-- <button class="btn btn-info btn-flat" ng-click="mode = 'quiz'">Bai thi</button> 
+                            <button class="btn btn-primary btn-flat" ng-click="mode = 'review'">Xem lai</button>  -->
+                            <button class="btn btn-success btn-flat pull-right" ng-click="onSubmit();">Nộp bài</button>
+                        </div>
   					</div>
                 </div>
             </div>
@@ -77,28 +116,28 @@
                     </div>
                     <div class="box-body">
                         <p>Thời gian còn lại: 10:10</p>
-                        <p>Đã làm: 8/15</p>
+                        <!-- <p>Đã làm: <span ng-show="defaultConfig.isQuiz" class="pull-right badge bg-aqua">5/10</span></p> -->
                     </div>
                     <div class="box-footer">
-                        <p>Điểm: 10</p>
-                        <p>Kết quả: Đạt</p>
+                        <p>Điểm: <span ng-show="defaultConfig.isQuiz" class="pull-right badge bg-red">{{result.score_obtained}}</span></p>
+                        <p>Kết quả: <span ng-show="defaultConfig.isQuiz" class="pull-right badge bg-green">{{result.result_status}}</span></p>
                     </div>
                 </div>
-                <!-- <div class="box box-header">
+                <div class="box box-header">
                     <div class="box-header with-border">
                         <h3>Bảng câu hỏi</h3>
                     </div>
-                    <div class="box-body">
-                        
-                        <a data-ng-repeat="(key,question) in questions" type="button" class="btn bg-orange btn-flat margin" ng-bind="key+1"></a>
-                         
+                    <div class="box-body review">
+                        <div ng-repeat="question in questions" style="display: inline;">
+                            <a ng-click="goTo($index + 1)" ng-disabled="btnReview" class="btn {{ isAnswered($index) == 'Answered'? 'btn-danger': 'btn-success' }} btn-flat margin">{{$index + 1}}</a>
+                        </div>
                     </div>
                     <div class="box-footer">
-                        <p><a class="btn bg-navy btn-flat margin"></a>Đã trả lời</p>
-                        <p><a class="btn bg-olive btn-flat margin"></a>Chưa trả lời</p>
-                        <p><a class="btn bg-orange btn-flat margin"></a>Chưa chọn</p>
+                        <p><a class="btn btn-danger btn-flat margin"></a>Đã trả lời</p>
+                        <p><a class="btn btn-success btn-flat margin"></a>Chưa trả lời</p>
+                        <!-- <p><a class="btn bg-orange btn-flat margin"></a>Chưa chọn</p> -->
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
     </section>

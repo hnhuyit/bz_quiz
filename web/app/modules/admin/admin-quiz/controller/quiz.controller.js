@@ -30,7 +30,13 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Quiz',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.edit = {
     pre: [

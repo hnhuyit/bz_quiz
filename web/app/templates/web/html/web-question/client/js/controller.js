@@ -116,28 +116,36 @@ function QuestionsController($scope, $filter, $window, $location, $timeout, Ques
     };
 
     ////////////////
-    $scope.resetQuestion = function() {
+    $scope.resetOptions = function() {
         $scope.question.subject_id    = "";
         $scope.question.question_type = "";
         $scope.question.level         = "";
         $scope.question.chapter_id    = "";
-        $scope.question.name          = "";
-        $scope.question.desc          = "";
-        $scope.options.name1          = "";
-        $scope.options.name2          = "";
-        $scope.options.name3          = "";
-        $scope.options.name4          = "";
+        setAddQuestion();
+    };
+    $scope.resetQuestion = function() {
+        $scope.question.name  = "";
+        $scope.question.desc  = "";
+        $scope.options.name1  = "";
+        $scope.options.name2  = "";
+        $scope.options.name3  = "";
+        $scope.options.name4  = "";
+        $scope.options.score1 = false;
+        $scope.options.score2 = false;
+        $scope.options.score3 = false;
+        $scope.options.score4 = false;
         setAddQuestion();
     };
 
     $scope.create = function() {
         let question = new QuestionFactory($scope.question);
             question.options = [
-                {name: $scope.options.name1, score: $scope.options.score1 == '1' ? 1 : 0},
-                {name: $scope.options.name2, score: $scope.options.score2 == '1' ? 1 : 0},
-                {name: $scope.options.name3, score: $scope.options.score3 == '1' ? 1 : 0},
-                {name: $scope.options.name4, score: $scope.options.score4 == '1' ? 1 : 0}
+                {name: $scope.options.name1, score: $scope.options.score1 === '1' ? 1 : 0, is_correct: $scope.options.score1 === '1' ? true : false},
+                {name: $scope.options.name2, score: $scope.options.score2 === '1' ? 1 : 0, is_correct: $scope.options.score2 === '1' ? true : false},
+                {name: $scope.options.name3, score: $scope.options.score3 === '1' ? 1 : 0, is_correct: $scope.options.score3 === '1' ? true : false},
+                {name: $scope.options.name4, score: $scope.options.score4 === '1' ? 1 : 0, is_correct: $scope.options.score4 === '1' ? true : false}
             ];
+        console.log($scope.options.score4);
 
         question.$save(function(response){
             console.log(response);

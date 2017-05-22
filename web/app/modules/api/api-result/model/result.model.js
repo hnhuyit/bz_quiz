@@ -14,7 +14,11 @@ var ResultSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'Quiz'
 	},
-	user_id: {
+	student_id: {
+		type: Schema.ObjectId,
+		ref: 'User'
+	},
+	teacher_id: {
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
@@ -39,6 +43,10 @@ var ResultSchema = new Schema({
 	total_time: {
 		type: 'Number',
 		default: 0
+	},
+	anwser_id: {
+		type: Schema.ObjectId,
+		ref: 'Anwser'
 	},
 	created: {
 		type: 'Date'

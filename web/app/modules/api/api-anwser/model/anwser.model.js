@@ -10,7 +10,7 @@ var slug = require('slug');
  * Anwser Schema
  */
 var AnwserSchema = new Schema({
-	user_id: {
+	student_id: {
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
@@ -18,32 +18,36 @@ var AnwserSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'Quiz'
 	},
-	question_name: {
+	teacher_id: {
 		type: Schema.ObjectId,
-		ref: 'Question'
+		ref: 'Quiz'
 	},
-	option_name: {
-		type: Schema.ObjectId,
-		ref: 'Option'
-	},
-	option_score: {
-		type: 'Number',
-		default: 0
-	},
-	// user_answer: [{
-	// 	question_id: {
-	// 		type: Schema.ObjectId,
-	// 		ref: 'Question'
-	// 	},
-	// 	q_option: {
-	// 		type: 'String',
-	// 		default: ""
-	// 	},
-	// 	q_score: {
-	// 		type: 'Number',
-	// 		default: 0
-	// 	},
-	// }],
+	// question_id: {
+	// 	type: Schema.ObjectId,
+	// 	ref: 'Question'
+	// },
+	// option_name: {
+	// 	type: String,
+	// 	default: ""
+	// },
+	// option_score: {
+	// 	type: 'Number',
+	// 	default: 0
+	// },
+	user_answer: [{
+		question_id: {
+			type: Schema.ObjectId,
+			ref: 'Question'
+		},
+		option_name: {
+			type: 'String',
+			default: ""
+		},
+		option_score: {
+			type: 'Number',
+			default: 0
+		},
+	}],
 	status: {
 		type: 'Number',
 		default: 1

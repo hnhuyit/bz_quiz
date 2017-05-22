@@ -76,8 +76,8 @@ var QuestionSchema = new Schema({
             trim: true
         },
         is_correct: {
-            type: Number,
-            default: 0
+            type: Boolean,
+            default: false
         },
         score: {
             type: Number,

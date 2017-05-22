@@ -31,7 +31,9 @@ exports.getAll = {
             reply(dataRes);
         });
 
-    }
+    },
+    description: 'List Category',
+    tags: ['api'],
 }
 
 exports.edit = {

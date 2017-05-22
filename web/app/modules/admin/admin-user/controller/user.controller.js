@@ -36,7 +36,13 @@ exports.getAll = {
             let dataRes = { status: 1, totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
             reply(dataRes);
         });
-    }
+    },
+    description: 'List User',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 
 

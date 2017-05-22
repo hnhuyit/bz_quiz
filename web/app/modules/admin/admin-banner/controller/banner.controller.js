@@ -30,7 +30,9 @@ exports.getAll = {
             reply(dataRes);
         });
 
-    }
+    },
+    description: 'List Banner',
+    tags: ['api']
 }
 
 exports.edit = {

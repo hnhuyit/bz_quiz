@@ -10,29 +10,34 @@ exports.register = function(server, options, next) {
         config: AnwsersController.getAll,
     });
     server.route({
+        method: 'GET',
+        path: '/anwser/get-anwsers-by-student',
+        config: AnwsersController.getAnwsersByStudent,
+    });
+    server.route({
         method: ['GET'],
         path: '/anwser/{id}',
         config: AnwsersController.edit,
 
     });
-    server.route({
-        method: ['DELETE'],
-        path: '/anwser/{id}',
-        config: AnwsersController.delete
+    // server.route({
+    //     method: ['DELETE'],
+    //     path: '/anwser/{id}',
+    //     config: AnwsersController.delete
 
-    });
+    // });
     server.route({
         method: 'POST',
         path: '/anwser',
         config: AnwsersController.save,
 
     });
-    server.route({
-        method: ['PUT', 'POST'],
-        path: '/anwser/{id}',
-        config: AnwsersController.update,
+    // server.route({
+    //     method: ['PUT', 'POST'],
+    //     path: '/anwser/{id}',
+    //     config: AnwsersController.update,
 
-    });
+    // });
     next();
 };
 

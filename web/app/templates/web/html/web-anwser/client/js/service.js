@@ -20,6 +20,10 @@ function AnwserFactory($resource, $window) {
         },
         query: {
             isArray: false,
+        },
+        getAnwsersByStudent: {
+            url: $window.settings.services.userApi + '/api/anwser/get-anwsers-by-student',
+            method: 'GET'
         }
     });
 }
