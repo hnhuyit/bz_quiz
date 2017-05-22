@@ -1,0 +1,21 @@
+/* div.review{
+    text-align:center;
+}
+div.review > div {
+    cursor:pointer;
+    display:inline-block;
+    margin:2px;
+    width: 25%;
+}
+
+.answered {
+    background-color:#ccffcc;
+    border:1px solid #aaeeaa;
+    padding:12px;
+}
+
+.not-answered {
+    background-color:#ffcccc;
+    border:1px solid #eeaaaa;
+    padding:12px;
+} */
