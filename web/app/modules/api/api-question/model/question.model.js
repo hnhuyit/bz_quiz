@@ -61,10 +61,29 @@ var QuestionSchema = new Schema({
         type: 'Number',
         default: 0
     },
-    correct_option: {
-        type: Schema.ObjectId,
-        ref: 'Option'
-    },
+    // correct_option: {
+    //     type: Schema.ObjectId,
+    //     ref: 'Option'
+    // },
+    options: [{
+        name:  {
+            type: String,
+            required: true
+        }, 
+        name_match: {
+            type: String,
+            default: '',
+            trim: true
+        },
+        is_correct: {
+            type: Boolean,
+            default: false
+        },
+        score: {
+            type: Number,
+            default: 0
+        },
+    }],
     created: {
         type: Date,
         default: Date.now

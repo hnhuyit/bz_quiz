@@ -29,7 +29,9 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Anwser',
+    tags: ['api'],
 }
 exports.edit = {
     pre: [

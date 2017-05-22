@@ -42,7 +42,13 @@ exports.getAll = {
                 };
                 reply(dataRes);
             });
-    }
+    },
+    description: 'List Setting',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 };
 
 exports.edit = {

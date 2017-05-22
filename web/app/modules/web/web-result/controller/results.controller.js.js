@@ -8,26 +8,34 @@ const Result = mongoose.model('Result');
 const _ = require('lodash');
 exports.list = {
     handler: function(request, reply) {
-        let page = request.query.page || 1;
-        let config = request.server.configManager;
-        let itemsPerPage =  config.get('web.paging.itemsPerPage');
-        let numberVisiblePages = config.get('web.paging.numberVisiblePages');
+        // let page = request.query.page || 1;
+        // let config = request.server.configManager;
+        // let itemsPerPage =  config.get('web.paging.itemsPerPage');
+        // let numberVisiblePages = config.get('web.paging.numberVisiblePages');
        
-        let options = {};
-        if (request.query.keyword && request.query.keyword.length > 0) {
-            let re = new RegExp(request.query.keyword, 'i');
-            options.title = re;
-        }
-        Result.find(options).sort('id').paginate(page, itemsPerPage, function(err, items, total) {
-            if (err) {
-                request.log(['error', 'list'], err);
-                reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
-            }
-            let totalPage = Math.ceil(total / itemsPerPage);
-            let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
-            reply.view('web/html/web-result/list',dataRes);
-        });
+        // let options = {};
+        // if (request.query.keyword && request.query.keyword.length > 0) {
+        //     let re = new RegExp(request.query.keyword, 'i');
+        //     options.title = re;
+        // }
+        // Result.find(options).sort('id').paginate(page, itemsPerPage, function(err, items, total) {
+        //     if (err) {
+        //         request.log(['error', 'list'], err);
+        //         reply(Boom.badRequest(ErrorHandler.getErrorMessage(err)));
+        //     }
+        //     let totalPage = Math.ceil(total / itemsPerPage);
+        //     let dataRes = { status: '1', totalItems: total, totalPage: totalPage, currentPage: page, itemsPerPage: itemsPerPage, numberVisiblePages: numberVisiblePages, items: items };
+        //     reply.view('web/html/web-result/list',dataRes);
+        // });
 
+
+        let meta = {
+            controller: 'Kết quả',
+            action: ' Danh sách kết quả',
+            title : ' Danh sách kết quả',
+            description: ' Danh sách kết quả',
+        };
+        reply.view('web/html/web-result/list', {meta:meta});
 
     }
 }

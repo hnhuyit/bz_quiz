@@ -31,7 +31,9 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Contact',
+    tags: ['api'],
 }
 
 exports.edit = {
@@ -44,6 +46,19 @@ exports.edit = {
             return reply(contact);
         } else {
             reply(Boom.notFound('Contact is not found'));
+        }
+    },
+    description: 'Get Contact',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+            responses: { '400': { 'description': 'Bad Request' } },
+            payloadType: 'form'
+        }
+    },
+    validate: {
+        params: {
+            id: Joi.string().required().description('ID'),
         }
     }
 }

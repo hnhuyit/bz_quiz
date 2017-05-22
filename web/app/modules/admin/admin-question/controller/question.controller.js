@@ -33,7 +33,13 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Question',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 
 exports.changeStatus = {

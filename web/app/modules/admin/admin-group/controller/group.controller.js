@@ -29,7 +29,9 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Group',
+    tags: ['api'],
 }
 exports.edit = {
     pre: [

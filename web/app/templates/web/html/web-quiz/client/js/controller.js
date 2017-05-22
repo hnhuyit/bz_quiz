@@ -139,43 +139,162 @@ function QuizController($scope, $filter, $timeout, QuizService, QuizFactory, Gro
     }
 }
 
-function AttemptQuizController($scope, $timeout, $location, QuizFactory, OptionFactory, AnwserFactory, toastr) {
+function AttemptQuizController($scope, $timeout, $location, helperService, QuizFactory, QuestionFactory, AnwserFactory, toastr) {
 
     //Ser permission
     
+    $scope.defaultConfig = {
+        'allowBack': true,
+        'allowReview': true,
+        'autoMove': false,  // if true, it will move to next question automatically when answered.
+        'duration': 0,  // indicates the time in which quiz needs to be completed. post that, quiz will be automatically submitted. 0 means unlimited.
+        'pageSize': 1,
+        'requiredAll': false,  // indicates if you must answer all the questions before submitting.
+        'richText': false,
+        'shuffleQuestions': false,
+        'shuffleOptions': false,
+        'showClock': false,
+        'showPager': true,
+        'theme': 'none', 
+        'isQuiz': false
+    }
 
     //Var
     var url = $location.$$absUrl;
     var idQuiz = url.substr(url.length-32,24);
-
-    //Method
-    $scope.getOptionsbyQuestion = function() {
-        $scope.options = OptionFactory.query({});
-        // console.log('options', $scope.options);
-    }
+    $scope.btnReview = false;
 
     $scope.find = function() {
-        $scope.quiz = QuizFactory.get({itemId: idQuiz});
-        $scope.getOptionsbyQuestion();
-    }
+        $scope.quiz = {};
+        QuizFactory.get({itemId: idQuiz}, function(data) {
+            $scope.quiz = data
+            $scope.config = helperService.extend({}, $scope.defaultConfig);
+            $scope.questions = data.question_ids;
+            $scope.totalItems = data.question_ids.length;
+            $scope.itemsPerPage = $scope.defaultConfig.pageSize;
+            $scope.currentPage = 1;
+            $scope.mode = 'quiz';
+            
+            $scope.$watch('currentPage + itemsPerPage', function () {
+             var begin = (($scope.currentPage - 1) * $scope.itemsPerPage),
+               end = begin + $scope.itemsPerPage;
 
-    ///Get point of option
-    // $scope.option = OptionFactory.get({itemId: '590993ec747d157092a6ac30'});
-    // console.log('option', $scope.option);
-    
-    //Init data
-    // $scope.find();
-    $scope.submitQuiz = function() {
-        let anwser = new AnwserFactory();
-        anwser.quiz_id = idQuiz;
-        anwser.question_name = $scope.question_name;
-        anwser.option_name = $scope.option_name;
-
-        console.log(anwser);
-        anwser.$save(function(anwser) {
-            // console.log(anwser);
-        }, function(err) {
-            console.log(err);
+             $scope.filteredQuestions = $scope.questions.slice(begin, end);
+            });
         });
     }
+
+    //If you wish, you may create a separate factory or service to call loadQuiz. To keep things simple, i have kept it within controller.
+    // $scope.loadQuiz = function (file) {
+    //     $http.get(file)
+    //      .then(function (res) {
+    //          $scope.quiz = res.data.quiz;
+    //          $scope.config = helper.extend({}, $scope.defaultConfig, res.data.config);
+    //          $scope.questions = $scope.config.shuffleQuestions ? helper.shuffle(res.data.questions) : res.data.questions;
+    //          $scope.totalItems = $scope.questions.length;
+    //          $scope.itemsPerPage = $scope.config.pageSize;
+    //          $scope.currentPage = 1;
+    //          $scope.mode = 'quiz';
+
+    //          $scope.$watch('currentPage + itemsPerPage', function () {
+    //              var begin = (($scope.currentPage - 1) * $scope.itemsPerPage),
+    //                end = begin + $scope.itemsPerPage;
+
+    //              $scope.filteredQuestions = $scope.questions.slice(begin, end);
+    //          });
+    //      });
+    // }
+
+    $scope.goTo = function (index) {
+        if (index > 0 && index <= $scope.totalItems) {
+            $scope.currentPage = index;
+            $scope.mode = 'quiz';
+        }
+    }
+    $scope.onSelect = function (question, option) {
+        // console.log(question);
+        if (question) {
+            question.options.forEach(function (element, index, array) {
+                if (element._id != option._id) {
+                    element.selected = false;
+                    // question.answered = element._id;
+                }
+            });
+        }
+
+        if ($scope.config.autoMove == true && $scope.currentPage < $scope.totalItems)
+            $scope.currentPage++;
+    }
+
+    $scope.onSubmit = function () {
+        var answer = {};
+            answer.quiz_id = idQuiz;
+            answer.user_answer = [];
+
+        QuizFactory.get({itemId: idQuiz}, function(data) {
+            answer.teacher_id = data.user_id;
+
+            $scope.questions.forEach(function (q, index) {
+                q.options.forEach(function (o, index) {
+                    if(o.selected) {
+                        answer.user_answer.push({
+                            question_id: q._id, 
+                            option_name: o._id, 
+                            option_score: o.score
+                        });
+                    }
+                });
+            });
+            
+            let ans = new AnwserFactory(answer);
+            ans.$save(function(data) {
+                // console.log(data);
+                $scope.result = data;
+                $scope.defaultConfig.isQuiz = true;
+                $scope.mode = 'result';
+                $scope.btnReview = true;
+            }, function(err) {
+                console.log(err);
+            });
+
+        });
+
+
+        // Post your data to the server here. answers contains the questionId and the users' answer.
+        //$http.post('api/Quiz/Submit', answers).success(function (data, status) {
+        //    alert(data);
+        //});
+        // console.log($scope.questions);
+        // console.log('answer', answer);
+        // $scope.mode = 'result';
+        // $scope.btnReview = true;
+    }
+
+    $scope.pageCount = function () {
+        return Math.ceil($scope.questions.length / $scope.itemsPerPage);
+    };
+
+    $scope.isAnswered = function (index) {
+        var answered = 'Not Answered';
+        $scope.questions[index].options.forEach(function (element, index, array) {
+            if (element.selected == true) {
+                answered = 'Answered';
+                return false;
+            }
+        });
+        return answered;
+    };
+
+    $scope.isCorrect = function (question) {
+        var result = 'correct';
+        question.options.forEach(function (option, index, array) {
+            if (helperService.toBool(option.selected) != option.is_correct) {
+                result = 'wrong';
+                return false;
+            }
+        });
+        return result;
+    };
+
+    
 };

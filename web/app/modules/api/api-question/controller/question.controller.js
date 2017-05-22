@@ -108,7 +108,7 @@ exports.save = {
             level: Joi.number().required().description('Level'),
             subject_id: Joi.any().allow('').description('Subject'),
             chapter_id: Joi.any().allow('').description('Chapter'),
-            correct_option: Joi.any().allow('').description('Option'),
+            options: Joi.any().description('Options'),
             desc: Joi.string().allow('').description('Desc'),
             // no_time_corrected: Joi.number().allow('').description('No Time Corrected'),
             // no_time_incorrected: Joi.number().allow('').description('No Time Incorrected'),

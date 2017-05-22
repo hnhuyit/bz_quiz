@@ -29,7 +29,9 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Chapter',
+    tags: ['api'],
 }
 exports.edit = {
     pre: [

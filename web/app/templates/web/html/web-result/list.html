@@ -14,78 +14,94 @@
                     <div class="box-header">
                         <h3 class="box-title"><$ meta.action $></h3>
                         <div class="pull-right">
-                            <a class="btn btn-block btn-primary" href="/<$ meta.context $>/add">Thêm mới</a>
+                            <!-- <a class="btn btn-block btn-primary" href="/<$ meta.context $>/add">Thêm mới</a> -->
                         </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="box-tools">
-                            <div class="input-group" style="width: 150px;">
-                                <input type="text" name="query" class="form-control input-sm pull-right" placeholder="Tìm kiếm" />
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-inline filter-layout">
+                                        <div class="form-group">
+                                            <label class="control-label" for="quiz_id">Ten ky thi</label>
+                                            <select ng-change="filter()" class="form-control" data-ng-model="search.quiz_id" id="quiz_id" ng-options="subject._id as subject.name for subject in subjectLists.items">
+                                                    <option value="">tất cả ky thi</option>
+                                                </select>
+                                        </div>
+                                        <!-- <div class="form-group">
+                                            <label class="control-label" for="subject_id">Môn học</label>
+                                            <select ng-change="filter()" class="form-control" data-ng-model="search.subject_id" id="subject_id" ng-options="subject._id as subject.name for subject in subjectLists.items">
+                                                    <option value="">tất cả môn học</option>
+                                                </select>
+                                        </div> -->
+                                        <div class="form-group filter-submit">
+                                            <a class="btn btn-primary" ng-click="filter()">Filter</a> &nbsp;&nbsp;
+                                            <a class="btn btn-primary" ng-click="reset()">Reset</a>
+                                        </div>
+                                        <hr/>
+                                    </div>
+
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            <h4><b>Summary</b></h4>
+                            <p><b>Items Per Page</b>: <span ng-bind="itemsPerPage"></span></p>
+                            <p><b>Total Page</b>: <span ng-bind="totalPage"></span></p>
+                            <p><b>Total Items</b>: <span ng-bind="totalItems"></span></p>
                         </div>
                         <div>&nbsp;</div>
                         <table id="table-list" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>Tên môn học</th>
+                                    <th>Tên ky thi</th>
                                     
-                                    <th>Khóa môn học</th>
+                                    <th>Tông thời gian làm bài</th>
                                     
-                                    <!-- <th>User Id</th> -->
+                                    <th>Điểm</th>
                                     
-                                    <!-- <th>Slug</th> -->
-                                    
-                                    <!-- <th>Status</th> -->
+                                    <th>Phần trăm đạt được</th>
+
+                                    <th>Đậu/Rớt</th>
                                     
                                     <th>Ngày tạo</th>
-                                    
-                                    <th>Ngày sửa</th>
                                     
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <% asyncEach item in items %>
-                                <tr>
-                                    <td><a href="subject/<$ item._id $>/view"><$ item.name $></a></td>
+                                <tr data-ng-repeat="result in results">
+                                    <!-- <td><a href="result/{{result._id}}/view">{{result._id}}</a></td> -->
+                                    
+                                    
+                                    <td><a href="result/{{result._id}}/view">{{result.quiz_id.name}}</a></td>
+
+
+                                    <td><a href="result/{{result._id}}/view">{{result.total_time}}</a></td>
                                     
                                     
                                     
-                                    <td><span class="label label-info"><$ item.key $></span></td>
+                                    <td><span class="label label-info">{{result.score_obtained}}</span></td>
                                     
                                     
                                     
-                                    <!-- <td><$ item.user_id $></td> -->
-                                    
-                                    
-                                    
-                                    <!-- <td><$ item.slug $></td> -->
+                                    <td>{{result.percentage_obtained}}</td>
                                     
                                     
                                         
-                                    <!-- <td><$ item.status $></td> -->
+                                    <td>{{result.result_status}}</td>
                                     
-                                    
-                                    
-                                    <td><$ item.created $></td>
-                                    
-                                    
-                                    
-                                    <td><$ item.modified $></td>
+                                    <td ng-bind="result.created | date:'short'"></td>
                                     
                                       
                                     <td>
-                                        <a href="subject/<$ item._id $>/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
-                                        <a href="subject/<$ item._id $>/view" title="Delete">
+                                        <a href="result/{{result._id}}/edit" title="Edit"><i class="glyphicon glyphicon-edit"></i></a> &nbsp; &nbsp;
+                                        <a href="result/{{result._id}}/view" title="Delete">
                                             <i class="glyphicon glyphicon-trash"></i>
                                         </a>
                                     </td>
                                 </tr>
-                            <% endeach %> 
                             </tbody>
                         </table>
 
@@ -98,15 +114,13 @@
             </div>
             <!-- /.col -->
         </div>
-        <%  if not items %>
-        <div class="row">
+       <!--  <div class="row">
             <div class="col-xs-12">
                 <div class="alert alert-warning text-center">
                     There is no item found, why don't you <a href="subject/create">create one</a>?
                 </div>
             </div>
-        </div>
-        <% endif %>
+        </div> -->
     </section>
 </section>
 

@@ -29,7 +29,13 @@ exports.getAll = {
         });
 
 
-    }
+    },
+    description: 'List Result',
+    tags: ['api'],
+    plugins: {
+        'hapi-swagger': {
+        }
+    },
 }
 exports.edit = {
     pre: [

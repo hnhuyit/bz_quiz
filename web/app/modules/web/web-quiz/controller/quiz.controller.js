@@ -85,7 +85,7 @@ exports.view = {
         let quiz = request.pre.quiz;
         let user = request.pre.user;
 
-        console.log('user', user)
+        // console.log('user', user)
         if (!quiz) {
             return reply(Boom.notFound('quiz is not be found'));
         }
@@ -109,7 +109,7 @@ exports.attempt = {
         {method: getUserLogin, assign: 'user'}
     ],
     handler: function(request, reply) {
-        let user = request.pre.user;
+        let user = request.pre.user || {};
         let quiz = request.pre.quiz;
         if (!quiz) {
             return reply(Boom.notFound('quiz is not be found'));
@@ -122,7 +122,7 @@ exports.attempt = {
             title : quiz.name,
             description: quiz.name,
         };
-        return reply.view('web/html/web-quiz/attempt', { user: user, meta: meta });
+        return reply.view('web/html/web-quiz/attempt', { quiz: quiz, user: user, meta: meta });
     },
 }
 exports.addQuestion = {

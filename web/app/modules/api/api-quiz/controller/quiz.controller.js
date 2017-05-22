@@ -185,6 +185,23 @@ exports.edit = {
         }
     }
 }
+exports.getQuestionsByQuiz = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['guest', 'user', 'admin']
+    },
+    pre: [
+        { method: getById, assign: 'quiz' }
+    ],
+    handler: function(request, reply) {
+        const quiz = request.pre.quiz;
+        if (quiz) {
+            return reply(quiz.question_ids);
+        } else {
+            reply(Boom.notFound('Quiz is not found'));
+        }
+    }
+}
 
 exports.save = {
     auth: {

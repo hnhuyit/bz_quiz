@@ -15,24 +15,24 @@ exports.register = function(server, options, next) {
         config: ResultsController.edit,
 
     });
-    server.route({
-        method: ['DELETE'],
-        path: '/result/{id}',
-        config: ResultsController.delete
+    // server.route({
+    //     method: ['DELETE'],
+    //     path: '/result/{id}',
+    //     config: ResultsController.delete
 
-    });
+    // });
     server.route({
         method: 'POST',
         path: '/result',
         config: ResultsController.save,
 
     });
-    server.route({
-        method: ['PUT', 'POST'],
-        path: '/result/{id}',
-        config: ResultsController.update,
+    // server.route({
+    //     method: ['PUT', 'POST'],
+    //     path: '/result/{id}',
+    //     config: ResultsController.update,
 
-    });
+    // });
     next();
 };
 
